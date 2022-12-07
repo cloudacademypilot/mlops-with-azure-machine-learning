@@ -1,5 +1,5 @@
-title: Created Collection and Added Role Assignments
-internal_name: Created Collection and Added Role Assignments
+title: Triggered Azure Machine Learning jobs with GitHub Actions
+internal_name: Triggered Azure Machine Learning jobs with GitHub Actions
 vendor: azure
 runtime: python3.8
 memory: 128
