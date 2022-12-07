@@ -1,0 +1,6 @@
+title: Created Collection and Added Role Assignments
+internal_name: Created Collection and Added Role Assignments
+vendor: azure
+runtime: python3.8
+memory: 128
+timeout: 10
