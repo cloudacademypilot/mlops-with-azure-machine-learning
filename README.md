@@ -1,1 +1,1 @@
-# mlops-with-azure-machine-learning
+# MLOps with Azure Machine Learning
