@@ -1,5 +1,5 @@
-title: Check if the User Successfully Deployed a model with GitHub Actions
-internal_name: Check if the User Successfully Deployed a model with GitHub Actions
+title: Deployed a model with GitHub Actions
+internal_name: Deployed a model with GitHub Actions
 vendor: azure
 runtime: python3.8
 memory: 128
