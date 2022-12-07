@@ -1,5 +1,5 @@
-title: Created Collection and Added Role Assignments
-internal_name: Created Collection and Added Role Assignments
+title: Check if the User Successfully Deployed a model with GitHub Actions
+internal_name: Check if the User Successfully Deployed a model with GitHub Actions
 vendor: azure
 runtime: python3.8
 memory: 128
