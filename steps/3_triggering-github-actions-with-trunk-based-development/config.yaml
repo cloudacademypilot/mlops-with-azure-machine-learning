@@ -1,4 +1,4 @@
-slug: using-an-azure-machine-learning-job-for-automation
-title: Using an Azure Machine Learning job for automation
+slug: triggering-github-actions-with-trunk-based-development
+title: Triggering GitHub Actions with trunk-based Development
 difficulty: Beginner
 validation_type: Basic
