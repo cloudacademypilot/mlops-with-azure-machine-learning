@@ -1,0 +1,216 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.13.1.58284",
+      "templateHash": "17277793070204216233"
+    }
+  },
+  "parameters": {
+    "name": {
+      "type": "string",
+      "defaultValue": "[format('{0}', substring(guid(resourceGroup().id), 0, 4))]",
+      "metadata": {
+        "description": "Specifies the name of the Azure Machine Learning service workspace."
+      }
+    },
+    "disableLocalAuth": {
+      "type": "bool",
+      "defaultValue": false,
+      "metadata": {
+        "description": "Disables local auth when not using ssh"
+      }
+    },
+    "sshAccess": {
+      "type": "string",
+      "defaultValue": "Disabled",
+      "allowedValues": [
+        "Disabled",
+        "Enabled"
+      ],
+      "metadata": {
+        "description": "Specifies whether SSH access should be enabled for compute instance"
+      }
+    },
+    "vmSize": {
+      "type": "string",
+      "defaultValue": "Standard_DS3_v2",
+      "metadata": {
+        "description": "Specifies the VM size of the Compute Instance to create under Azure Machine Learning workspace."
+      }
+    },
+    "maxNodeCount": {
+      "type": "int",
+      "defaultValue": 1
+    },
+    "minNodeCount": {
+      "type": "int",
+      "defaultValue": 0
+    },
+    "nodeIdleTimeBeforeScaleDown": {
+      "type": "string",
+      "defaultValue": "PT120S"
+    },
+    "remoteLoginPortPublicAccess": {
+      "type": "string",
+      "defaultValue": "NotSpecified"
+    },
+    "vmPriority": {
+      "type": "string",
+      "defaultValue": "Dedicated"
+    },
+    "utcValue": {
+          "type": "string",
+          "defaultValue": "[utcNow()]"
+        }
+  },
+  "variables": {
+    "tenantId": "[subscription().tenantId]",
+    "storageAccountName": "[format('st{0}', parameters('name'))]",
+    "keyVaultName": "[format('kv-{0}', parameters('utcValue'))]",
+    "applicationInsightsName": "[format('appi-{0}', parameters('name'))]",
+    "containerRegistryName": "[format('cr{0}', parameters('name'))]",
+    "workspaceName": "[format('mlw{0}', parameters('name'))]",
+    "storageAccountId": "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]",
+    "keyVaultId": "[resourceId('Microsoft.KeyVault/vaults', variables('keyVaultName'))]",
+    "applicationInsightId": "[resourceId('Microsoft.Insights/components', variables('applicationInsightsName'))]",
+    "containerRegistryId": "[resourceId('Microsoft.ContainerRegistry/registries', variables('containerRegistryName'))]"
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Storage/storageAccounts",
+      "apiVersion": "2022-05-01",
+      "name": "[variables('storageAccountName')]",
+      "location": "[resourceGroup().location]",
+      "sku": {
+        "name": "Standard_RAGRS"
+      },
+      "kind": "StorageV2",
+      "properties": {
+        "encryption": {
+          "services": {
+            "blob": {
+              "enabled": true
+            },
+            "file": {
+              "enabled": true
+            }
+          },
+          "keySource": "Microsoft.Storage"
+        },
+        "supportsHttpsTrafficOnly": true,
+        "minimumTlsVersion": "TLS1_2",
+        "allowBlobPublicAccess": false,
+        "networkAcls": {
+          "defaultAction": "Allow"
+        }
+      }
+    },
+    {
+      "type": "Microsoft.KeyVault/vaults",
+      "apiVersion": "2022-07-01",
+      "name": "[variables('keyVaultName')]",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "tenantId": "[variables('tenantId')]",
+        "sku": {
+          "name": "standard",
+          "family": "A"
+        },
+        "accessPolicies": [],
+        "enableSoftDelete": true
+      }
+    },
+    {
+      "type": "Microsoft.Insights/components",
+      "apiVersion": "2020-02-02",
+      "name": "[variables('applicationInsightsName')]",
+      "location": "[resourceGroup().location]",
+      "kind": "web",
+      "properties": {
+        "Application_Type": "web"
+      }
+    },
+    {
+      "type": "Microsoft.ContainerRegistry/registries",
+      "apiVersion": "2022-02-01-preview",
+      "name": "[variables('containerRegistryName')]",
+      "sku": {
+        "name": "Standard"
+      },
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "adminUserEnabled": false
+      }
+    },
+    {
+      "type": "Microsoft.MachineLearningServices/workspaces",
+      "apiVersion": "2022-05-01",
+      "name": "[variables('workspaceName')]",
+      "identity": {
+        "type": "SystemAssigned"
+      },
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "friendlyName": "[variables('workspaceName')]",
+        "storageAccount": "[variables('storageAccountId')]",
+        "keyVault": "[variables('keyVaultId')]",
+        "applicationInsights": "[variables('applicationInsightId')]",
+        "containerRegistry": "[variables('containerRegistryId')]"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Insights/components', variables('applicationInsightsName'))]",
+        "[resourceId('Microsoft.ContainerRegistry/registries', variables('containerRegistryName'))]",
+        "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]",
+        "[resourceId('Microsoft.KeyVault/vaults', variables('keyVaultName'))]"
+      ]
+    }, 
+    {
+      "type": "Microsoft.MachineLearningServices/workspaces/computes",
+      "apiVersion": "2021-07-01",
+      "name": "[concat(variables('workspaceName'), '/','instance', parameters('utcValue'))]",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "computeType": "ComputeInstance",
+        "disableLocalAuth": "[parameters('disableLocalAuth')]",
+        "properties": {
+          "VMSize": "[parameters('vmSize')]",
+          "applicationSharingPolicy": "Personal",
+          "sshSettings": {
+            "sshPublicAccess": "[parameters('sshAccess')]"
+          }
+        }
+      },
+        "dependsOn": [
+          "[resourceId('Microsoft.MachineLearningServices/workspaces', concat(variables('workspaceName')))]"
+            ]
+    },
+    {
+      "type": "Microsoft.MachineLearningServices/workspaces/computes",
+      "apiVersion": "2020-04-01",
+      "name": "[concat(variables('workspaceName'), '/','cluster', parameters('utcValue'))]",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "computeType": "AmlCompute",
+        "disableLocalAuth": "[parameters('disableLocalAuth')]",
+        "properties": {
+          "remoteLoginPortPublicAccess": "[parameters('remoteLoginPortPublicAccess')]",
+          "scaleSettings": {
+            "maxNodeCount": "[parameters('maxNodeCount')]",
+            "minNodeCount": "[parameters('minNodeCount')]",
+            "nodeIdleTimeBeforeScaleDown": "[parameters('nodeIdleTimeBeforeScaleDown')]"
+          },
+          "vmPriority": "[parameters('vmPriority')]",
+          "vmSize": "[parameters('vmSize')]"
+        }
+      },
+        "dependsOn": [
+          "[resourceId('Microsoft.MachineLearningServices/workspaces', concat(variables('workspaceName')))]"
+            ]
+      
+    }
+  ]
+}        
+        
