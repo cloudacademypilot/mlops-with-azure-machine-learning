@@ -8,3 +8,6 @@ The objective of this lab is to provide participants solid understanding and exp
 4. Working with linting and unit testing in GitHub Actions
 5. Working with environments in GitHub Actions
 6. Deploying a model with GitHub Actions
+
+## Intended Audience
+Microsoft CSA Team members
