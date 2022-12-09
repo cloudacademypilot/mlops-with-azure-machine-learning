@@ -1,1 +1,68 @@
-To-Do
+# Using an Azure Machine Learning job for automation
+Azure Machine Learning is a cloud service for accelerating and managing the machine learning project lifecycle. Machine learning professionals, data scientists, and engineers can use it in their day-to-day workflows: Train and deploy models, and manage MLOps.
+
+You can create a model in Azure Machine Learning or use a model built from an open-source platform, such as Pytorch, TensorFlow, or scikit-learn. MLOps tools help you monitor, retrain, and redeploy models.
+
+## MLOps: DevOps for machine learning
+DevOps for machine learning models, often called MLOps, is a process for developing models for production. A model's lifecycle from training to deployment must be auditable if not reproducible.
+### ML model lifecycle
+
+![Mllifecycle](./assets/1_ml-cycle.jpg "Ml lifecycle")
+
+### Integrations enabling MLOPs
+Azure Machine Learning is built with the model lifecycle in mind. You can audit the model lifecycle down to a specific commit and environment.
+
+Some key features enabling MLOps include:
+
+- git integration
+- MLflow integration
+- Machine learning pipeline scheduling
+- Azure Event Grid integration for custom triggers
+- Easy to use with CI/CD tools like GitHub Actions or Azure DevOps
+
+Also, Azure Machine Learning includes features for monitoring and auditing:
+
+- Job artifacts, such as code snapshots, logs, and other outputs
+- Lineage between jobs and assets, such as containers, data, and compute resources
+
+Machine learning operations (MLOps) applies DevOps principles to machine learning projects. In this lab, you'll learn how to implement key concepts like source control, automation, and CI/CD to build an end-to-end MLOps solution.
+
+## Prerequisites
+- Azure ML workspace and Compute Instance to run notebooks
+- Azure Machine Learning CLI v2 (CLI v2)
+
+## Learning Objectives
+- Create a GitHub Repository
+- Create a Notebook that trains a model
+- Convert the Notebook to Python scripts
+- Define Azure Machine Learning Job
+- Trigger Azure Machine Learning job  
+
+## Exercise 1: Create a GitHub Account and Repository
+1. Browse to https://github.com/. If you already have an account click on **"Sign in"** and open your GitHub Account. If you don't have an account then click on **"Sign up"** at the top-right corner.
+
+![signup](./assets/2_signup.jpg "Sign Up")
+
+2. Enter your email address, create a password and give a unique username for your GitHub. Click **continue.**
+
+![Details](./assets/3_entermail.jpg "Details")
+
+4. verify your account by solving a puzzle and click on **create account.**
+5. Next you will receive a GitHub Launch Code to your email address. Enter the code and your GitHub account is created.
+
+![LaunchCode](./assets/4_otp.jpg "Launch Code")
+
+## Exercise 2: Create a Notebook that trains a model
+
+
+## Exercise 3: Convert the Notebook to Python scripts
+
+
+## Exercise 4: Define Azure Machine Learning Job
+
+
+## Exercise 5: Trigger Azure Machine Learning Job
+
+
+
+[Next Module ⏭️](../2_triggering-azure-machine-learning-jobs-with-github-actions/documentation.md)
