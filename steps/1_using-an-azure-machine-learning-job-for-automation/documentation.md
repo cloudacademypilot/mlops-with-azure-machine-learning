@@ -65,83 +65,225 @@ Machine learning operations (MLOps) applies DevOps principles to machine learnin
 
 ![LaunchCode](./assets/7_repo.jpg "Launch Code")
 
-## Exercise 2: Create a Notebook that trains a model
+## Exercise 2: Create a Notebook that trains a Machine Learning model to predict quality of wine.
 1. Go to the resource group deployed in the Azure Portal. Amongst the list of resources, open the Azure Machine Learning workspace.
 2. Scroll down, and click on the **Launch Studio** Tile.
 3. After landing on to the Azure ML Workspace. Your Home Page looks like below.
 4. Now on the left side, Go to **Notebooks** and click on **⊕** and **Create new file**.
-5. Give ```train-classification-model.ipynb``` as File name and Select Notebook as File type from Dropdown. Click create.
+5. Give ```train-classification-model.ipynb``` as File name and Select **Notebook(*.ipynb)** as File type from Dropdown. Click create.
 6. Select **compute instance** and click on **Start compute**, if the instance is in stopped state.
 7. Run the below scripts in the command cell. And use (+Code) icon for new cells.
 
-Here you will read a CSV file and train a model to predict diabetes in patients.
+Here you will read a CSV file and train a model to predict quality of wine.
 
-### Read data from local file
+### Read data from a CSV file
 ```python
 import pandas as pd
-df = pd.read_csv('diabetes.csv')
+df = pd.read_csv('<path for csv file>')
 df
 ```
 
 ### Split data
 ```python
-# X will contain the data for 8 columns.
-# y will contain Diabetic column data i.e., 1 or 0. 1 if patient is diabetic and 0 if patient is non-diabetic.
-X, y = df[['Pregnancies','PlasmaGlucose','DiastolicBloodPressure','TricepsThickness','SerumInsulin','BMI','DiabetesPedigree','Age']].values, df['Diabetic'].values
+# X will contain the data for 11 columns used for predicting.
+X = df[['fixed acidity','volatile acidity','citric acid','residual sugar','chlorides','free sulfur dioxide','total sulfur dioxide','density','pH','sulphates','alcohol']].values
+# y is the traget column i.e., it has wine quality with scores from 0 to 10.
+y = df['quality']
 ```
-```python
-# It will print an array with number of non-diabetic and diabetic patients.
-import numpy as np
-print(np.unique(y, return_counts=True))
-```
+
 ```python
 # train_test_split library is used to split our data into train and test sets.
 from sklearn.model_selection import train_test_split
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.30, random_state=0)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 ```
+
 ### Train model
 ```python
-from sklearn.linear_model import LogisticRegression
-model = LogisticRegression(C=1/0.1, solver="liblinear").fit(X_train, y_train)
+#The random forest classifier is a supervised learning algorithm which you can use for regression and classification problems.
+#n_estimators is the number of trees in the forest.
+from sklearn.ensemble import RandomForestClassifier
+rfc = RandomForestClassifier(n_estimators=200) 
+rfc.fit(X_train, y_train)
 ```
+
 ### Evaluate model
 ```python
-import numpy as np
-y_hat = model.predict(X_test)
-acc = np.average(y_hat == y_test)
-acc
+#The confusion_matrix function evaluates classification accuracy by computing the confusion matrix with each row corresponding to the true class.
+#The classification_report function builds a text report showing the main classification metrics.
+from sklearn.metrics import confusion_matrix, classification_report
+pred_rfc = rfc.predict(X_test)
+print(classification_report(y_test, pred_rfc))
+print(confusion_matrix(y_test, pred_rfc))
 ```
 
 ```python
-from sklearn.metrics import roc_auc_score
-y_scores = model.predict_proba(X_test)
-auc = roc_auc_score(y_test,y_scores[:,1])
-auc
+#The accuracy_score function computes the accuracy, either the fraction or the count of correct predictions.
+from sklearn.metrics import accuracy_score
+cm = accuracy_score(y_test, pred_rfc)
+cm
 ```
 
+### Test the model by giving new parameters
 ```python
-from sklearn.metrics import roc_curve
-import matplotlib.pyplot as plt
-# plot ROC curve
-fpr, tpr, thresholds = roc_curve(y_test, y_scores[:,1])
-fig = plt.figure(figsize=(6, 4))
-# Plot the diagonal 50% line
-plt.plot([0, 1], [0, 1], 'k--')
-# Plot the FPR and TPR achieved by our model
-plt.plot(fpr, tpr)
-plt.xlabel('False Positive Rate')
-plt.ylabel('True Positive Rate')
-plt.title('ROC Curve')
+df.head(10)
+```
+```python
+Xnew = [[7.0,	0.27,	0.36,	20.7,	0.045,	45.0,	170.0,	1.0010,	3.00,	0.45,	8.8]]
+ynew = rfc.predict(Xnew)
+print('The quality of wine with given parameters is:') 
+print(ynew)
 ```
 
 ## Exercise 3: Convert the Notebook to Python scripts
+Though the Jupyter notebook is ideal for experimentation, it’s not a good fit for production workloads. Your next task will be to convert the notebooks to scripts and to run the model training as an Azure Machine Learning job, so that the workflow can easily be triggered and automated.
 
+To make a machine learning model ready for production, you should first get your code ready for production. When you have a Jupyter notebook that needs to be converted to production code, you’ll need to:
+- Clean nonessential code.
+- Export your code to Python scripts.
+- Use functions in your scripts.
+- Use parameters in your scripts.
+
+### Creating python script
+1. Go to **Notebooks** and click on **⊕** and **Create new file**.
+2. Give ```main.py``` as File name and Select **Python(*.py)** as File type from Dropdown. Click create.
+3. Select **compute instance** and click on **Start compute**, if the instance is in stopped state.
+
+Add the following snippets to the python script
+```python
+# Import libraries
+import argparse
+import glob
+import os
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import confusion_matrix, classification_report
+import mlflow
+```
+
+```python
+# define functions
+def main(args):
+    # enable autologging
+    mlflow.autolog()
+
+
+    # read data
+    df = get_csvs_df(args.training_data)
+
+    # split data
+    X_train, X_test, y_train, y_test = split_data(df)
+
+    # train model
+    train_model(args.n_estimators, X_train, X_test, y_train, y_test)
+```
+
+```python
+#function to read CSV file
+def get_csvs_df(path):
+    if not os.path.exists(path):
+        raise RuntimeError(f"Cannot use non-existent path provided: {path}")
+    csv_files = glob.glob(f"{path}/*.csv")
+    if not csv_files:
+        raise RuntimeError(f"No CSV files found in provided data path: {path}")
+    return pd.concat((pd.read_csv(f) for f in csv_files), sort=False)
+```
+
+```python
+# function to split data
+def split_data(df):
+    X = df[['fixed acidity','volatile acidity','citric acid','residual sugar','chlorides','free sulfur dioxide','total sulfur dioxide','density','pH','sulphates','alcohol']].values
+    y = df['quality']
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.30, random_state=0)
+    return X_train, X_test, y_train, y_test
+```
+
+```python
+# function to train model
+def train_model(n_estimators, X_train, X_test, y_train, y_test):
+    RandomForestClassifier(n_estimators=n_estimators).fit(X_train, y_train)
+```
+
+```python
+# function to read input arguments
+def parse_args():
+    # setup arg parser
+    parser = argparse.ArgumentParser()
+
+    # add arguments
+    parser.add_argument("--training_data", dest='training_data',
+                        type=str)
+    parser.add_argument("--n_estimators", dest='n_estimators',
+                        type=float, default=200)
+
+    # parse args
+    args = parser.parse_args()
+
+    # return args
+    return args
+```
+
+```python
+# run script
+if __name__ == "__main__":
+    # add space in logs
+    print("\n\n")
+    print("*" * 60)
+
+    # parse args
+    args = parse_args()
+
+    # run main function
+    main(args)
+
+    # add space in logs
+    print("*" * 60)
+    print("\n\n")
+```
+
+By using functions in your scripts, it will be easier to test your code quality. When you have a script that you want to execute, you can use an Azure Machine Learning job to run the code.
 
 ## Exercise 4: Define Azure Machine Learning Job
+To define a job in Azure Machine Learning, you can create a YAML file. Whether you want to run one script as a command job or multiple scripts sequentially as a pipeline. For both command and pipeline jobs, you'll need to create a YAML file, which details:
+- Which scripts to run.
+- What the inputs and outputs are for each script.
+- The compute that will be used to run the scripts.
+- The environment that needs to be installed on the compute to run the scripts.
 
+### Creating YAML Job
+1. Go to **Notebooks** and click on **⊕** and **Create new file**.
+2. Give ```job.yaml``` as File name and Select **Yaml(*.yaml)** as File type from Dropdown. Click create.
+3. Select **compute instance** and click on **Start compute**, if the instance is in stopped state. 
+An example of a command job that uses a registered data asset as input when running the main.py script is shown in the following YAML:
+
+```yaml
+$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
+code: src
+command: python main.py --training_data ${{inputs.training_data}}
+inputs:
+  training_data: 
+    path: <Registered-Data-Asset-Path>
+    mode: ro_mount  
+environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
+compute: azureml:<Compute-instance-name>
+experiment_name: wine-quality-data-example
+description: Train a classification model on wine quality data using a registered dataset as input.
+```
+
+In the YAML file, you'll find the necessary details you need to include:
+- The ```code``` refers to the local folder, which stores the scripts you want to run. The ```command``` key specifies that the ```main.py``` script in the ```src``` folder should be executed, using the value of ```inputs.training_data``` for the ```training_data``` parameter.
+- ```<Registered-Data-Asset-Path>``` is the path of registered data asset ```wine-quality-data``` in the Azure Machine Learning workspace is mounted to the compute to be used as input for the script.
+- The compute instance ```<Compute-instance-name>``` will be used to run the scripts.
+- The latest version of the registered custom sklearn environment will be installed on the compute instance before running the script.
+
+To test the YAML definition of the job, you can trigger it using the CLI v2.
 
 ## Exercise 5: Trigger Azure Machine Learning Job
-
+Whenever you want to run an Azure Machine Learning job, you can use the CLI v2. The CLI v2 can be installed on your local device, or you can use the Azure Cloud Shell available on Azure Machine Learning Workspace.
+You can submit an Azure Machine Learning job using the following command:
+```cmd
+az ml job create --file job.yml
+```
 
 
 [Next Module ⏭️](../2_triggering-azure-machine-learning-jobs-with-github-actions/documentation.md)
