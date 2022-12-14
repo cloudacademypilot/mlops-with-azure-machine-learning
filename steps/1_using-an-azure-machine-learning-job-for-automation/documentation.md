@@ -284,8 +284,9 @@ To define a job in Azure Machine Learning, you can create a YAML file. Whether y
 ### Creating YAML Job
 1. Go to **Notebooks** and click on **⊕** and **Create new file**.
 2. Give ```job.yaml``` as File name and Select **Yaml** as File type from Dropdown. Click **Create**.
-3. Select **compute instance** starting with ```instance{*}``` that is already created for you and click on **Start compute**, if the instance is in stopped state. 
-An example of a command job that uses a registered data asset as input when running the main.py script is shown in the following YAML:
+3. Select **compute instance** starting with ```instance{*}``` that is already created for you. Click on **Start compute**, if the instance is in stopped state.
+ 
+An example of a command job that uses a registered data asset as input when running the ```main.py``` script is shown in the following YAML. Paste it in the Yaml file you created.
 
 ```yaml
 $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
@@ -306,6 +307,13 @@ In the YAML file, you'll find the necessary details you need to include:
 - ```<Registered-Data-Asset-Path>``` is the path of registered data asset ```wine-quality-data``` in the Azure Machine Learning workspace is mounted to the compute to be used as input for the script.
 - The compute instance ```<Compute-instance-name>``` will be used to run the scripts.
 - The latest version of the registered custom sklearn environment will be installed on the compute instance before running the script.
+
+To get ```<Registered-Data-Asset-Path>``` field value, First you need to create a Data Asset:
+- Now on the left side, Go to **Data**, select **Data Assets** and Click on **+ Create**.
+- Give ```wine-quality``` as Name and select ```File``` under Dataset types (from Azure ML v1 APIs) as File. Click **Next**. 
+- Select **From web files**. Click **Next**.
+- Paste the path for wine-quality-data.csv file from Git Repo you copied in **Exercise 2**. Click **Next**.
+- Click **Create**.
 
 To test the YAML definition of the job, you can trigger it using the CLI v2.
 
