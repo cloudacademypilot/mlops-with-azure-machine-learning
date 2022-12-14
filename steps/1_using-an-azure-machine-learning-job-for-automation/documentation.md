@@ -82,7 +82,7 @@ Machine learning operations (MLOps) applies DevOps principles to machine learnin
 
 ![Notebook](./assets/11_notebook.jpg "Notebook")
 
-5. Give ```train-classification-model.ipynb``` as File name and Select **Notebook** as File type from Dropdown. Click **create**.
+5. Give ```train-classification-model.ipynb``` as File name and Select **Notebook** as File type from Dropdown. Click **Create**.
 
 ![create](./assets/12_create.jpg "create")
 
@@ -162,7 +162,7 @@ To make a machine learning model ready for production, you should first get your
 - Use parameters in your scripts.
 
 ### Creating python script
-1. Go to **Notebooks** and click on **⊕** and **Create new folder** and give ```src``` as Folder Name. Click create.
+1. Go to **Notebooks** and click on **⊕** and **Create new folder** and give ```src``` as Folder Name. Click **Create**.
 
 ![newfolder](./assets/14_new_folder.jpg "new_folder")
 ![create](./assets/15_create.jpg "create")
@@ -171,7 +171,7 @@ To make a machine learning model ready for production, you should first get your
 
 ![create](./assets/16_create_file.jpg "create")
 
-3. Give ```main.py``` as File name and Select **Python** as File type from Dropdown. Click create.
+3. Give ```main.py``` as File name and Select **Python** as File type from Dropdown. Click **Create**.
 
 ![create](./assets/17_create.jpg "create")
 
@@ -283,7 +283,7 @@ To define a job in Azure Machine Learning, you can create a YAML file. Whether y
 
 ### Creating YAML Job
 1. Go to **Notebooks** and click on **⊕** and **Create new file**.
-2. Give ```job.yaml``` as File name and Select **Yaml** as File type from Dropdown. Click create.
+2. Give ```job.yaml``` as File name and Select **Yaml** as File type from Dropdown. Click **Create**.
 3. Select **compute instance** starting with ```instance{*}``` that is already created for you and click on **Start compute**, if the instance is in stopped state. 
 An example of a command job that uses a registered data asset as input when running the main.py script is shown in the following YAML:
 
