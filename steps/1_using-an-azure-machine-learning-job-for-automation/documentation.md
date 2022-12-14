@@ -71,7 +71,7 @@ Machine learning operations (MLOps) applies DevOps principles to machine learnin
 3. After landing on to the Azure ML Workspace. Your Home Page looks like below.
 4. Now on the left side, Go to **Notebooks** and click on **⊕** and **Create new file**.
 5. Give ```train-classification-model.ipynb``` as File name and Select **Notebook(*.ipynb)** as File type from Dropdown. Click create.
-6. Select **compute instance** and click on **Start compute**, if the instance is in stopped state.
+6. Select **compute instance** starting with ```instance{*}``` that is already created for you and click on **Start compute**, if the instance is in stopped state.
 7. Run the below scripts in the command cell. And use (+Code) icon for new cells.
 
 Here you will read a CSV file and train a model to predict quality of wine.
@@ -79,7 +79,7 @@ Here you will read a CSV file and train a model to predict quality of wine.
 ### Read data from a CSV file
 ```python
 import pandas as pd
-df = pd.read_csv('<path for csv file>')
+df = pd.read_csv('<path for csv file>') #For CSV path go to your github repo, open the wine-quality-data.csv file under Dataset folder, click on Raw and copy the path and paste. 
 df
 ```
 
@@ -146,7 +146,7 @@ To make a machine learning model ready for production, you should first get your
 ### Creating python script
 1. Go to **Notebooks** and click on **⊕** and **Create new file**.
 2. Give ```main.py``` as File name and Select **Python(*.py)** as File type from Dropdown. Click create.
-3. Select **compute instance** and click on **Start compute**, if the instance is in stopped state.
+3. Select **compute instance** starting with ```instance{*}``` that is already created for you and click on **Start compute**, if the instance is in stopped state.
 
 Add the following snippets to the python script
 ```python
@@ -253,7 +253,7 @@ To define a job in Azure Machine Learning, you can create a YAML file. Whether y
 ### Creating YAML Job
 1. Go to **Notebooks** and click on **⊕** and **Create new file**.
 2. Give ```job.yaml``` as File name and Select **Yaml(*.yaml)** as File type from Dropdown. Click create.
-3. Select **compute instance** and click on **Start compute**, if the instance is in stopped state. 
+3. Select **compute instance** starting with ```instance{*}``` that is already created for you and click on **Start compute**, if the instance is in stopped state. 
 An example of a command job that uses a registered data asset as input when running the main.py script is shown in the following YAML:
 
 ```yaml
