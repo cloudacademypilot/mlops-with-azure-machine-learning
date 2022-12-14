@@ -67,11 +67,29 @@ Machine learning operations (MLOps) applies DevOps principles to machine learnin
 
 ## Exercise 2: Create a Notebook that trains a Machine Learning model to predict quality of wine.
 1. Go to the resource group deployed in the Azure Portal. Amongst the list of resources, open the Azure Machine Learning workspace.
-2. Scroll down, and click on the **Launch Studio** Tile.
+
+![Resources](./assets/8_resources.jpg "Resources")
+
+2. Click on the **Launch Studio** Tile.
+
+![LaunchWorkspace](./assets/9_launch_mlws.jpg "Launch Workspace")
+
 3. After landing on to the Azure ML Workspace. Your Home Page looks like below.
+
+![HomePage](./assets/10_homepage.jpg "Home Page")
+
 4. Now on the left side, Go to **Notebooks** and click on **⊕** and **Create new file**.
-5. Give ```train-classification-model.ipynb``` as File name and Select **Notebook(*.ipynb)** as File type from Dropdown. Click create.
-6. Select **compute instance** starting with ```instance{*}``` that is already created for you and click on **Start compute**, if the instance is in stopped state.
+
+![Notebook](./assets/11_notebook.jpg "Notebook")
+
+5. Give ```train-classification-model.ipynb``` as File name and Select **Notebook** as File type from Dropdown. Click **create**.
+
+![create](./assets/12_create.jpg "create")
+
+6. Select **compute instance** starting with ```instance{*}``` that is already created for you. Click on **Start compute**, if the instance is in stopped state.
+
+![compute](./assets/13_compute.jpg "compute")
+
 7. Run the below scripts in the command cell. And use (+Code) icon for new cells.
 
 Here you will read a CSV file and train a model to predict quality of wine.
@@ -87,7 +105,7 @@ df
 ```python
 # X will contain the data for 11 columns used for predicting.
 X = df[['fixed acidity','volatile acidity','citric acid','residual sugar','chlorides','free sulfur dioxide','total sulfur dioxide','density','pH','sulphates','alcohol']].values
-# y is the traget column i.e., it has wine quality with scores from 0 to 10.
+# y is the target column i.e., it has wine quality with scores from 0 to 10.
 y = df['quality']
 ```
 
@@ -144,9 +162,22 @@ To make a machine learning model ready for production, you should first get your
 - Use parameters in your scripts.
 
 ### Creating python script
-1. Go to **Notebooks** and click on **⊕** and **Create new file**.
-2. Give ```main.py``` as File name and Select **Python(*.py)** as File type from Dropdown. Click create.
-3. Select **compute instance** starting with ```instance{*}``` that is already created for you and click on **Start compute**, if the instance is in stopped state.
+1. Go to **Notebooks** and click on **⊕** and **Create new folder** and give ```src``` as Folder Name. Click create.
+
+![newfolder](./assets/14_new_folder.jpg "new_folder")
+![create](./assets/15_create.jpg "create")
+
+2. Now when you hover on the folder ```src```, you will see ```...``` . Click on it and select **Create new file**.
+
+![create](./assets/16_create_file.jpg "create")
+
+3. Give ```main.py``` as File name and Select **Python** as File type from Dropdown. Click create.
+
+![create](./assets/17_create.jpg "create")
+
+4. Select **compute instance** starting with ```instance{*}``` that is already created for you. Click on **Start compute**, if the instance is in stopped state.
+
+![compute](./assets/18_python_script.jpg "compute")
 
 Add the following snippets to the python script
 ```python
@@ -252,7 +283,7 @@ To define a job in Azure Machine Learning, you can create a YAML file. Whether y
 
 ### Creating YAML Job
 1. Go to **Notebooks** and click on **⊕** and **Create new file**.
-2. Give ```job.yaml``` as File name and Select **Yaml(*.yaml)** as File type from Dropdown. Click create.
+2. Give ```job.yaml``` as File name and Select **Yaml** as File type from Dropdown. Click create.
 3. Select **compute instance** starting with ```instance{*}``` that is already created for you and click on **Start compute**, if the instance is in stopped state. 
 An example of a command job that uses a registered data asset as input when running the main.py script is shown in the following YAML:
 
