@@ -11,7 +11,7 @@ Write-Host "file upload script started"
 $uri = "https://raw.githubusercontent.com/CSALabsAutomation/mlops-with-azure-machine-learning/main/environments/env1/Artifacts/wine-quality-data.csv";
 $bacpacFileName = "wine-quality-data.csv";
 
-$storageaccountkey = Get-AzStorageAccountKey -ResourceGroupName $Resourcegroupname -Name $RawDataLakeAccountName;
+$storageaccountkey = Get-AzStorageAccountKey -ResourceGroupName $ResourceGroupName -Name $RawDataLakeAccountName;
 
 $ctx = New-AzStorageContext -StorageAccountName $RawDataLakeAccountName -StorageAccountKey $storageaccountkey.Value[0]
 
