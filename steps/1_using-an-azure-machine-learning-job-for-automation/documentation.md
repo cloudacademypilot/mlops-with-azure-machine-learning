@@ -157,7 +157,7 @@ To make a machine learning model ready for production, you should first get your
 ![newfolder](./assets/14_new_folder.jpg "new_folder")
 ![create](./assets/15_create.jpg "create")
 
-2. Now when you hover on the folder ```src```, you will see ```...``` . Click on it and select **Create new file**.
+2. Now when you hover on the folder **src**, you will see **...**  . Click on it and select **Create new file**.
 
 ![create](./assets/16_create_file.jpg "create")
 
@@ -308,7 +308,7 @@ To get ```<Registered-Data-Asset-Path>``` field value, First you need to create 
 
 ![datastore](./assets/20_data_store.jpg "data_store")
 
-- Under Browse Preview, you will see the wine-quality-data.csv file. Click on it.
+- Under Browse Preview, you will see the **wine-quality-data.csv** file. Click on it.
 
 ![preview](./assets/21_preview.jpg "preview")
 
@@ -336,10 +336,23 @@ To test the YAML definition of the job, you can trigger it using the CLI v2.
 
 ## Exercise 4: Trigger Azure Machine Learning Job
 Whenever you want to run an Azure Machine Learning job, you can use the CLI v2. The CLI v2 can be installed on your local device, or you can use the Azure Cloud Shell available on Azure Machine Learning Workspace.
-You can submit an Azure Machine Learning job using the following command:
-```cmd
-az ml job create --file job.yml
-```
+1. Click on **Open terminal** under Notebooks.
 
+![openterminal](./assets/35_openterminal.jpg "openterminal")
+
+2. First login to your azure account using any of the below commands.
+```cmd
+az login
+``` 
+```cmd
+az login --identity
+```
+![azlogin](./assets/36_azlogin.jpg "azlogin")
+
+3. Now, you can submit an Azure Machine Learning job using the following command:
+```cmd
+az ml job create --file job.yaml
+```
+![runjob](./assets/37_runjob.jpg "runjob")
 
 [Next Module ⏭️](../2_triggering-azure-machine-learning-jobs-with-github-actions/documentation.md)
