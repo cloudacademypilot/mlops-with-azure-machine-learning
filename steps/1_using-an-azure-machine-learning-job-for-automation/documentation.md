@@ -64,7 +64,7 @@ Machine learning operations (MLOps) applies DevOps principles to machine learnin
 
 ![compute](./assets/13_compute.jpg "compute")
 
-Before running the following scripts, you need to upload **wine-quality-data.csv** file to your workspace. 
+Before running the notebook, you need to upload **wine-quality-data.csv** file to your workspace. 
 - Go to the resource group deployed in the Azure Portal. Amongst the list of resources, open the Storage account. On the left side, click on **Containers**. Then open **azureml** container. Inside you will see the **wine-quality-data.csv** file. On the right side, click on **...** and **Downlaod**. The csv file will be downloaded to your local system in **Downloads** folder.
 
 ![storage](./assets/25_storage.jpg "storage")
