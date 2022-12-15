@@ -274,7 +274,12 @@ To define a job in Azure Machine Learning, you can create a YAML file. Whether y
 ### Creating YAML Job
 1. Go to **Notebooks** and click on **⊕** and **Create new file**.
 2. Give ```job.yaml``` as File name and Select **Yaml** as File type from Dropdown. Click **Create**.
+
+![createjob](./assets/19_create_job.jpg "create_job")
+
 3. Select **compute instance** starting with ```instance{*}``` that is already created for you. Click on **Start compute**, if the instance is in stopped state.
+
+![job](./assets/34_job.jpg "job")
  
 An example of a command job that uses a registered data asset as input when running the ```main.py``` script is shown in the following YAML. Paste it in the Yaml file you created.
 
@@ -294,16 +299,38 @@ description: Train a classification model on wine quality data using a registere
 
 In the YAML file, you'll find the necessary details you need to include:
 - The ```code``` refers to the local folder, which stores the scripts you want to run. The ```command``` key specifies that the ```main.py``` script in the ```src``` folder should be executed, using the value of ```inputs.training_data``` for the ```training_data``` parameter.
-- ```<Registered-Data-Asset-Path>``` is the path of registered data asset ```wine-quality-data``` in the Azure Machine Learning workspace is mounted to the compute to be used as input for the script.
+- ```<Registered-Data-Asset-Path>``` is the path of registered data asset ```wine-quality-data.csv``` in the Azure Machine Learning workspace is mounted to the compute to be used as input for the script.
 - The compute instance ```<Compute-instance-name>``` will be used to run the scripts.
 - The latest version of the registered custom sklearn environment will be installed on the compute instance before running the script.
 
 To get ```<Registered-Data-Asset-Path>``` field value, First you need to create a Data Asset:
-- Now on the left side, Go to **Data**, select **Data Assets** and Click on **+ Create**.
-- Give ```wine-quality``` as Name and select ```File``` under Dataset types (from Azure ML v1 APIs) as File. Click **Next**. 
-- Select **From web files**. Click **Next**.
-- Paste the path for wine-quality-data.csv file from Git Repo you copied in **Exercise 2**. Click **Next**.
-- Click **Create**.
+- Now on the left side, Go to **Data**, select **Datastores** and open **workspaceartifactstore**.
+
+![datastore](./assets/20_data_store.jpg "data_store")
+
+- Under Browse Preview, you will see the wine-quality-data.csv file. Click on it.
+
+![preview](./assets/21_preview.jpg "preview")
+
+- Now you can preview the csv file data. On the right side, click on **Create as data asset**.
+
+![dataasset](./assets/22_dataasset.jpg "dataasset")
+
+- Now give ```wine-quality``` as Name and let other fields be default. Click **Create**.
+
+![create](./assets/23_create.jpg "create")
+
+- Now Go to **Data**, select **Data assets** and you will see the data asset you created. Open it.
+
+![open](./assets/24_open.jpg "open")
+
+- Now under **Attributes**, Copy the URI path under field **Named asset URI**. And paste in ```<Registered-Data-Asset-Path>``` field in the ```job.yaml``` file.
+
+![copy](./assets/24_2_copy.jpg "copy")
+
+For ```<Compute-instance-name>```, go to **compute**, under **Compute instances**, copy-paste the name of the instance.
+
+![instancename](./assets/33_instancename.jpg "instancename")
 
 To test the YAML definition of the job, you can trigger it using the CLI v2.
 
