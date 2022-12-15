@@ -11,11 +11,9 @@ Write-Host "file upload script started"
 $uri = "https://raw.githubusercontent.com/CSALabsAutomation/mlops-with-azure-machine-learning/main/environments/env1/Artifacts/wine-quality-data.csv";
 $bacpacFileName = "wine-quality-data.csv";
 
+$StorageAccountKey = Get-AzStorageAccountKey -ResourceGroupName $ResourceGroupName -Name $RawDataLakeAccountName;
 
-
-$storageaccountkey = Get-AzStorageAccountKey -ResourceGroupName $ResourceGroupName -Name $RawDataLakeAccountName;
-
-$ctx = New-AzStorageContext -StorageAccountName $RawDataLakeAccountName -StorageAccountKey $storageaccountkey.Value[0];
+$Ctx = New-AzStorageContext -StorageAccountName $RawDataLakeAccountName -StorageAccountKey $StorageAccountKey.Value[0];
 
 Invoke-WebRequest -Uri $uri -OutFile $bacpacFileName;
-Set-AzStorageBlobContent -File $bacpacFileName -Container "azureml" -Blob 'wine-quality-data.csv' -Context $ctx;
+Set-AzStorageBlobContent -File $bacpacFileName -Container "azureml" -Blob 'wine-quality-data.csv' -Context $Ctx;
