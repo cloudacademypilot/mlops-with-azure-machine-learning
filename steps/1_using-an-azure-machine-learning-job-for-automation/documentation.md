@@ -33,39 +33,13 @@ Machine learning operations (MLOps) applies DevOps principles to machine learnin
 - Azure Machine Learning CLI v2 (CLI v2)
 
 ## Learning Objectives
-- Create a GitHub Repository
 - Create a Notebook that trains a model
 - Convert the Notebook to Python scripts
 - Define Azure Machine Learning Job
 - Trigger Azure Machine Learning job  
 
-## Exercise 1: Create a GitHub Account and Repository
-1. Browse to [GitHub](https://github.com). If you already have an account click on **"Sign in"** and open your GitHub Account. If you don't have an account then click on **"Sign up"** at the top-right corner.
 
-![signup](./assets/2_signup.jpg "Sign Up")
-
-2. Enter your email address, create a password and give a unique username for your GitHub Account. Click **continue.**
-
-![Details](./assets/3_entermail.jpg "Details")
-
-4. verify your account by solving a puzzle and click on **create account.**
-5. Next you will receive a GitHub Launch Code to your email address. Enter the code and your GitHub account is ready.
-
-![LaunchCode](./assets/4_otp.jpg "Launch Code")
-
-6. Create a new public repo by navigating to https://github.com/MicrosoftLearning/mslearn-mlops and selecting the **Use this template** button to create your own repo.
-
-![LaunchCode](./assets/5_create-repo.jpg "Launch Code")
-
-7. Select **Owner**(Username of your GitHub Account) and **Repository Name** as ```mlops-with-azure-machine-learning```.
-
-![LaunchCode](./assets/6_create.jpg "Launch Code")
-
-8. You'll see this page once repo is created in your GitHub Account.
-
-![LaunchCode](./assets/7_repo.jpg "Launch Code")
-
-## Exercise 2: Create a Notebook that trains a Machine Learning model to predict quality of wine.
+## Exercise 1: Create a Notebook that trains a Machine Learning model to predict quality of wine.
 1. Go to the resource group deployed in the Azure Portal. Amongst the list of resources, open the Azure Machine Learning workspace.
 
 ![Resources](./assets/8_resources.jpg "Resources")
@@ -90,14 +64,30 @@ Machine learning operations (MLOps) applies DevOps principles to machine learnin
 
 ![compute](./assets/13_compute.jpg "compute")
 
-7. Run the below scripts in the command cell. And use (+Code) icon for new cells.
+Before running the following scripts, you need to upload **wine-quality-data.csv** file to your workspace. 
+- Go to the resource group deployed in the Azure Portal. Amongst the list of resources, open the Storage account. On the left side, click on **Containers**. Then open **azureml** container. Inside you will see the **wine-quality-data.csv** file. On the right side, click on **...** and **Downlaod**. The csv file will be downloaded to your local system in **Downloads** folder.
+
+![storage](./assets/25_storage.jpg "storage")
+![containers](./assets/26_containers.jpg "containers")
+![azureml](./assets/27_azureml.jpg "azureml")
+![download](./assets/28_download.jpg "download")
+
+- Now go back to the Azure ML workspace, Go to **Notebooks** and click on **⊕** and **Upload files**. Browse and select the csv file you downloaded. Click **Upload**. 
+
+![upload](./assets/29_upload.jpg "upload")
+![browse](./assets/30_browse.jpg "browse")
+![upload](./assets/31_upload.jpg "upload")
+
+7. Now open the Notebook you created and Run the below scripts in the command cell. And use (+Code) icon for new cells.
+
+![runscripts](./assets/32_run_scripts.jpg "run_scripts")
 
 Here you will read a CSV file and train a model to predict quality of wine.
 
 ### Read data from a CSV file
 ```python
 import pandas as pd
-df = pd.read_csv('<path for csv file>') #For CSV path go to your github repo, open the wine-quality-data.csv file under Dataset folder, click on Raw and copy the path and paste. 
+df = pd.read_csv('wine-quality-data.csv')
 df
 ```
 
@@ -152,7 +142,7 @@ print('The quality of wine with given parameters is:')
 print(ynew)
 ```
 
-## Exercise 3: Convert the Notebook to Python scripts
+## Exercise 2: Convert the Notebook to Python scripts
 Though the Jupyter notebook is ideal for experimentation, it’s not a good fit for production workloads. Your next task will be to convert the notebooks to scripts and to run the model training as an Azure Machine Learning job, so that the workflow can easily be triggered and automated.
 
 To make a machine learning model ready for production, you should first get your code ready for production. When you have a Jupyter notebook that needs to be converted to production code, you’ll need to:
@@ -274,7 +264,7 @@ if __name__ == "__main__":
 
 By using functions in your scripts, it will be easier to test your code quality. When you have a script that you want to execute, you can use an Azure Machine Learning job to run the code.
 
-## Exercise 4: Define Azure Machine Learning Job
+## Exercise 3: Define Azure Machine Learning Job
 To define a job in Azure Machine Learning, you can create a YAML file. Whether you want to run one script as a command job or multiple scripts sequentially as a pipeline. For both command and pipeline jobs, you'll need to create a YAML file, which details:
 - Which scripts to run.
 - What the inputs and outputs are for each script.
@@ -317,7 +307,7 @@ To get ```<Registered-Data-Asset-Path>``` field value, First you need to create 
 
 To test the YAML definition of the job, you can trigger it using the CLI v2.
 
-## Exercise 5: Trigger Azure Machine Learning Job
+## Exercise 4: Trigger Azure Machine Learning Job
 Whenever you want to run an Azure Machine Learning job, you can use the CLI v2. The CLI v2 can be installed on your local device, or you can use the Azure Cloud Shell available on Azure Machine Learning Workspace.
 You can submit an Azure Machine Learning job using the following command:
 ```cmd
