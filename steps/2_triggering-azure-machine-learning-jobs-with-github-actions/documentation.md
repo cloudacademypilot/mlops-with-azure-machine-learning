@@ -1,7 +1,9 @@
 # Triggering Azure Machine Learning jobs with GitHub Actions
 Automation is an important part in machine learning operations (MLOps). Similar to DevOps, MLOps allows for rapid development and delivery of machine learning artifacts to consumers of those artifacts. An effective MLOps strategy allows for the creation of automated workflows to train, test, and deploy machine learning models while also ensuring model quality is maintained.
 
-## GitHub Actions
+Here we are using GitHub Actions for automating workflows and running Azure ML jobs.
+
+## What is GitHub Actions ?
 GitHub Actions is a continuous integration and continuous delivery (CI/CD) platform that allows you to automate your build, test, and deployment pipeline. You can create workflows that build and test every pull request to your repository, or deploy merged pull requests to production.
 
 ### The components of GitHub Actions
@@ -25,9 +27,6 @@ An action is a custom application for the GitHub Actions platform that performs 
 
 ### Runners
 A runner is a server that runs your workflows when they're triggered. Each runner can run a single job at a time. GitHub provides Ubuntu Linux, Microsoft Windows, and macOS runners to run your workflows; each workflow run executes in a fresh, newly-provisioned virtual machine.
-
-
-Using GitHub Actions, you'll automatically execute an Azure Machine Learning job to train a model. To execute your Azure Machine Learning jobs with GitHub Actions, you'll save your Azure credentials as a secret in GitHub. You'll then define the GitHub Action using YAML.
 
 ## Prerequisites
 - Azure Subscription
