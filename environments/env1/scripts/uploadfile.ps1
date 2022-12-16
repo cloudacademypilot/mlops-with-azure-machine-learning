@@ -16,4 +16,4 @@ $StorageAccountKey = Get-AzStorageAccountKey -ResourceGroupName $ResourceGroupNa
 $Ctx = New-AzStorageContext -StorageAccountName $RawDataLakeAccountName -StorageAccountKey $StorageAccountKey.Value[0];
 
 Invoke-WebRequest -Uri $uri -OutFile $bacpacFileName;
-Set-AzStorageBlobContent -File $bacpacFileName -Container "azureml" -Blob 'wine-quality-data.csv' -Context $Ctx;
+Set-AzStorageBlobContent -File $bacpacFileName -Container "raw" -Blob 'wine-quality-data.csv' -Context $Ctx;
