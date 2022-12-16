@@ -16,6 +16,20 @@
         "description": "Specifies the name of the Azure Machine Learning service workspace."
       }
     },
+    "fileuploaduri": {
+          "defaultValue": "https://raw.githubusercontent.com/CSALabsAutomation/mlops-with-azure-machine-learning/main/environments/env1/scripts/uploadfile.ps1",
+          "type": "String",
+          "metadata": {
+              "description": "The URI of script file to upload blob container"
+          }
+      },
+      "identityName": {
+          "defaultValue": "PostDeploymentScriptuserAssignedName",
+          "type": "String",
+          "metadata": {
+              "description": "Name of identity"
+          }
+      },
     "disableLocalAuth": {
       "type": "bool",
       "defaultValue": false,
@@ -64,7 +78,32 @@
     "utcValue": {
           "type": "string",
           "defaultValue": "[utcNow()]"
-        }
+    },
+    "uniqueSuffix": {
+          "defaultValue": "[substring(uniqueString(resourceGroup().id), 0, 6)]",
+          "type": "String",
+          "metadata": {
+              "description": "Unique Suffix"
+          }
+      },
+    "firstuniquestring": {
+          "defaultValue": "[format('firstunique{0}', parameters('uniqueSuffix'))]",
+          "type": "String",
+          "metadata": {
+              "description": "firstuniquestring"
+          }
+    },
+    "seconduniquestring": {
+          "defaultValue": "[format('secondunique{0}', parameters('uniqueSuffix'))]",
+          "type": "String",
+          "metadata": {
+              "description": "seconduniquestring"
+          }
+    },
+    "containerName": {
+        "type": "string",
+        "defaultValue": "raw"
+    }
   },
   "variables": {
     "tenantId": "[subscription().tenantId]",
@@ -76,7 +115,13 @@
     "storageAccountId": "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]",
     "keyVaultId": "[resourceId('Microsoft.KeyVault/vaults', variables('keyVaultName'))]",
     "applicationInsightId": "[resourceId('Microsoft.Insights/components', variables('applicationInsightsName'))]",
-    "containerRegistryId": "[resourceId('Microsoft.ContainerRegistry/registries', variables('containerRegistryName'))]"
+    "containerRegistryId": "[resourceId('Microsoft.ContainerRegistry/registries', variables('containerRegistryName'))]",
+    "fileuploadurivariable": "[parameters('fileuploaduri')]",
+    "scriptParametersToUploadFile": "[format('-ResourceGroupName {0} -RawDataLakeAccountName {1}', resourceGroup().name, variables('storageAccountName'))]",
+    "contributorRoleDefinitionId": "B24988ac-6180-42a0-ab88-20f7382dd24c",
+    "bootstrapRoleAssignmentId": "[guid(parameters('firstuniquestring'), parameters('seconduniquestring'))]"
+    
+    
   },
   "resources": [
     {
@@ -85,7 +130,7 @@
       "name": "[variables('storageAccountName')]",
       "location": "[resourceGroup().location]",
       "sku": {
-        "name": "Standard_RAGRS"
+        "name": "Standard_LRS"
       },
       "kind": "StorageV2",
       "properties": {
@@ -107,6 +152,14 @@
           "defaultAction": "Allow"
         }
       }
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+      "apiVersion": "2021-06-01",
+      "name": "[format('{0}/default/{1}',variables('storageAccountName'), parameters('containerName'))]",
+      "dependsOn": [
+          "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]"
+        ]
     },
     {
       "type": "Microsoft.KeyVault/vaults",
@@ -158,7 +211,8 @@
         "storageAccount": "[variables('storageAccountId')]",
         "keyVault": "[variables('keyVaultId')]",
         "applicationInsights": "[variables('applicationInsightId')]",
-        "containerRegistry": "[variables('containerRegistryId')]"
+        "containerRegistry": "[variables('containerRegistryId')]",
+        "publicNetworkAccess": "Enabled"
       },
       "dependsOn": [
         "[resourceId('Microsoft.Insights/components', variables('applicationInsightsName'))]",
@@ -210,7 +264,52 @@
           "[resourceId('Microsoft.MachineLearningServices/workspaces', concat(variables('workspaceName')))]"
             ]
       
-    }
+    },
+    {
+          "type": "Microsoft.Resources/deploymentScripts",
+          "apiVersion": "2020-10-01",
+          "name": "PostDeploymentScriptForFileUpload",
+          "location": "[resourceGroup().location]",
+          "dependsOn": [
+              "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('identityName'))]"
+          ],
+          "kind": "AzurePowerShell",
+          "identity": {
+              "type": "UserAssigned",
+              "userAssignedIdentities": {
+                  "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('identityName'))]": {}
+              }
+          },
+          "properties": {
+              "azPowerShellVersion": "8.3",
+              "cleanupPreference": "OnSuccess",
+              "retentionInterval": "P1D",
+              "timeout": "PT30M",
+              "arguments": "[variables('scriptParametersToUploadFile')]",
+              "primaryScriptUri": "[variables('fileuploadurivariable')]"
+          }
+      },
+      {
+          "type": "Microsoft.ManagedIdentity/userAssignedIdentities",
+          "apiVersion": "2018-11-30",
+          "name": "[parameters('identityName')]",
+          "location": "[resourceGroup().location]"
+      },
+      {
+          "type": "Microsoft.Authorization/roleAssignments",
+          "apiVersion": "2018-09-01-preview",
+          "name": "[variables('bootstrapRoleAssignmentId')]",
+          "dependsOn": [
+              "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('identityName'))]"
+          ],
+          "properties": {
+              "roleDefinitionId": "[resourceId('Microsoft.Authorization/roleDefinitions', variables('contributorRoleDefinitionId'))]",
+              "principalId": "[reference(resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('identityName')), '2018-11-30').principalId]",
+              "scope": "[resourceGroup().id]",
+              "principalType": "ServicePrincipal"
+          }
+      }
+      
   ]
 }        
         
