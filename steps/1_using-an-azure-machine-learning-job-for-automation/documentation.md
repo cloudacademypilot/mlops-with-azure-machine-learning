@@ -344,9 +344,6 @@ Whenever you want to run an Azure Machine Learning job, you can use the CLI v2. 
 ```cmd
 az login
 ``` 
-```cmd
-az login --identity
-```
 ![azlogin](./assets/36_azlogin.jpg "azlogin")
 
 3. Now, you can submit an Azure Machine Learning job using the following command:
