@@ -354,7 +354,7 @@ az ml job create --file job.yaml
 
 4. On the left side, Goto **Jobs** and select **All jobs**. Here you can see all the jobs that you had run.
 
-![job](./assets/37_38_job.jpg "job")
+![job](./assets/38_job.jpg "job")
 
 5. Click on the **Job Display Name** to view more details.
 
