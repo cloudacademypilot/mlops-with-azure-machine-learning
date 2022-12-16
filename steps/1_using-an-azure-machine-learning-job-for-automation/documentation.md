@@ -340,7 +340,7 @@ Whenever you want to run an Azure Machine Learning job, you can use the CLI v2. 
 
 ![openterminal](./assets/35_openterminal.jpg "openterminal")
 
-2. First login to your azure account using any of the below commands.
+2. First login to your azure account using the below command.
 ```cmd
 az login
 ``` 
@@ -351,5 +351,15 @@ az login
 az ml job create --file job.yaml
 ```
 ![runjob](./assets/37_runjob.jpg "runjob")
+
+4. On the left side, Goto **Jobs** and select **All jobs**. Here you can see all the jobs that you had run.
+
+![job](./assets/37_38_job.jpg "job")
+
+5. Click on the **Job Display Name** to view more details.
+
+![jobdetails](./assets/39_jobdetails.jpg "jobdetails")
+
+
 
 [Next Module ⏭️](../2_triggering-azure-machine-learning-jobs-with-github-actions/documentation.md)
