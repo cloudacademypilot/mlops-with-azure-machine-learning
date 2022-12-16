@@ -36,7 +36,7 @@ Machine learning operations (MLOps) applies DevOps principles to machine learnin
 - Create a Notebook that trains a model
 - Convert the Notebook to Python scripts
 - Define Azure Machine Learning Job
-- Trigger Azure Machine Learning job  
+- Trigger Azure Machine Learning Job  
 
 
 ## Exercise 1: Create a Notebook that trains a Machine Learning model to predict quality of wine.
