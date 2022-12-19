@@ -5,10 +5,11 @@ You can create a model in Azure Machine Learning or use a model built from an op
 
 ## MLOps: DevOps for machine learning
 DevOps for machine learning models, often called MLOps, is a process for developing models for production. A model's lifecycle from training to deployment must be auditable if not reproducible.
+
 ### ML model lifecycle
-
-    ![Mllifecycle](./assets/1_ml-cycle.jpg "Ml lifecycle")
-
+   
+   ![Mllifecycle](./assets/1_ml-cycle.jpg "Ml lifecycle")
+    
 ### Integrations enabling MLOPs
 Azure Machine Learning is built with the model lifecycle in mind. You can audit the model lifecycle down to a specific commit and environment.
 
@@ -108,6 +109,7 @@ Here you will read a CSV file and train a model to predict quality of wine.
     ```
 
 ### Train model
+
     ```python
     #The random forest classifier is a supervised learning algorithm which you can use for regression and classification problems.
     #n_estimators is the number of trees in the forest.
@@ -175,6 +177,7 @@ To make a machine learning model ready for production, you should first get your
     ![compute](./assets/18_python_script.jpg "compute")
 
 Add the following snippets to the python script
+
     ```python
     # Import libraries
     import argparse
@@ -278,6 +281,7 @@ To define a job in Azure Machine Learning, you can create a YAML file. Whether y
 
 ### Creating YAML Job
 1. Go to **Notebooks** and click on **⊕** and **Create new file**.
+
 2. Give ```job.yaml``` as File name and Select **Yaml** as File type from Dropdown. Click **Create**.
 
     ![createjob](./assets/19_create_job.jpg "create_job")
@@ -308,7 +312,7 @@ In the YAML file, you'll find the necessary details you need to include:
 - The compute instance ```<Compute-instance-name>``` will be used to run the scripts.
 - The latest version of the registered custom sklearn environment will be installed on the compute instance before running the script.
 
-To get ```<Registered-Data-Asset-Path>``` field value, First you need to create a Data Asset:
+4. To get ```<Registered-Data-Asset-Path>``` field value, First you need to create a Data Asset:
 - Now on the left side, Go to **Data**, select **Datastores** and open **workspaceartifactstore**.
 
     ![datastore](./assets/20_data_store.jpg "data_store")
@@ -333,7 +337,7 @@ To get ```<Registered-Data-Asset-Path>``` field value, First you need to create 
 
     ![copy](./assets/24_2_copy.jpg "copy")
 
-For ```<Compute-instance-name>```, go to **compute**, under **Compute instances**, copy-paste the name of the instance.
+5. For ```<Compute-instance-name>```, go to **compute**, under **Compute instances**, copy-paste the name of the instance.
 
     ![instancename](./assets/33_instancename.jpg "instancename")
 
