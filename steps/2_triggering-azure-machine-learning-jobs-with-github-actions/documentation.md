@@ -86,7 +86,8 @@ A runner is a server that runs your workflows when they're triggered. Each runne
    ![commit](./assets/10_commit.jpg "commit")
     
 11. Click on **Add file** and select **Create new file** to create one more directory with the name ```src/model/``` and create a ```main.py``` file, which will be the python script you created in the previous module to train model. Copy-paste the entire code from that script file. And Click on **Commit new file** at the bottom of the page.
-
+    
+    ![add_file](./assets/11_add_file.jpg "add_file")
     ![py_script](./assets/12_py_script.jpg "py_script")
     
 12. Go to ```src``` folder and click on **Add file** and select **Create new file** to create one job with the name ```job.yaml```. And Click **Commit**.
