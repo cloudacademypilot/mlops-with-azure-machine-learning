@@ -47,6 +47,7 @@ A runner is a server that runs your workflows when they're triggered. Each runne
 - Create a service principal needed to run an Azure Machine Learning job
 - Store Azure credentials securely using secrets in GitHub
 - Create a GitHub Action using YAML that uses the stored Azure credentials to run an Azure Machine Learning job
+- Manually trigger the workflow.
 
 ## Exercise 1: Create a GitHub Account and Repository
 
@@ -101,7 +102,7 @@ jobs:
       with:
         creds: ${{secrets.AZURE_CREDENTIALS}}
     - name: run ml job
-      run: az ml job create --file job.yaml
+      run: az ml job create --file job.yaml --resource-group <>resource group name> --workspace-name <Azure ML workspace name>
       working-directory: src
 ```
 
@@ -113,10 +114,20 @@ jobs:
     ![add_file](./assets/11_add_file.jpg "add_file")
     ![py_script](./assets/12_py_script.jpg "py_script")
     
-12. Go to ```src``` folder and click on **Add file** and select **Create new file** to create a Azure ML job with the name ```job.yaml```. And Click **Commit**.
+12. Go to ```src``` folder and click on **Add file** and select **Create new file** to create a Azure ML job with the name ```job.yaml```, which will be the same job you defined in previous module. Only change will be the **cluster name**. Here we will use **Compute Cluster** instead of **Cluster Instance**. Because, GitHub is authenticated to use your Azure Machine Learning workspace with a service principal. The service principal is only allowed to submit jobs that use a compute cluster, not a compute instance. You can get compute cluster name from your ML Workspace in **Compute** under **Compute Clusters** starting with **cluster{\*}**. Replace the instance name with cluster name and Paste. Click **Commit**.
 
 ```yaml
-
+$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
+code: model
+command: python main.py --training_data ${{inputs.training_data}}
+inputs:
+  training_data: 
+    path: azureml:wine-quality:1
+    mode: ro_mount  
+environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
+compute: azureml:<Compute Cluster Name>
+experiment_name: wine-quality-data-example
+description: Train a classification model on wine quality data using a registered dataset as input.
 ```
     
    ![create](./assets/13_create.jpg "create")
@@ -204,7 +215,7 @@ jobs:
 
 To define a workflow, you'll need to create a YAML file. You can trigger the workflow to train a model manually or with a push event. Manually triggering the workflow is ideal for testing, while automating it with an event is better for automation.
 
-To configure a GitHub Actions workflow so that you can trigger it manually, use on: workflow_dispatch. To trigger a workflow with a push event, use on: [push].
+To configure a GitHub Actions workflow so that you can trigger it manually, use ```on: workflow_dispatch```. To trigger a workflow with a push event, use ```on: [push]```.
 
 Once the GitHub Actions workflow is triggered, you can add various steps to a job. For example, you can use a step to run an Azure Machine Learning job:
     
@@ -227,12 +238,38 @@ jobs:
       with:
         creds: ${{secrets.AZURE_CREDENTIALS}}
     - name: run ml job
-      run: az ml job create --file job.yml
+      run: az ml job create --file job.yaml --resource-group <>resource group name> --workspace-name <Azure ML workspace name>
       working-directory: src
 ```
 
+## Exercise 5: Manually trigger the workflow
 
+1. To trigger the workflow, navigate to Actions. On the left, under **All workflows**, you will see a workflow with name ```Manually trigger an Azure Machine Learning job```. Click on it.
 
+    ![workflows](./assets/21_workflows.jpg "workflows")
 
+2. Now on the right, click **Run workflow**.
+
+    ![run_workflow](./assets/22_run_workflow.jpg "run_workflow")
+    
+3. Open the workflow ```Manually trigger an Azure Machine Learning job``` whose status is **In progress**.
+
+    ![click](./assets/23_click.jpg "click")
+    
+4. Now click on ```train``` under **Jobs**.
+
+    ![train](./assets/24_train.jpg "train")
+    
+5. Once the workflow runs successfully, you will see the below page.
+
+    ![completed](./assets/25_completed.jpg "completed")
+    
+6. Go to your Azure ML workspace to see the job run.
+
+    ![job_run](./assets/26_job_run.jpg "job_run")
+
+7. Open the job to view more details.
+
+    ![details](./assets/27_details.jpg "details")
 
 [ ⏮️ Previous Module](../1_using-an-azure-machine-learning-job-for-automation/documentation.md) - [Next Module ⏭️ ](../3_triggering-github-actions-with-trunk-based-development/documentation.md)
