@@ -81,7 +81,7 @@ A runner is a server that runs your workflows when they're triggered. Each runne
 
     ![dir_name](./assets/8_dir_name.jpg "dir_name")
     
-10. Now give ```01-manual-trigger-job.yaml``` to create a yaml file, which we will use in this module to trigger azure machine learning job through GitHub Actions. Copy paste the below code as content of the file. Scroll down at the bottom and Click on **Commit new file**.
+10. Now give ```01-manual-trigger-job.yaml``` to create a yaml file, which we will use in this module to trigger azure machine learning job through GitHub Actions. Copy paste the below code as file content after replacing ```<resource group name>``` and ```<Azure ML workspace name>``` with your **resource group** and **Azure ML workspace** names from Azure Portal. Scroll down at the bottom and Click on **Commit new file**.
 
 ```yaml
 name: Manually trigger an Azure Machine Learning job
@@ -102,7 +102,7 @@ jobs:
       with:
         creds: ${{secrets.AZURE_CREDENTIALS}}
     - name: run ml job
-      run: az ml job create --file job.yaml --resource-group <>resource group name> --workspace-name <Azure ML workspace name>
+      run: az ml job create --file job.yaml --resource-group <resource group name> --workspace-name <Azure ML workspace name>
       working-directory: src
 ```
 
@@ -238,7 +238,7 @@ jobs:
       with:
         creds: ${{secrets.AZURE_CREDENTIALS}}
     - name: run ml job
-      run: az ml job create --file job.yaml --resource-group <>resource group name> --workspace-name <Azure ML workspace name>
+      run: az ml job create --file job.yaml --resource-group <resource group name> --workspace-name <Azure ML workspace name>
       working-directory: src
 ```
 
