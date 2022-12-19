@@ -190,15 +190,16 @@ if __name__ == "__main__":
 
 ```
     
-    ![add_file](./assets/11_add_file.jpg "add_file")
+   ![add_file](./assets/11_add_file.jpg "add_file")
     ![py_script](./assets/12_py_script.jpg "py_script")
     
 12. Go to ```src``` folder and click on **Add file** and select **Create new file** to create one job with the name ```job.yaml```. And Click **Commit**.
 
 ```yaml
 
+```
     
-    ![create](./assets/13_create.jpg "create")
+   ![create](./assets/13_create.jpg "create")
     ![job](./assets/14_job.jpg "job")
     
 
@@ -208,7 +209,7 @@ When you use GitHub Actions to automate Azure Machine Learning jobs, you need to
 
 Create a service principal, using the Cloud Shell in the Azure portal, which has contributor access to your resource group.  Use the following command:
     
-```
+```bash
 az ad sp create-for-rbac --name "<service-principal-name>" --role contributor --scopes /subscriptions/<subscription-id>/resourceGroups/<your-resource-group-name> --sdk-auth
 ```
 
@@ -229,7 +230,7 @@ Run the above command after updating all the fields in Azure Portal Cloud Shell.
 
 - The output of the service principal should be a JSON with the following structure:
 
-```
+```json
 {
 "clientId": "your-client-id",
 "clientSecret": "your-client-secret",
