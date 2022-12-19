@@ -80,20 +80,238 @@ A runner is a server that runs your workflows when they're triggered. Each runne
 
     ![dir_name](./assets/8_dir_name.jpg "dir_name")
     
-10. Now give ```01-manual-trigger-job.yaml``` to create a yaml file, which we will use in this module to trigger azure machine learning job through GitHub Actions. Scroll down at the bottom and Click on **Commit new file**.
+10. Now give ```01-manual-trigger-job.yaml``` to create a yaml file, which we will use in this module to trigger azure machine learning job through GitHub Actions. Copy paste the below code as content of the file. Scroll down at the bottom and Click on **Commit new file**.
+
+```yaml
+name: Manually trigger an Azure Machine Learning job
+
+on: 
+  workflow_dispatch:
+
+jobs:
+  train:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out repo
+      uses: actions/checkout@main
+    - name: Install az ml extension
+      run: az extension add -n ml -y
+    - name: Azure login
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZURE_CREDENTIALS}}
+    - name: run ml job
+      run: az ml job create --file job.yml
+      working-directory: src
+```
 
    ![name](./assets/9_name.jpg "name")
    ![commit](./assets/10_commit.jpg "commit")
     
-11. Click on **Add file** and select **Create new file** to create one more directory with the name ```src/model/``` and create a ```main.py``` file, which will be the python script you created in the previous module to train model. Copy-paste the entire code from that script file. And Click on **Commit new file** at the bottom of the page.
+11. Click on **Add file** and select **Create new file** to create one more directory with the name ```src/model/``` and create a ```main.py``` file, which will be the python script you created in the previous module to train model. Copy-paste the below python code. And Click on **Commit new file** at the bottom of the page.
+
+```python
+# Import libraries
+import argparse
+import glob
+import os
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import confusion_matrix, classification_report
+import mlflow
+
+def main(args):
+    # enable autologging
+    mlflow.autolog()
+
+
+    # read data
+    df = get_csvs_df(args.training_data)
+
+    # split data
+    X_train, X_test, y_train, y_test = split_data(df)
+
+    # train model
+    train_model(args.n_estimators, X_train, X_test, y_train, y_test)
+
+#function to read CSV file
+def get_csvs_df(path):
+    if not os.path.exists(path):
+        raise RuntimeError(f"Cannot use non-existent path provided: {path}")
+    csv_files = glob.glob(f"{path}/*.csv")
+    if not csv_files:
+        raise RuntimeError(f"No CSV files found in provided data path: {path}")
+    return pd.concat((pd.read_csv(f) for f in csv_files), sort=False)
+
+# function to split data
+def split_data(df):
+    X = df[['fixed acidity','volatile acidity','citric acid','residual sugar','chlorides','free sulfur dioxide','total sulfur dioxide','density','pH','sulphates','alcohol']].values
+    y = df['quality']
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.30, random_state=0)
+    return X_train, X_test, y_train, y_test
+
+# function to train model
+def train_model(n_estimators, X_train, X_test, y_train, y_test):
+    RandomForestClassifier(n_estimators=n_estimators).fit(X_train, y_train)
+
+# function to read input arguments
+def parse_args():
+    # setup arg parser
+    parser = argparse.ArgumentParser()
+
+    # add arguments
+    parser.add_argument("--training_data", dest='training_data',
+                        type=str)
+    parser.add_argument("--n_estimators", dest='n_estimators',
+                        type=float, default=200)
+
+    # parse args
+    args = parser.parse_args()
+
+    # return args
+    return args
+
+# run script
+if __name__ == "__main__":
+    # add space in logs
+    print("\n\n")
+    print("*" * 60)
+
+    # parse args
+    args = parse_args()
+
+    # run main function
+    main(args)
+
+    # add space in logs
+    print("*" * 60)
+    print("\n\n")
+
+```
     
     ![add_file](./assets/11_add_file.jpg "add_file")
     ![py_script](./assets/12_py_script.jpg "py_script")
     
 12. Go to ```src``` folder and click on **Add file** and select **Create new file** to create one job with the name ```job.yaml```. And Click **Commit**.
+
+```yaml
+
     
     ![create](./assets/13_create.jpg "create")
     ![job](./assets/14_job.jpg "job")
     
+
+## Exercise 2: Create a service principal needed to run an Azure Machine Learning job
+
+When you use GitHub Actions to automate Azure Machine Learning jobs, you need to use a service principal to authenticate GitHub to manage the Azure Machine Learning workspace. For example, to train a model using Azure Machine Learning compute, you or any tool that you use, needs to be authorized to use that compute.
+
+Create a service principal, using the Cloud Shell in the Azure portal, which has contributor access to your resource group.  Use the following command:
+    
+```
+az ad sp create-for-rbac --name "<service-principal-name>" --role contributor --scopes /subscriptions/<subscription-id>/resourceGroups/<your-resource-group-name> --sdk-auth
+```
+
+- Give ```gitserviceprincipal``` as **\<service-principal-name>**.
+- For **\<subscription-id>** and **\<your-resource-group-name>**, Goto the resource group created in Azure Portal, copy the **Resource group** name and **Subscription ID** will be available under **Essentials**. Copy and Paste in the required fields.
+
+    ![subscription](./assets/15_subscription.jpg "subscription")
+
+Run the above command after updating all the fields in Azure Portal Cloud Shell. Save the output, you’ll also need it for next modules.
+
+- Go to Azure Portal, At the top, right side of search menu, you will see **Cloud Shell**. Open it.
+
+    ![cloudshell](./assets/16_cloudshell.jpg "cloudshell")
+
+- Paste the command in azure cloud shell and hit enter.
+
+    ![run](./assets/17_run.jpg "run")
+
+- The output of the service principal should be a JSON with the following structure:
+
+```
+{
+"clientId": "your-client-id",
+"clientSecret": "your-client-secret",
+"subscriptionId": "your-subscription-id",
+"tenantId": "your-tenant-id",
+"activeDirectoryEndpointUrl": "https://login.microsoftonline.com",
+"resourceManagerEndpointUrl": "https://management.azure.com/",
+"activeDirectoryGraphResourceId": "https://graph.windows.net/",
+"sqlManagementEndpointUrl": "https://management.core.windows.net:8443/",
+"galleryEndpointUrl": "https://gallery.azure.com/",
+"managementEndpointUrl": "https://management.core.windows.net/"
+}
+```
+
+## Exercise 3: Store Azure credentials securely using secrets in GitHub
+
+The Azure credentials you need to authenticate should not be stored in your code or plain text and should instead be stored in a GitHub secret.
+
+To add a secret to your GitHub repository:
+
+1. Navigate to the Settings tab. In the Settings tab, under Security, expand the Secrets option and select Actions.
+
+    ![secrets](./assets/18_secrets.jpg "secrets")
+
+2. Click on **New repositoty secret** to create a new secret.
+
+    ![repo_secret](./assets/19_repo_secret.jpg "repo_secret")
+
+3. Enter your Azure credentials i.e., the output of the service principal as a **secret** and **name** the secret ```AZURE_CREDENTIALS```. Click **Add secret**.
+
+    ![add_secret](./assets/20_add_secret.jpg "add_secret")
+    
+4. To use a secret containing Azure credentials in a GitHub Action, refer to the secret in the YAML file. For example - 
+
+```yaml
+on: [push]
+
+name: Azure Login Sample
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Log in with Azure
+        uses: azure/login@v1
+        with:
+          creds: '${{secrets.AZURE_CREDENTIALS}}'
+```
+
+## Exercise 4: Create a GitHub Action using YAML that uses the stored Azure credentials to run an Azure Machine Learning job
+
+To define a workflow, you'll need to create a YAML file. You can trigger the workflow to train a model manually or with a push event. Manually triggering the workflow is ideal for testing, while automating it with an event is better for automation.
+
+To configure a GitHub Actions workflow so that you can trigger it manually, use on: workflow_dispatch. To trigger a workflow with a push event, use on: [push].
+
+Once the GitHub Actions workflow is triggered, you can add various steps to a job. For example, you can use a step to run an Azure Machine Learning job:
+    
+```yaml
+name: Manually trigger an Azure Machine Learning job
+
+on: 
+  workflow_dispatch:
+
+jobs:
+  train:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out repo
+      uses: actions/checkout@main
+    - name: Install az ml extension
+      run: az extension add -n ml -y
+    - name: Azure login
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZURE_CREDENTIALS}}
+    - name: run ml job
+      run: az ml job create --file job.yml
+      working-directory: src
+```
+
+
+
+
 
 [ ⏮️ Previous Module](../1_using-an-azure-machine-learning-job-for-automation/documentation.md) - [Next Module ⏭️ ](../3_triggering-github-actions-with-trunk-based-development/documentation.md)
