@@ -81,73 +81,73 @@ Before running the notebook, you need to upload **wine-quality-data.csv** file t
 
 7. Now open the Notebook you created and Run the below scripts in the command cell. And use (+Code) icon for new cells.
 
-    ![runscripts](./assets/32_run_scripts.jpg "run_scripts")
+   ![runscripts](./assets/32_run_scripts.jpg "run_scripts")
 
 Here you will read a CSV file and train a model to predict quality of wine.
 
 ### Read data from a CSV file
-
-    ```python
-    import pandas as pd
-    df = pd.read_csv('wine-quality-data.csv')
-    df
-    ```
-
+      
+```python
+import pandas as pd
+df = pd.read_csv('wine-quality-data.csv')
+df
+```
+      
 ### Split data
 
-    ```python
-    # X will contain the data for 11 columns used for predicting.
-    X = df[['fixed acidity','volatile acidity','citric acid','residual sugar','chlorides','free sulfur dioxide','total sulfur     dioxide','density','pH','sulphates','alcohol']].values
-    # y is the target column i.e., it has wine quality with scores from 0 to 10.
-    y = df['quality']
-    ```
+```python
+# X will contain the data for 11 columns used for predicting.
+X = df[['fixed acidity','volatile acidity','citric acid','residual sugar','chlorides','free sulfur dioxide','total sulfur     dioxide','density','pH','sulphates','alcohol']].values
+# y is the target column i.e., it has wine quality with scores from 0 to 10.
+y = df['quality']
+```
 
-    ```python
-    # train_test_split library is used to split our data into train and test sets.
-    from sklearn.model_selection import train_test_split
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-    ```
+```python
+# train_test_split library is used to split our data into train and test sets.
+from sklearn.model_selection import train_test_split
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+```
 
 ### Train model
 
-    ```python
-    #The random forest classifier is a supervised learning algorithm which you can use for regression and classification problems.
-    #n_estimators is the number of trees in the forest.
-    from sklearn.ensemble import RandomForestClassifier
-    rfc = RandomForestClassifier(n_estimators=200) 
-    rfc.fit(X_train, y_train)
-    ```
+```python
+#The random forest classifier is a supervised learning algorithm which you can use for regression and classification problems.
+#n_estimators is the number of trees in the forest.
+from sklearn.ensemble import RandomForestClassifier
+rfc = RandomForestClassifier(n_estimators=200) 
+rfc.fit(X_train, y_train)
+```
 
 ### Evaluate model
 
-    ```python
-    #The confusion_matrix function evaluates classification accuracy by computing the confusion matrix with each row corresponding to the true class.
-    #The classification_report function builds a text report showing the main classification metrics.
-    from sklearn.metrics import confusion_matrix, classification_report
-    pred_rfc = rfc.predict(X_test)
-    print(classification_report(y_test, pred_rfc))
-    print(confusion_matrix(y_test, pred_rfc))
-    ```
+```python
+#The confusion_matrix function evaluates classification accuracy by computing the confusion matrix with each row corresponding to the true class.
+#The classification_report function builds a text report showing the main classification metrics.
+from sklearn.metrics import confusion_matrix, classification_report
+pred_rfc = rfc.predict(X_test)
+print(classification_report(y_test, pred_rfc))
+print(confusion_matrix(y_test, pred_rfc))
+```
 
-    ```python
-    #The accuracy_score function computes the accuracy, either the fraction or the count of correct predictions.
-    from sklearn.metrics import accuracy_score
-    cm = accuracy_score(y_test, pred_rfc)
-    cm
-    ```
+```python
+#The accuracy_score function computes the accuracy, either the fraction or the count of correct predictions.
+from sklearn.metrics import accuracy_score
+cm = accuracy_score(y_test, pred_rfc)
+cm
+```
 
 ### Test the model by giving new parameters
 
-    ```python
-    df.head(10)
-    ```
+```python
+df.head(10)
+```
     
-    ```python
-    Xnew = [[7.0,	0.27,	0.36,	20.7,	0.045,	45.0,	170.0,	1.0010,	3.00,	0.45,	8.8]]
-    ynew = rfc.predict(Xnew)
-    print('The quality of wine with given parameters is:') 
-    print(ynew)
-    ```
+```python
+Xnew = [[7.0,	0.27,	0.36,	20.7,	0.045,	45.0,	170.0,	1.0010,	3.00,	0.45,	8.8]]
+ynew = rfc.predict(Xnew)
+print('The quality of wine with given parameters is:') 
+print(ynew)
+```
 
 ## Exercise 2: Convert the Notebook to Python scripts
 Though the Jupyter notebook is ideal for experimentation, it’s not a good fit for production workloads. Your next task will be to convert the notebooks to scripts and to run the model training as an Azure Machine Learning job, so that the workflow can easily be triggered and automated.
@@ -178,97 +178,96 @@ To make a machine learning model ready for production, you should first get your
 
 Add the following snippets to the python script
 
-    ```python
-    # Import libraries
-    import argparse
-    import glob
-    import os
-    import pandas as pd
-    from sklearn.model_selection import train_test_split
-    from sklearn.ensemble import RandomForestClassifier
-    from sklearn.metrics import confusion_matrix, classification_report
-    import mlflow
-    ```
+```python
+# Import libraries
+import argparse
+import glob
+import os
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import confusion_matrix, classification_report
+import mlflow
+```
 
-    ```python
-    # define functions
-    def main(args):
-        # enable autologging
-        mlflow.autolog()
+```python
+#Define Functions
+def main(args):
+    # enable autologging
+    mlflow.autolog()
 
 
-        # read data
-        df = get_csvs_df(args.training_data)
+    # read data
+    df = get_csvs_df(args.training_data)
 
-        # split data
-        X_train, X_test, y_train, y_test = split_data(df)
+    # split data
+    X_train, X_test, y_train, y_test = split_data(df)
 
-        # train model
-        train_model(args.n_estimators, X_train, X_test, y_train, y_test)
-    ```
+    # train model
+    train_model(args.n_estimators, X_train, X_test, y_train, y_test)
+```
 
-    ```python
-    #function to read CSV file
-    def get_csvs_df(path):
-        if not os.path.exists(path):
-            raise RuntimeError(f"Cannot use non-existent path provided: {path}")
-        csv_files = glob.glob(f"{path}/*.csv")
-        if not csv_files:
-            raise RuntimeError(f"No CSV files found in provided data path: {path}")
-        return pd.concat((pd.read_csv(f) for f in csv_files), sort=False)
-    ```
+```python
+#function to read CSV file
+def get_csvs_df(path):
+    if not os.path.exists(path):
+        raise RuntimeError(f"Cannot use non-existent path provided: {path}")
+    csv_files = glob.glob(f"{path}/*.csv")
+    if not csv_files:
+        raise RuntimeError(f"No CSV files found in provided data path: {path}")
+    return pd.concat((pd.read_csv(f) for f in csv_files), sort=False)
+```
 
-    ```python
-    # function to split data
-    def split_data(df):
-        X = df[['fixed acidity','volatile acidity','citric acid','residual sugar','chlorides','free sulfur dioxide','total sulfur dioxide','density','pH','sulphates','alcohol']].values
-        y = df['quality']
-        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.30, random_state=0)
-        return X_train, X_test, y_train, y_test
-    ```
+```python
+# function to split data
+def split_data(df):
+    X = df[['fixed acidity','volatile acidity','citric acid','residual sugar','chlorides','free sulfur dioxide','total sulfur dioxide','density','pH','sulphates','alcohol']].values
+    y = df['quality']
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.30, random_state=0)
+    return X_train, X_test, y_train, y_test
+```
 
-    ```python
-    # function to train model
-    def train_model(n_estimators, X_train, X_test, y_train, y_test):
-        RandomForestClassifier(n_estimators=n_estimators).fit(X_train, y_train)
-    ```
+```python
+# function to train model
+def train_model(n_estimators, X_train, X_test, y_train, y_test):
+    RandomForestClassifier(n_estimators=n_estimators).fit(X_train, y_train)
+```
 
-    ```python
-    # function to read input arguments
-    def parse_args():
-        # setup arg parser
-        parser = argparse.ArgumentParser()
+```python
+# function to read input arguments
+def parse_args():
+    # setup arg parser
+    parser = argparse.ArgumentParser()
 
-        # add arguments
-        parser.add_argument("--training_data", dest='training_data',
+    # add arguments
+    parser.add_argument("--training_data", dest='training_data',
                         type=str)
-        parser.add_argument("--n_estimators", dest='n_estimators',
+    parser.add_argument("--n_estimators", dest='n_estimators',
                         type=float, default=200)
 
-        # parse args
-        args = parser.parse_args()
+    # parse args
+    args = parser.parse_args()
 
-        # return args
-        return args
-    ```
+    # return args
+    return args
+```
 
-    ```python
-    # run script
-    if __name__ == "__main__":
-        # add space in logs
-        print("\n\n")
-        print("*" * 60)
+```python
+if __name__ == "__main__":
+    # add space in logs
+    print("\n\n")
+    print("*" * 60)
 
-        # parse args
-        args = parse_args()
+    # parse args
+    args = parse_args()
 
-        # run main function
-        main(args)
+    # run main function
+    main(args)
 
-        # add space in logs
-        print("*" * 60)
-        print("\n\n")
-    ```
+    # add space in logs
+    print("*" * 60)
+    print("\n\n")
+```
 
 By using functions in your scripts, it will be easier to test your code quality. When you have a script that you want to execute, you can use an Azure Machine Learning job to run the code.
 
@@ -292,7 +291,7 @@ To define a job in Azure Machine Learning, you can create a YAML file. Whether y
  
 An example of a command job that uses a registered data asset as input when running the ```main.py``` script is shown in the following YAML. Paste it in the Yaml file you created.
 
-    ```yaml
+```yaml
     $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
     code: src
     command: python main.py --training_data ${{inputs.training_data}}
@@ -304,7 +303,7 @@ An example of a command job that uses a registered data asset as input when runn
     compute: azureml:<Compute-instance-name>
     experiment_name: wine-quality-data-example
     description: Train a classification model on wine quality data using a registered dataset as input.
-    ```
+```
 
 In the YAML file, you'll find the necessary details you need to include:
 - The ```code``` refers to the local folder, which stores the scripts you want to run. The ```command``` key specifies that the ```main.py``` script in the ```src``` folder should be executed, using the value of ```inputs.training_data``` for the ```training_data``` parameter.
