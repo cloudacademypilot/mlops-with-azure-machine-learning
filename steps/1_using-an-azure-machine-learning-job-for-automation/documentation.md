@@ -292,26 +292,27 @@ To define a job in Azure Machine Learning, you can create a YAML file. Whether y
 An example of a command job that uses a registered data asset as input when running the ```main.py``` script is shown in the following YAML. Paste it in the Yaml file you created.
 
 ```yaml
-    $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
-    code: src
-    command: python main.py --training_data ${{inputs.training_data}}
-    inputs:
-    training_data: 
-        path: <Registered-Data-Asset-Path>
-        mode: ro_mount  
-    environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
-    compute: azureml:<Compute-instance-name>
-    experiment_name: wine-quality-data-example
-    description: Train a classification model on wine quality data using a registered dataset as input.
+$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
+code: src
+command: python main.py --training_data ${{inputs.training_data}}
+inputs:
+training_data: 
+    path: <Registered-Data-Asset-Path>
+    mode: ro_mount  
+environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
+compute: azureml:<Compute-instance-name>
+experiment_name: wine-quality-data-example
+description: Train a classification model on wine quality data using a registered dataset as input.
 ```
 
 In the YAML file, you'll find the necessary details you need to include:
-- The ```code``` refers to the local folder, which stores the scripts you want to run. The ```command``` key specifies that the ```main.py``` script in the ```src``` folder should be executed, using the value of ```inputs.training_data``` for the ```training_data``` parameter.
-- ```<Registered-Data-Asset-Path>``` is the path of registered data asset ```wine-quality-data.csv``` in the Azure Machine Learning workspace is mounted to the compute to be used as input for the script.
-- The compute instance ```<Compute-instance-name>``` will be used to run the scripts.
-- The latest version of the registered custom sklearn environment will be installed on the compute instance before running the script.
+   - The ```code``` refers to the local folder, which stores the scripts you want to run. The ```command``` key specifies that the ```main.py``` script in the ```src``` folder should be executed, using the value of ```inputs.training_data``` for the ```training_data``` parameter.
+   - ```<Registered-Data-Asset-Path>``` is the path of registered data asset ```wine-quality-data.csv``` in the Azure Machine Learning workspace is mounted to the compute to be used as input for the script.
+   - The compute instance ```<Compute-instance-name>``` will be used to run the scripts.
+   - The latest version of the registered custom sklearn environment will be installed on the compute instance before running the script.
 
-4. To get ```<Registered-Data-Asset-Path>``` field value, First you need to create a Data Asset:
+To get ```<Registered-Data-Asset-Path>``` field value, First you need to create a Data Asset:
+
 - Now on the left side, Go to **Data**, select **Datastores** and open **workspaceartifactstore**.
 
     ![datastore](./assets/20_data_store.jpg "data_store")
@@ -336,9 +337,9 @@ In the YAML file, you'll find the necessary details you need to include:
 
     ![copy](./assets/24_2_copy.jpg "copy")
 
-5. For ```<Compute-instance-name>```, go to **compute**, under **Compute instances**, copy-paste the name of the instance.
+For ```<Compute-instance-name>```, go to **compute**, under **Compute instances**, copy-paste the name of the instance.
 
-    ![instancename](./assets/33_instancename.jpg "instancename")
+   ![instancename](./assets/33_instancename.jpg "instancename")
 
 To test the YAML definition of the job, you can trigger it using the CLI v2.
 
@@ -350,17 +351,17 @@ Whenever you want to run an Azure Machine Learning job, you can use the CLI v2. 
 
 2. First login to your azure account using the below command.
     
-    ```cmd
-    az login
-    ```
+```cmd
+az login
+```
     
     ![azlogin](./assets/36_azlogin.jpg "azlogin")
 
 3. Now, you can submit an Azure Machine Learning job using the following command:
 
-    ```cmd
-    az ml job create --file job.yaml
-    ```
+```cmd
+az ml job create --file job.yaml
+```
     
     ![runjob](./assets/37_runjob.jpg "runjob")
 
