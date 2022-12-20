@@ -35,12 +35,72 @@ To set up trunk-based development, you'll want to:
 - Create a branch to update the code.
 - Trigger a GitHub Actions workflow when opening a pull request.
 
+## Exercise 1: Create a branch protection rule to block direct pushes to main
 
+To protect your code, you want to block any direct pushes to the main branch. Blocking direct pushes means that no one will be allowed to directly push any code changes to the main branch. Instead, changes to the main branch can be made by merging pull requests.
 
+To protect the main branch, enable a branch protection rule in GitHub:
 
+1. Navigate to the **Settings** tab in your repo. In the **Settings** tab, under **Code and automation**, select **Branches**. Select **Add branch protection rule**.
 
+    ![newrule](./assets/1_newrule.jpg "newrule")
 
+2. Enter ```main``` under **Branch name pattern**. Enable only **Require a pull request before merging**. Save your changes by clicking **Create** at the bottom.
 
+    ![Create](./assets/2_create.jpg "Create")
 
+## Exercise 2: Create a branch to update the code
+
+Whenever you want to edit the code, you'll have to create a branch and work in there. Once you want to make your changes final, you can create a pull request to merge the feature branch with the main branch.
+
+1. Navigate to the **Code** tab in your repo. In the **Code** tab, select **main**.
+
+    ![branch](./assets/3_branch.jpg "branch")
+
+2. Now enter a branch name (For ex- ```cycle-1```) to create a new branch. Click **Create branch: cycle-1 from 'main'**.
+
+    ![cycle1](./assets/4_cycle1.jpg "cycle1")
+    
+3. You can switch between the branches.
+
+    ![change](./assets/5_change.jpg "change")
+    
+## Trigger a GitHub Actions workflow when opening a pull request
+
+Finally, you may want to use the creation of pull requests as a trigger for GitHub Actions workflows. For example, whenever someone makes changes to the code, you'll want to run some code quality checks.
+
+Only when the edited code has passed the quality checks and someone has verified the proposed changes, do you want to actually merge the pull request.
+
+To trigger a GitHub Actions workflow, you can use ```on: [pull_request]```. When you use this trigger, your workflow will run whenever the pull request is created.
+
+If you want a workflow to run whenever a pull request is merged, you'll need to use another trigger. Merging a pull request is essentially a push to the main branch. So, to trigger a workflow to run when a pull request is merged, use the following trigger in the GitHub Actions workflow:
+
+```yaml
+name: Trigger a workflow to run when a pull request is merged 
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Pull request
+      run: echo "Checking how pull request works."
+```
+
+1. You need to create a new workflow in ```cycle-1``` branch which will be triggered whenever you push the new changes to ```main``` branch. Go to ```.github/workflows``` directory in ```cycle1``` branch Select **Add file** and **Create new file**.
+
+    ![newfile](./assets/6_newfile.jpg "newfile")
+    
+2. Give the name ```02-push-trigger-job.yaml``` and copy-paste the above trigger. Click **Commit new file**.
+
+    ![Commit](./assets/7_commit.jpg "Commit")
+
+3. Navigate to the **Pull requests** tab in your repo. In the **Pull requests** tab, select **New pull request**.
+
+    ![pullreq](./assets/8_pullreq.jpg "pullreq")
+
+4. 
 
 [ ⏮️ Previous Module](../2_triggering-azure-machine-learning-jobs-with-github-actions/documentation.md) - [Next Module ⏭️ ](../4_working-with-linting-and-unit-testing-in-github-actions/documentation.md)
