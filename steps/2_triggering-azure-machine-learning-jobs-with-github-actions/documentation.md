@@ -40,6 +40,7 @@ A runner is a server that runs your workflows when they're triggered. Each runne
 
 - Azure Subscription
 - Azure Machine Learning workspace and Compute Cluster
+- User Access Administrator role to create Service principal
 
 ## Learning Objectives
 
