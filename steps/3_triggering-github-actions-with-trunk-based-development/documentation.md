@@ -65,7 +65,7 @@ Whenever you want to edit the code, you'll have to create a branch and work in t
 
     ![change](./assets/5_change.jpg "change")
     
-## Exercise 2: Trigger a GitHub Actions workflow when opening a pull request
+## Exercise 3: Trigger a GitHub Actions workflow when opening a pull request
 
 Finally, you may want to use the creation of pull requests as a trigger for GitHub Actions workflows. For example, whenever someone makes changes to the code, you'll want to run some code quality checks.
 
