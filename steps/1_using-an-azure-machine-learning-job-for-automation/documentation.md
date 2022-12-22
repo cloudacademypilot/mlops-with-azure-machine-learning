@@ -28,6 +28,8 @@ Also, Azure Machine Learning includes features for monitoring and auditing:
 
 Machine learning operations (MLOps) applies DevOps principles to machine learning projects. In this lab, you'll learn how to implement key concepts like source control, automation, and CI/CD to build an end-to-end MLOps solution.
 
+
+
 ## Prerequisites
 - Azure Subscription
 - Azure Machine Learning workspace and Compute Instance to run notebooks
