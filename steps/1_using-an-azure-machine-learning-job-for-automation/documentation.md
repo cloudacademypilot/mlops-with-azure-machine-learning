@@ -33,7 +33,6 @@ Machine learning operations (MLOps) applies DevOps principles to machine learnin
 ## Prerequisites
 - Azure Subscription
 - Azure Machine Learning workspace and Compute Instance to run notebooks
-- Azure Machine Learning CLI v2 (CLI v2)
 
 ## Learning Objectives
 - Create a Notebook that trains a model
