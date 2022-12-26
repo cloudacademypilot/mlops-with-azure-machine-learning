@@ -102,12 +102,12 @@ As a best practice, your code should exist mostly out of functions. Whether you'
 - Check that column names are right.
 - Check the prediction level of model on new datasets.
 - Check the distribution of prediction levels.
-- 
+
 When you work with Python, you can use Pytest and Numpy (which uses the Pytest framework) to test your code.
 
 You created a training script ```main.py```, in step 1, which contains the following function:
 
-```
+```python
 #function to read CSV file
 def get_csvs_df(path):
     if not os.path.exists(path):
