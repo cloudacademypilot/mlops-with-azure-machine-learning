@@ -187,16 +187,12 @@ import os
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import confusion_matrix, classification_report
 import mlflow
-```
 
-```python
-#Define Functions
+
 def main(args):
     # enable autologging
     mlflow.autolog()
-
 
     # read data
     df = get_csvs_df(args.training_data)
@@ -206,10 +202,9 @@ def main(args):
 
     # train model
     train_model(args.n_estimators, X_train, X_test, y_train, y_test)
-```
 
-```python
-#function to read CSV file
+
+# function to read CSV file
 def get_csvs_df(path):
     if not os.path.exists(path):
         raise RuntimeError(f"Cannot use non-existent path provided: {path}")
@@ -217,24 +212,25 @@ def get_csvs_df(path):
     if not csv_files:
         raise RuntimeError(f"No CSV files found in provided data path: {path}")
     return pd.concat((pd.read_csv(f) for f in csv_files), sort=False)
-```
 
-```python
+
 # function to split data
 def split_data(df):
-    X = df[['fixed acidity','volatile acidity','citric acid','residual sugar','chlorides','free sulfur dioxide','total sulfur dioxide','density','pH','sulphates','alcohol']].values
+    X = df[['fixed acidity', 'volatile acidity',
+            'citric acid', 'residual sugar', 'chlorides',
+            'free sulfur dioxide', 'total sulfur dioxide',
+            'density', 'pH', 'sulphates', 'alcohol']].values
     y = df['quality']
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.30, random_state=0)
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=0.30, random_state=0)
     return X_train, X_test, y_train, y_test
-```
 
-```python
+
 # function to train model
 def train_model(n_estimators, X_train, X_test, y_train, y_test):
     RandomForestClassifier(n_estimators=n_estimators).fit(X_train, y_train)
-```
 
-```python
+
 # function to read input arguments
 def parse_args():
     # setup arg parser
@@ -251,10 +247,11 @@ def parse_args():
 
     # return args
     return args
-```
 
-```python
+
+# run script
 if __name__ == "__main__":
+
     # add space in logs
     print("\n\n")
     print("*" * 60)
