@@ -123,7 +123,7 @@ Assume you stored the training script in the directory ```src/model/main.py``` w
 You create the ```test_main.py``` file in the ```tests``` folder in git repo with the following code:
 
 ```python
-from model.main import get_csvs_df
+from src.model.main import get_csvs_df
 import os
 import pytest
 
@@ -187,10 +187,60 @@ To run the test in GitHub Action:
 - Run the tests with ```pytest tests/```
 - The results of the tests will show in the output of the workflow you run.
 
+## Exercise 2: Integrate code checks with pull requests
 
+To trigger a GitHub Actions workflow when a pull request is created, you can use ```on: pull_request```.
 
+You want to ensure that a pull request may only be merged when all quality checks have passed.
 
+### Defining the workflow
 
+Goto your github repo. Inside ```.github/workflows```, select Add file > Create new file and give ```03_code_checks.yaml``` as name and paste the following code and commit.
+
+```yaml
+name: Linting and Unit Testing
+
+on: 
+  workflow_dispatch:
+
+jobs:
+  job1:
+    name: linting
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out repo
+      uses: actions/checkout@main
+    - name: Use Python version 3.8
+      uses: actions/setup-python@v3
+      with:
+        python-version: '3.8'
+    - name: Install Flake8
+      run: |
+        python -m pip install flake8
+    - name: Run linting tests
+      run: | 
+        flake8 src/model/
+  unittest:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out repo
+      uses: actions/checkout@main
+    - name: Install az ml extension
+      run: az extension add -n ml -y
+    - name: Install requirements.txt
+      run : pip install -r requirements.txt
+    - name: Unit testing
+      run: pytest tests/
+ ```
+
+   ![workflow](./assets/11_workflow.jpg "workflow")
+   ![workflow](./assets/12_workflow.jpg "workflow")
+  
+### Triggering workflow
+
+- Go to the **Actions** tab in your GitHub repo and Click on ```Linting and Unit Testing``` workflow and click on **Run workflow**. Inspect the output and fix your code where necessary.
+
+    ![trigger](./assets/13_trigger.jpg "trigger")
 
 
 
