@@ -177,6 +177,9 @@ index,first,last
 9,Bonnie,Begor
 ```
 
+   ![datasets](./assets/5_datasets.jpg "datasets")
+   ![datasets](./assets/6_datasets.jpg "datasets")
+
 - Now go inside ```datasets``` folder, Select Add file > Create new file and give ```second.csv``` as name and Paste the following sample data for unit testing. Click commit.
 
 ```
@@ -193,8 +196,6 @@ index,first,last
 9,Joan,Laborde
 ```
 
-   ![datasets](./assets/5_datasets.jpg "datasets")
-   ![datasets](./assets/6_datasets.jpg "datasets")
    ![datasets](./assets/7_datasets.jpg "datasets")
    ![datasets](./assets/8_datasets.jpg "datasets")
    
@@ -312,7 +313,9 @@ on:
 
 - Select **Start commit** and **Commit changes**.
 
-- Now Navigate to the **Pull requests** tab in your repo. Select **New pull request** and select ```base:main``` and ```compare:cycle-2```. Click **Create pull request**.
+#### Creating pull request
+
+- Navigate to the **Pull requests** tab in your repo. Select **New pull request** and select ```base:main``` and ```compare:cycle-2```. Click **Create pull request**.
 
     ![pull](./assets/20_pull.jpg "pull")
     ![pull](./assets/21_pull.jpg "pull")
@@ -322,27 +325,9 @@ on:
 
     ![merge](./assets/23_merge.jpg "merge")
 
-- Select **Merge pull request** and **Confirm merge**.
+- Select **Merge pull request** and **Confirm merge** to merge.
 
     ![merge](./assets/24_merge.jpg "merge")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
