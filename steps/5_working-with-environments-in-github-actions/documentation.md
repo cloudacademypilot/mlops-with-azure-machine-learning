@@ -44,7 +44,7 @@ Go to the **Settings** tab within your repo. Select **Environments**. Create a *
    ![environment](./assets/1_environment.jpg "environment")
    ![environment](./assets/2_dev.jpg "environment")
 
-#### 2. Setup Production environment
+#### 2. Setup Production environment and Add an approval check for the production environment
 
 Go to the **Settings** tab within your repo. Select **Environments**. Create a **new environment**. Enter a name (For ex- ```production environment```). Select **Configure environment**. Select **Required reviewers** and add your GitHub account id. Click **Save protection rules**.
 
@@ -61,7 +61,11 @@ Create one GitHub Actions workflow, triggered by changes being pushed to the mai
 Add a condition that the production job is only allowed to run when the experiment job ran successfully. Success means that the Azure Machine Learning job ran successfully too.
 
 1. Define the GitHub Actions workflow:
-Goto ```/.github/workflows/``` in cycle-2 branch. Select 
+
+Goto ```/.github/workflows/``` folder in cycle-2 branch in your repo. Select **Add file** and **Create new file**. Give name (For ex- ```04_environment.yaml```) and paste the following code after changing the ```<rg-name>``` to your **resource group** name from Azure portal and ```<ml-workspace-name>``` to your **Azure ML workspace** name. Select Commit.
+
+   ![workflow](./assets/5_workflow.jpg "workflow")
+   ![workflow](./assets/6_workflow.jpg "workflow")
 
 ```yaml
 ---
@@ -88,7 +92,7 @@ jobs:
       - name: set current directory
         run: cd src
       - name: Run dev env job
-        run: az ml job create --file src/dev.yml --resource-group <rg-name> --workspace-name <ml-workspace-name> --stream
+        run: az ml job create --file src/development.yaml --resource-group <rg-name> --workspace-name <ml-workspace-name> --stream
   prod:
     name: prod
     needs: dev
@@ -107,10 +111,13 @@ jobs:
       - name: set current directory
         run: cd src
       - name: Run prod env job
-        run: az ml job create --file src/prod.yml --resource-group <rg-name> --workspace-name <ml-workspace-name> --stream  
+        run: az ml job create --file src/production.yaml --resource-group <rg-name> --workspace-name <ml-workspace-name> --stream  
  ```
+The above workflow will run experiment job in ```development environment``` and the production job, will run in ```production environment```, is only allowed to run when the experiment job ran successfully. Adding ```needs: dev``` to the workflow will wait for experiment job to run successfully before running production job. 
 
-2. Define experiment job
+2. Define experiment job to run in **development environment**:
+
+Goto ```src```folder in cycle-2 branch in your repo. Select **Add file** and **Create new file**. Give name (For ex- ```development.yaml```) and paste the following code after changing the ```<Compute Cluster name>``` to your **Compute cluster name** from your Azure ML workspace. Select Commit.
 
 ```yaml
 $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
@@ -130,7 +137,9 @@ experiment_name: wine-quality-data-example
 description: Train a classification model on wine quality data using a registered dataset as input.
 ```
 
-3. Define production job
+3. Define production job to run in **production environment**:
+
+Goto ```src``` folder in cycle-2 branch in your repo. Select **Add file** and **Create new file**. Give name (For ex- ```production.yaml```) and paste the following code after changing the ```<Compute Cluster name>``` to your **Compute cluster name** from your Azure ML workspace. Select Commit.
 
 ```yaml
 $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
