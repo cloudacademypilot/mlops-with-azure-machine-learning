@@ -60,7 +60,7 @@ Create one GitHub Actions workflow, triggered by changes being pushed to the mai
 
 Add a condition that the production job is only allowed to run when the experiment job ran successfully. Success means that the Azure Machine Learning job ran successfully too.
 
-1. Define the GitHub Actions workflow:
+### Define the GitHub Actions workflow:
 
 Goto ```/.github/workflows/``` folder in cycle-2 branch in your repo. Select **Add file** and **Create new file**. Give name (For ex- ```04_environment.yaml```) and paste the following code after changing the ```<rg-name>``` to your **resource group** name from Azure portal and ```<ml-workspace-name>``` to your **Azure ML workspace** name. Select Commit.
 
@@ -115,52 +115,54 @@ jobs:
  ```
 The above workflow will run experiment job in ```development environment``` and the production job, will run in ```production environment```, is only allowed to run when the experiment job ran successfully. Adding ```needs: dev``` to the workflow will wait for experiment job to run successfully before running production job. 
 
-2. Define experiment job to run in **development environment**:
+### Define experiment job to run in **development environment**:
 
 Goto ```src```folder in cycle-2 branch in your repo. Select **Add file** and **Create new file**. Give name (For ex- ```development.yaml```) and paste the following code after changing the ```<Compute Cluster name>``` to your **Compute cluster name** from your Azure ML workspace. Select Commit.
 
 ```yaml
 $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
 code: model
-command: >-
-  python main.py  
-  --training_data ${{inputs.training_data}}
+command: python main.py --training_data ${{inputs.training_data}}
 inputs:
   training_data: 
-    type: uri_folder 
     path: azureml:wine-quality:1
-  reg_rate: 0.01
-  mode: ro_mount
+    mode: ro_mount  
 environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
 compute: azureml:<Compute Cluster name>
 experiment_name: wine-quality-data-example
 description: Train a classification model on wine quality data using a registered dataset as input.
 ```
 
-3. Define production job to run in **production environment**:
+   ![job](./assets/7_job.jpg "job")
+   ![job](./assets/8_job.jpg "job")
+
+### Define production job to run in **production environment**:
 
 Goto ```src``` folder in cycle-2 branch in your repo. Select **Add file** and **Create new file**. Give name (For ex- ```production.yaml```) and paste the following code after changing the ```<Compute Cluster name>``` to your **Compute cluster name** from your Azure ML workspace. Select Commit.
 
 ```yaml
 $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
 code: model
-command: >-
-  python main.py  
-  --training_data ${{inputs.training_data}}
+command: python main.py --training_data ${{inputs.training_data}}
 inputs:
   training_data: 
-    type: uri_folder 
     path: azureml:wine-quality:1
-  reg_rate: 0.01
-  mode: ro_mount
+    mode: ro_mount  
 environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
 compute: azureml:<Compute Cluster name>
 experiment_name: wine-quality-data-example
 description: Train a classification model on wine quality data using a registered dataset as input.
 ```
 
+   ![job](./assets/9_job.jpg "job")
+   ![job](./assets/10_job.jpg "job")
 
+### Creating pull request
 
+1. Navigate to the Pull requests tab in your repo. Select New pull request and select base:main and compare:cycle-2. Click Create pull request.
 
+   ![pull](./assets/11_pull.jpg "pull")
+   ![pull](./assets/12_pull.jpg "pull")
+   ![pull](./assets/13_pull.jpg "pull")
 
 [ ⏮️ Previous Module](../4_working-with-linting-and-unit-testing-in-github-actions/documentation.md) - [Next Module ⏭️ ](../6_deploying-a-model-with-github-actions/documentation.md)
