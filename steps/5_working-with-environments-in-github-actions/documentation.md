@@ -60,7 +60,8 @@ Create one GitHub Actions workflow, triggered by changes being pushed to the mai
 
 Add a condition that the production job is only allowed to run when the experiment job ran successfully. Success means that the Azure Machine Learning job ran successfully too.
 
-1. Define the workflow
+1. Define the GitHub Actions workflow:
+Goto ```/.github/workflows/``` in cycle-2 branch. Select 
 
 ```yaml
 ---
@@ -120,13 +121,13 @@ command: >-
 inputs:
   training_data: 
     type: uri_folder 
-    path: azureml:wine-quality
+    path: azureml:wine-quality:1
   reg_rate: 0.01
   mode: ro_mount
 environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
-compute: azureml:<Cluster name>
-experiment_name: wine-quality
-description: Train a classification model on diabetes data using a registered dataset as input.
+compute: azureml:<Compute Cluster name>
+experiment_name: wine-quality-data-example
+description: Train a classification model on wine quality data using a registered dataset as input.
 ```
 
 3. Define production job
@@ -140,13 +141,13 @@ command: >-
 inputs:
   training_data: 
     type: uri_folder 
-    path: azureml:wine-quality
+    path: azureml:wine-quality:1
   reg_rate: 0.01
   mode: ro_mount
 environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
-compute: azureml:<Cluster name>
-experiment_name: wine-quality
-description: Train a classification model on diabetes data using a registered dataset as input.
+compute: azureml:<Compute Cluster name>
+experiment_name: wine-quality-data-example
+description: Train a classification model on wine quality data using a registered dataset as input.
 ```
 
 
