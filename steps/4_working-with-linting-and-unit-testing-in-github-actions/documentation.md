@@ -47,6 +47,7 @@ You can use **linters** to check whether your code adheres to quality guidelines
 To check whether the code works as expected, you can create **unit tests**. To easily test specific parts of your code, your scripts should contain functions. You can test functions in your scripts by creating test files. A popular tool to test Python code is **Pytest**.
 
 ### Lint your code
+
 The quality of your code depends on the standards you and your team agree on. To ensure that the agreed upon quality is met, you can run linters that will check whether the code conforms to the standards of the team.
 
 Depending on the code language you use, there are several options to lint your code. For example, if you work with Python, you can use either Flake8 or Pylint.
@@ -123,7 +124,10 @@ Assume you stored the training script in the directory ```src/model/main.py``` w
 You create the ```test_main.py``` file in the ```tests``` folder in git repo with the following code:
 
 ```python
-from src.model.main import get_csvs_df
+import sys
+sys.path.append('src/model')
+import main
+from main import get_csvs_df
 import os
 import pytest
 
@@ -157,7 +161,37 @@ Goto your github repo ```tests``` folder. Select Add file > Create new file and 
     
 #### Creating datasets folder with csv files.
 
-Goto your github repo ```tests``` folder. Select Add file > Create new file and give ```datasets``` as name and give a slash(```/```). Then give ```first.csv```. Click commit. Now go inside ```datasets``` folder, Select Add file > Create new file and give ```second.csv``` as name and commit.
+- Goto your github repo ```tests``` folder. Select Add file > Create new file and give ```datasets``` as name and give a slash(```/```). Then give ```first.csv```. Paste the following sample data for unit testing. Click commit. 
+
+```
+index,first,last
+0,Glenn,Hernandez
+1,Sarah,Pedersen
+2,Jill,Tracy
+3,Melissa,Nelson
+4,Hugh,Soto
+5,Frank,Dees
+6,Vita,Singleton
+7,James,Papenfuss
+8,Mary,Smithson
+9,Bonnie,Begor
+```
+
+- Now go inside ```datasets``` folder, Select Add file > Create new file and give ```second.csv``` as name and Paste the following sample data for unit testing. Click commit.
+
+```
+index,first,last
+0,Tina,Holloway
+1,Katherine,Logan
+2,Juan,Duncan
+3,Doyle,Clyne
+4,Jacob,Kazin
+5,Kimberly,Tomes
+6,Lisa,Cochrane
+7,Troy,Hall
+8,Erin,Johnson
+9,Joan,Laborde
+```
 
    ![datasets](./assets/5_datasets.jpg "datasets")
    ![datasets](./assets/6_datasets.jpg "datasets")
@@ -187,11 +221,6 @@ To run the test in GitHub Action:
 - Run the tests with ```pytest tests/```
 - The results of the tests will show in the output of the workflow you run.
 
-## Exercise 2: Integrate code checks with pull requests
-
-To trigger a GitHub Actions workflow when a pull request is created, you can use ```on: pull_request```.
-
-You want to ensure that a pull request may only be merged when all quality checks have passed.
 
 ### Defining the workflow
 
@@ -236,22 +265,66 @@ jobs:
    ![workflow](./assets/11_workflow.jpg "workflow")
    ![workflow](./assets/12_workflow.jpg "workflow")
   
-### Triggering workflow
+### Triggering workflow manually
 
 - Go to the **Actions** tab in your GitHub repo and Click on ```Linting and Unit Testing``` workflow and click on **Run workflow**. Inspect the output and fix your code where necessary.
 
     ![trigger](./assets/13_trigger.jpg "trigger")
+    ![trigger](./assets/14_trigger.jpg "trigger")
+    ![trigger](./assets/14_2_trigger.jpg "trigger")
 
 
+## Exercise 2: Integrate code checks with pull requests
 
+To trigger a GitHub Actions workflow when a pull request is created, you can use ```on: pull_request```.
 
+You want to ensure that a pull request may only be merged when all quality checks have passed.
 
+To integrate the code checks with any pull requests that target the main branch, you'll need to do:
 
+- Navigate to the **Settings** tab in your repo. Select **Branches**. Select **edit**. 
 
+    ![branch](./assets/16_branch.jpg "branch")
+    
+- Enable **Require status checks to pass before merging** within the branch protection rule for the main branch. 
+- Here, you can search for ```linting``` and ```unittest``` and select your linters and unit tests to set them as required. Whenever you then create a pull request, you'll notice that it will trigger your GitHub Actions and only when the workflows pass successfully will you be able to merge the pull request. Select them. Click **Save changes**.
 
+    ![branch](./assets/17_branch.jpg "branch")
 
+- Create a new branch with the name ```cycle-2```
 
+    ![branch](./assets/15_branch.jpg "branch")
 
+- Go to ```.github/workflows/03_code_checks.yaml``` in ```cycle-2``` branch and Click on ✏️ to edit the file.
+
+    ![branch](./assets/18_branch.jpg "branch")
+    
+- Replace ```on: workflow_dispatch``` with:
+
+```yaml
+on: 
+  pull_request:
+    branches:
+      - main
+```
+
+   ![branch](./assets/19_branch.jpg "branch")
+
+- Select **Start commit** and **Commit changes**.
+
+- Now Navigate to the **Pull requests** tab in your repo. Select **New pull request** and select ```base:main``` and ```compare:cycle-2```. Click **Create pull request**.
+
+    ![pull](./assets/20_pull.jpg "pull")
+    ![pull](./assets/21_pull.jpg "pull")
+    ![pull](./assets/22_pull.jpg "pull")
+
+- In the next page, you will see two checks(```linting``` and ```unittest```) required to pass successfully before merging.
+
+    ![merge](./assets/23_merge.jpg "merge")
+
+- Select **Merge pull request** and **Confirm merge**.
+
+    ![merge](./assets/24_merge.jpg "merge")
 
 
 
