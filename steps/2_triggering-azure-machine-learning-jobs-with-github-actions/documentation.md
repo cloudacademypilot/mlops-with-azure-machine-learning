@@ -108,11 +108,13 @@ jobs:
 ```
 
    ![name](./assets/9_name.jpg "name")
+   
    ![commit](./assets/10_commit.jpg "commit")
     
 11. Click on **Add file** and select **Create new file** to create one more directory with the name ```src/model/``` and create a ```main.py``` file, which will be the python script you created in the previous module to train model. Copy-paste the python code from the main.py script created in Azure ML workspace. And Click on **Commit new file** at the bottom of the page.
     
     ![add_file](./assets/11_add_file.jpg "add_file")
+    
     ![py_script](./assets/12_py_script.jpg "py_script")
     
 12. Go to ```src``` folder and click on **Add file** and select **Create new file** to create a Azure ML job with the name ```job.yaml```, which will be the same job you defined in previous module. Only change will be the **cluster name**. Here we will use **Compute Cluster** instead of **Cluster Instance**. Because, GitHub is authenticated to use your Azure Machine Learning workspace with a service principal. The service principal is only allowed to submit jobs that use a compute cluster, not a compute instance. You can get compute cluster name from your ML Workspace in **Compute** under **Compute Clusters** starting with **cluster{\*}**. Replace the instance name with cluster name and Paste. Click **Commit**.
@@ -132,7 +134,8 @@ description: Train a classification model on wine quality data using a registere
 ```
     
    ![create](./assets/13_create.jpg "create")
-    ![job](./assets/14_job.jpg "job")
+   
+   ![job](./assets/14_job.jpg "job")
     
 
 ## Exercise 2: Create a service principal needed to run an Azure Machine Learning job
