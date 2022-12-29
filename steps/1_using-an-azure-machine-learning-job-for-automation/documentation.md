@@ -352,8 +352,7 @@ To get ```<Registered-Data-Asset-Path>``` field value, First you need to create 
     ![copy](./assets/24_2_copy.jpg "copy")
 
 For ```<Compute-instance-name>```, go to **compute**, under **Compute instances**, copy-paste the name of the instance.
-
-   ![instancename](./assets/33_instancename.jpg "instancename")
+    ![instancename](./assets/33_instancename.jpg "instancename")
 
 To test the YAML definition of the job, you can trigger it using the CLI v2.
 
