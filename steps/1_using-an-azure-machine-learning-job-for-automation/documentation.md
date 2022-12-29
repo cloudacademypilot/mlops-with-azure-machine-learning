@@ -97,67 +97,67 @@ Here you will read a CSV file and train a model to predict quality of wine.
 
 ### Read data from a CSV file
       
-    ```python
-    import pandas as pd
-    df = pd.read_csv('wine-quality-data.csv')
-    df
-    ```
+```python
+import pandas as pd
+df = pd.read_csv('wine-quality-data.csv')
+df
+```
       
 ### Split data
 
-    ```python
-    # X will contain the data for 11 columns used for predicting.
-    X = df[['fixed acidity','volatile acidity','citric acid','residual sugar','chlorides','free sulfur dioxide','total sulfur        dioxide','density','pH','sulphates','alcohol']].values
-    # y is the target column i.e., it has wine quality with scores from 0 to 10.
-    y = df['quality']
-    ```
+```python
+# X will contain the data for 11 columns used for predicting.
+X = df[['fixed acidity','volatile acidity','citric acid','residual sugar','chlorides','free sulfur dioxide','total sulfur        dioxide','density','pH','sulphates','alcohol']].values
+# y is the target column i.e., it has wine quality with scores from 0 to 10.
+y = df['quality']
+```
 
-    ```python
-    # train_test_split library is used to split our data into train and test sets.
-    from sklearn.model_selection import train_test_split
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-    ```
+```python
+# train_test_split library is used to split our data into train and test sets.
+from sklearn.model_selection import train_test_split
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+```
 
 ### Train model
 
-    ```python
-    #The random forest classifier is a supervised learning algorithm which you can use for regression and classification problems.
-    #n_estimators is the number of trees in the forest.
-    from sklearn.ensemble import RandomForestClassifier
-    rfc = RandomForestClassifier(n_estimators=200) 
-    rfc.fit(X_train, y_train)
-    ```
+```python
+#The random forest classifier is a supervised learning algorithm which you can use for regression and classification problems.
+#n_estimators is the number of trees in the forest.
+from sklearn.ensemble import RandomForestClassifier
+rfc = RandomForestClassifier(n_estimators=200) 
+rfc.fit(X_train, y_train)
+```
 
 ### Evaluate model
 
-    ```python
-    #The confusion_matrix function evaluates classification accuracy by computing the confusion matrix with each row corresponding to the true class.
-    #The classification_report function builds a text report showing the main classification metrics.
-    from sklearn.metrics import confusion_matrix, classification_report
-    pred_rfc = rfc.predict(X_test)
-    print(classification_report(y_test, pred_rfc))
-    print(confusion_matrix(y_test, pred_rfc))
-    ```
+```python
+#The confusion_matrix function evaluates classification accuracy by computing the confusion matrix with each row corresponding to the true class.
+#The classification_report function builds a text report showing the main classification metrics.
+from sklearn.metrics import confusion_matrix, classification_report
+pred_rfc = rfc.predict(X_test)
+print(classification_report(y_test, pred_rfc))
+print(confusion_matrix(y_test, pred_rfc))
+```
 
-    ```python
-    #The accuracy_score function computes the accuracy, either the fraction or the count of correct predictions.
-    from sklearn.metrics import accuracy_score
-    cm = accuracy_score(y_test, pred_rfc)
-    cm
-    ```
+```python
+#The accuracy_score function computes the accuracy, either the fraction or the count of correct predictions.
+from sklearn.metrics import accuracy_score
+cm = accuracy_score(y_test, pred_rfc)
+cm
+```
 
 ### Test the model by giving new parameters
 
-    ```python
-    df.head(10)
-    ```
+```python
+df.head(10)
+```
     
-    ```python
-    Xnew = [[7.0,	0.27,	0.36,	20.7,	0.045,	45.0,	170.0,	1.0010,	3.00,	0.45,	8.8]]
-    ynew = rfc.predict(Xnew)
-    print('The quality of wine with given parameters is:') 
-    print(ynew)
-    ```
+```python
+Xnew = [[7.0,	0.27,	0.36,	20.7,	0.045,	45.0,	170.0,	1.0010,	3.00,	0.45,	8.8]]
+ynew = rfc.predict(Xnew)
+print('The quality of wine with given parameters is:') 
+print(ynew)
+```
 
 ## Exercise 2: Convert the Notebook to Python scripts
 
@@ -191,15 +191,15 @@ To make a machine learning model ready for production, you should first get your
 
 Add the following snippets to the python script
 
-    ```python
-    # Import libraries
-    import argparse
-    import glob
-    import os
-    import pandas as pd
-    from sklearn.model_selection import train_test_split
-    from sklearn.ensemble import RandomForestClassifier
-    import mlflow
+```python
+# Import libraries
+import argparse
+import glob
+import os
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+import mlflow
 
 
 def main(args):
@@ -277,7 +277,7 @@ if __name__ == "__main__":
     # add space in logs
     print("*" * 60)
     print("\n\n")
-    ```
+```
 
 By using functions in your scripts, it will be easier to test your code quality. When you have a script that you want to execute, you can use an Azure Machine Learning job to run the code.
 
@@ -303,19 +303,19 @@ To define a job in Azure Machine Learning, you can create a YAML file. Whether y
  
 An example of a command job that uses a registered data asset as input when running the ```main.py``` script is shown in the following YAML. Paste it in the Yaml file you created.
 
-    ```yaml
-    $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
-    code: src
-    command: python main.py --training_data ${{inputs.training_data}}
-    inputs:
-    training_data: 
-        path: <Registered-Data-Asset-Path>
-        mode: ro_mount  
-    environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
-    compute: azureml:<Compute-instance-name>
-    experiment_name: wine-quality-data-example
-    description: Train a classification model on wine quality data using a registered dataset as input.
-    ```
+```yaml
+$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
+code: src
+command: python main.py --training_data ${{inputs.training_data}}
+inputs:
+training_data: 
+    path: <Registered-Data-Asset-Path>
+    mode: ro_mount  
+environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
+compute: azureml:<Compute-instance-name>
+experiment_name: wine-quality-data-example
+description: Train a classification model on wine quality data using a registered dataset as input.
+```
 
 In the YAML file, you'll find the necessary details you need to include:
    
@@ -366,17 +366,17 @@ Whenever you want to run an Azure Machine Learning job, you can use the CLI v2. 
 
 2. First login to your azure account using the below command.
     
-    ```cmd
-    az login
-    ```
+```cmd
+az login
+```
     
    ![azlogin](./assets/36_azlogin.jpg "azlogin")
 
 3. Now, you can submit an Azure Machine Learning job using the following command:
 
-    ```cmd
-    az ml job create --file job.yaml
-    ```
+```cmd
+az ml job create --file job.yaml
+```
     
    ![runjob](./assets/37_runjob.jpg "runjob")
 
@@ -387,7 +387,6 @@ Whenever you want to run an Azure Machine Learning job, you can use the CLI v2. 
 5. Click on the **Job Display Name** to view more details.
 
     ![jobdetails](./assets/39_jobdetails.jpg "jobdetails")
-
 
 
 [Next Module ⏭️](../2_triggering-azure-machine-learning-jobs-with-github-actions/documentation.md)
