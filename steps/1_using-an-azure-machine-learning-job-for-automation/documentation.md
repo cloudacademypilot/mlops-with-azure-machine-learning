@@ -70,8 +70,9 @@ Machine learning operations (MLOps) applies DevOps principles to machine learnin
 
     ![compute](./assets/13_compute.jpg "compute")
 
-Before running the notebook, you need to upload **wine-quality-data.csv** file to your workspace. 
-- Go to the resource group deployed in the Azure Portal. Amongst the list of resources, open the Storage account. On the left side, click on **Containers**. Then open **azureml** container. Inside you will see the **wine-quality-data.csv** file. On the right side, click on **...** and **Downlaod**. The csv file will be downloaded to your local system in **Downloads** folder.
+Before running the notebook, you need to upload **wine-quality-data.csv** file to your workspace.
+
+7. Go to the resource group deployed in the Azure Portal. Amongst the list of resources, open the Storage account. On the left side, click on **Containers**. Then open **azureml** container. Inside you will see the **wine-quality-data.csv** file. On the right side, click on **...** and **Downlaod**. The csv file will be downloaded to your local system in **Downloads** folder.
 
     ![storage](./assets/25_storage.jpg "storage")
     
@@ -81,7 +82,7 @@ Before running the notebook, you need to upload **wine-quality-data.csv** file t
     
     ![download](./assets/28_download.jpg "download")
 
-- Now go back to the Azure ML workspace, Go to **Notebooks** and click on **⊕** and **Upload files**. Browse and select the csv file you downloaded. Click **Upload**. 
+8. Now go back to the Azure ML workspace, Go to **Notebooks** and click on **⊕** and **Upload files**. Browse and select the csv file you downloaded. Click **Upload**. 
 
     ![upload](./assets/29_upload.jpg "upload")
     
@@ -89,7 +90,7 @@ Before running the notebook, you need to upload **wine-quality-data.csv** file t
     
     ![upload](./assets/31_upload.jpg "upload")
 
-7. Now open the Notebook you created and Run the below scripts in the command cell. And use (+Code) icon for new cells.
+9. Now open the Notebook you created and Run the below scripts in the command cell. And use (+Code) icon for new cells.
 
    ![runscripts](./assets/32_run_scripts.jpg "run_scripts")
 
@@ -189,7 +190,7 @@ To make a machine learning model ready for production, you should first get your
 
     ![compute](./assets/18_python_script.jpg "compute")
 
-Add the following snippets to the python script
+Add the following code to the python script ```main.py```
 
 ```python
 # Import libraries
@@ -369,7 +370,7 @@ Whenever you want to run an Azure Machine Learning job, you can use the CLI v2. 
 ```cmd
 az login
 ```
-    
+   
    ![azlogin](./assets/36_azlogin.jpg "azlogin")
 
 3. Now, you can submit an Azure Machine Learning job using the following command:
