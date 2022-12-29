@@ -104,17 +104,21 @@ jobs:
 4. Select ```main``` branch for base and ```cycle-1``` for compare. Select **Create pull request**. It will compare whats changed in cycle-1 from main branch. And create a pull request to merge.
 
     ![pullreq](./assets/9_create.jpg "pullreq")
+    
     ![pullreq](./assets/10_createpull.jpg "pullreq")
 
 5. Now you will see commits made to ```cycle-1```. Click **Merge pull request** and then **Confirm merge**. It will merge all the changes to ```main``` branch.
 
     ![pullreq](./assets/11_merge.jpg "pullreq")
+    
     ![pullreq](./assets/12_confirm.jpg "pullreq")
+    
     ![pullreq](./assets/14_merged.jpg "pullreq")
     
 6. Now the workflow is triggered which you defined to run when a pull request is created. To see the worflow, navigate to **Actions** tab. In the **Actions** tab, select the workflow ```Trigger a workflow to run when a pull request is merged```. You will see that workflow run successfully.
 
     ![pullreq](./assets/15_workflow.jpg "pullreq")
+    
     ![pullreq](./assets/16_run.jpg "pullreq")
     
 7. You can cross-check the merge by looking into ```.github/workflows``` directory of ```main``` branch. You will see the YAML workflow you created in ```cycle-1```.
