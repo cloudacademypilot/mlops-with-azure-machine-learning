@@ -60,7 +60,7 @@ A runner is a server that runs your workflows when they're triggered. Each runne
 
     ![Details](./assets/3_entermail.jpg "Details")
 
-4. verify your account by solving a puzzle and click on **create account.**
+4. Verify your account by solving a puzzle and click on **create account.**
 
 5. Next you will receive a GitHub Launch Code to your email address. Enter the code and your GitHub account is ready.
 
