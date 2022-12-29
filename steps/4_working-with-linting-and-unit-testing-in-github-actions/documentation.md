@@ -89,9 +89,8 @@ import-order-style = pep8
 ```
 
 Create a new directory/folder in your github account repo with the name ```tests```. And create ```.flake8``` configuration file inside with above code copied. Click commit to save the file.
-
-   ![tests](./assets/1_tests.jpg "tests")
-   ![flake8](./assets/2_flake8.jpg "flake8")
+    ![tests](./assets/1_tests.jpg "tests")
+    ![flake8](./assets/2_flake8.jpg "flake8")
     
 
 ### Unit tests
@@ -157,6 +156,7 @@ For example, to test the ```get_csvs_df``` function, you can create a ```dataset
 Goto your github repo ```tests``` folder. Select Add file > Create new file and give ```test_main.py``` as name and paste the above code.
 
    ![tests](./assets/3_testmain.jpg "tests")
+   
    ![tests](./assets/4_testmain.jpg "tests")
     
 #### Creating datasets folder with csv files.
@@ -178,6 +178,7 @@ index,first,last
 ```
 
    ![datasets](./assets/5_datasets.jpg "datasets")
+   
    ![datasets](./assets/6_datasets.jpg "datasets")
 
 - Now go inside ```datasets``` folder, Select Add file > Create new file and give ```second.csv``` as name and Paste the following sample data for unit testing. Click commit.
@@ -197,6 +198,7 @@ index,first,last
 ```
 
    ![datasets](./assets/7_datasets.jpg "datasets")
+   
    ![datasets](./assets/8_datasets.jpg "datasets")
    
 #### Creating requirements.txt
@@ -212,6 +214,7 @@ scikit-learn==1.1.1
 ```
 
    ![requirements](./assets/9_req.jpg "requirements")
+   
    ![requirements](./assets/10_req.jpg "requirements")
     
 
@@ -226,6 +229,10 @@ To run the test in GitHub Action:
 ### Defining the workflow
 
 Goto your github repo. Inside ```.github/workflows```, select Add file > Create new file and give ```03_code_checks.yaml``` as name and paste the following code and commit.
+
+   ![workflow](./assets/11_workflow.jpg "workflow")
+   
+   ![workflow](./assets/12_workflow.jpg "workflow")
 
 ```yaml
 name: Linting and Unit Testing
@@ -262,16 +269,15 @@ jobs:
     - name: Unit testing
       run: pytest tests/
  ```
-
-   ![workflow](./assets/11_workflow.jpg "workflow")
-   ![workflow](./assets/12_workflow.jpg "workflow")
   
 ### Triggering workflow manually
 
 - Go to the **Actions** tab in your GitHub repo and Click on ```Linting and Unit Testing``` workflow and click on **Run workflow**. Inspect the output and fix your code where necessary.
 
     ![trigger](./assets/13_trigger.jpg "trigger")
+    
     ![trigger](./assets/14_trigger.jpg "trigger")
+    
     ![trigger](./assets/14_2_trigger.jpg "trigger")
 
 
@@ -302,14 +308,14 @@ To integrate the code checks with any pull requests that target the main branch,
     
 - Replace ```on: workflow_dispatch``` with:
 
+    ![branch](./assets/19_branch.jpg "branch")
+
 ```yaml
 on: 
   pull_request:
     branches:
       - main
 ```
-
-   ![branch](./assets/19_branch.jpg "branch")
 
 - Select **Start commit** and **Commit changes**.
 
@@ -318,7 +324,9 @@ on:
 - Navigate to the **Pull requests** tab in your repo. Select **New pull request** and select ```base:main``` and ```compare:cycle-2```. Click **Create pull request**.
 
     ![pull](./assets/20_pull.jpg "pull")
+    
     ![pull](./assets/21_pull.jpg "pull")
+    
     ![pull](./assets/22_pull.jpg "pull")
 
 - In the next page, you will see two checks(```linting``` and ```unittest```) required to pass successfully before merging.
