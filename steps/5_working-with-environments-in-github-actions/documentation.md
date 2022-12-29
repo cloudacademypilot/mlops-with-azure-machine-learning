@@ -42,6 +42,7 @@ To create an environment within your GitHub repo:
 Go to the **Settings** tab within your repo. Select **Environments**. Create a **new environment**. Enter a name (For ex- ```development environment```). Select **Configure environment**. Let everything default.
 
    ![environment](./assets/1_environment.jpg "environment")
+   
    ![environment](./assets/2_dev.jpg "environment")
 
 #### 2. Setup Production environment and Add an approval check for the production environment
@@ -49,6 +50,7 @@ Go to the **Settings** tab within your repo. Select **Environments**. Create a *
 Go to the **Settings** tab within your repo. Select **Environments**. Create a **new environment**. Enter a name (For ex- ```production environment```). Select **Configure environment**. Select **Required reviewers** and add your GitHub account id. Click **Save protection rules**.
 
    ![environment](./assets/3_prod.jpg "environment")
+   
    ![environment](./assets/4_prod.jpg "environment")
 
 ## Exercise 2: Use environments in GitHub Actions
@@ -65,6 +67,7 @@ Add a condition that the production job is only allowed to run when the experime
 Goto ```/.github/workflows/``` folder in cycle-2 branch in your repo. Select **Add file** and **Create new file**. Give name (For ex- ```04_environment.yaml```) and paste the following code after changing the ```<rg-name>``` to your **resource group** name from Azure portal and ```<ml-workspace-name>``` to your **Azure ML workspace** name. Select Commit.
 
    ![workflow](./assets/5_workflow.jpg "workflow")
+   
    ![workflow](./assets/6_workflow.jpg "workflow")
 
 ```yaml
@@ -134,6 +137,7 @@ description: Train a classification model on wine quality data using a registere
 ```
 
    ![job](./assets/7_job.jpg "job")
+   
    ![job](./assets/8_job.jpg "job")
 
 ### Define production job to run in **production environment**:
@@ -155,6 +159,7 @@ description: Train a classification model on wine quality data using a registere
 ```
 
    ![job](./assets/9_job.jpg "job")
+   
    ![job](./assets/10_job.jpg "job")
 
 ### Creating pull request
@@ -162,7 +167,9 @@ description: Train a classification model on wine quality data using a registere
 1. Navigate to the Pull requests tab in your repo. Select New pull request and select base:main and compare:cycle-2. Click Create pull request.
 
    ![pull](./assets/11_pull.jpg "pull")
+   
    ![pull](./assets/12_pull.jpg "pull")
+   
    ![pull](./assets/13_pull.jpg "pull")
 
 [ ⏮️ Previous Module](../4_working-with-linting-and-unit-testing-in-github-actions/documentation.md) - [Next Module ⏭️ ](../6_deploying-a-model-with-github-actions/documentation.md)
