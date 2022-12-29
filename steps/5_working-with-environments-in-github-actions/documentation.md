@@ -40,14 +40,18 @@ To create an environment within your GitHub repo:
 #### 1. Setup Development environment
 
 Go to the **Settings** tab within your repo. Select **Environments**. Create a **new environment**. Enter a name (For ex- ```development environment```). Select **Configure environment**. Let everything default.
-    ![environment](./assets/1_environment.jpg "environment")
-    ![environment](./assets/2_dev.jpg "environment")
+    
+   ![environment](./assets/1_environment.jpg "environment")
+    
+   ![environment](./assets/2_dev.jpg "environment")
 
 #### 2. Setup Production environment and Add an approval check for the production environment
 
 Go to the **Settings** tab within your repo. Select **Environments**. Create a **new environment**. Enter a name (For ex- ```production environment```). Select **Configure environment**. Select **Required reviewers** and add your GitHub account id. Click **Save protection rules**.
-    ![environment](./assets/3_prod.jpg "environment")
-    ![environment](./assets/4_prod.jpg "environment")
+    
+   ![environment](./assets/3_prod.jpg "environment")
+    
+   ![environment](./assets/4_prod.jpg "environment")
 
 ## Exercise 2: Use environments in GitHub Actions
 
@@ -61,8 +65,10 @@ Add a condition that the production job is only allowed to run when the experime
 ### Define the GitHub Actions workflow:
 
 Goto ```/.github/workflows/``` folder in cycle-2 branch in your repo. Select **Add file** and **Create new file**. Give name (For ex- ```04_environment.yaml```) and paste the following code after changing the ```<rg-name>``` to your **resource group** name from Azure portal and ```<ml-workspace-name>``` to your **Azure ML workspace** name. Select Commit.
-    ![workflow](./assets/5_workflow.jpg "workflow")
-    ![workflow](./assets/6_workflow.jpg "workflow")
+    
+   ![workflow](./assets/5_workflow.jpg "workflow")
+   
+   ![workflow](./assets/6_workflow.jpg "workflow")
 
 ```yaml
 ---
