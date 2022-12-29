@@ -1,9 +1,11 @@
 # Using an Azure Machine Learning job for automation
+
 Azure Machine Learning is a cloud service for accelerating and managing the machine learning project lifecycle. Machine learning professionals, data scientists, and engineers can use it in their day-to-day workflows: Train and deploy models, and manage MLOps.
 
 You can create a model in Azure Machine Learning or use a model built from an open-source platform, such as Pytorch, TensorFlow, or scikit-learn. MLOps tools help you monitor, retrain, and redeploy models.
 
 ## MLOps: DevOps for machine learning
+
 DevOps for machine learning models, often called MLOps, is a process for developing models for production. A model's lifecycle from training to deployment must be auditable if not reproducible.
 
 ### ML model lifecycle
@@ -11,6 +13,7 @@ DevOps for machine learning models, often called MLOps, is a process for develop
    ![Mllifecycle](./assets/1_ml-cycle.jpg "Ml lifecycle")
     
 ### Integrations enabling MLOPs
+
 Azure Machine Learning is built with the model lifecycle in mind. You can audit the model lifecycle down to a specific commit and environment.
 
 Some key features enabling MLOps include:
@@ -28,13 +31,13 @@ Also, Azure Machine Learning includes features for monitoring and auditing:
 
 Machine learning operations (MLOps) applies DevOps principles to machine learning projects. In this lab, you'll learn how to implement key concepts like source control, automation, and CI/CD to build an end-to-end MLOps solution.
 
-
-
 ## Prerequisites
+
 - Azure Subscription
 - Azure Machine Learning workspace and Compute Instance to run notebooks
 
 ## Learning Objectives
+
 - Create a Notebook that trains a model
 - Convert the Notebook to Python scripts
 - Define Azure Machine Learning Job
@@ -42,6 +45,7 @@ Machine learning operations (MLOps) applies DevOps principles to machine learnin
 
 
 ## Exercise 1: Create a Notebook that trains a Machine Learning model to predict quality of wine.
+
 1. Go to the resource group deployed in the Azure Portal. Amongst the list of resources, open the Azure Machine Learning workspace.
 
     ![Resources](./assets/8_resources.jpg "Resources")
@@ -70,14 +74,19 @@ Before running the notebook, you need to upload **wine-quality-data.csv** file t
 - Go to the resource group deployed in the Azure Portal. Amongst the list of resources, open the Storage account. On the left side, click on **Containers**. Then open **azureml** container. Inside you will see the **wine-quality-data.csv** file. On the right side, click on **...** and **Downlaod**. The csv file will be downloaded to your local system in **Downloads** folder.
 
     ![storage](./assets/25_storage.jpg "storage")
+    
     ![containers](./assets/26_containers.jpg "containers")
+    
     ![azureml](./assets/27_azureml.jpg "azureml")
+    
     ![download](./assets/28_download.jpg "download")
 
 - Now go back to the Azure ML workspace, Go to **Notebooks** and click on **⊕** and **Upload files**. Browse and select the csv file you downloaded. Click **Upload**. 
 
     ![upload](./assets/29_upload.jpg "upload")
+    
     ![browse](./assets/30_browse.jpg "browse")
+    
     ![upload](./assets/31_upload.jpg "upload")
 
 7. Now open the Notebook you created and Run the below scripts in the command cell. And use (+Code) icon for new cells.
@@ -88,69 +97,70 @@ Here you will read a CSV file and train a model to predict quality of wine.
 
 ### Read data from a CSV file
       
-```python
-import pandas as pd
-df = pd.read_csv('wine-quality-data.csv')
-df
-```
+    ```python
+    import pandas as pd
+    df = pd.read_csv('wine-quality-data.csv')
+    df
+    ```
       
 ### Split data
 
-```python
-# X will contain the data for 11 columns used for predicting.
-X = df[['fixed acidity','volatile acidity','citric acid','residual sugar','chlorides','free sulfur dioxide','total sulfur     dioxide','density','pH','sulphates','alcohol']].values
-# y is the target column i.e., it has wine quality with scores from 0 to 10.
-y = df['quality']
-```
+    ```python
+    # X will contain the data for 11 columns used for predicting.
+    X = df[['fixed acidity','volatile acidity','citric acid','residual sugar','chlorides','free sulfur dioxide','total sulfur        dioxide','density','pH','sulphates','alcohol']].values
+    # y is the target column i.e., it has wine quality with scores from 0 to 10.
+    y = df['quality']
+    ```
 
-```python
-# train_test_split library is used to split our data into train and test sets.
-from sklearn.model_selection import train_test_split
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-```
+    ```python
+    # train_test_split library is used to split our data into train and test sets.
+    from sklearn.model_selection import train_test_split
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    ```
 
 ### Train model
 
-```python
-#The random forest classifier is a supervised learning algorithm which you can use for regression and classification problems.
-#n_estimators is the number of trees in the forest.
-from sklearn.ensemble import RandomForestClassifier
-rfc = RandomForestClassifier(n_estimators=200) 
-rfc.fit(X_train, y_train)
-```
+    ```python
+    #The random forest classifier is a supervised learning algorithm which you can use for regression and classification problems.
+    #n_estimators is the number of trees in the forest.
+    from sklearn.ensemble import RandomForestClassifier
+    rfc = RandomForestClassifier(n_estimators=200) 
+    rfc.fit(X_train, y_train)
+    ```
 
 ### Evaluate model
 
-```python
-#The confusion_matrix function evaluates classification accuracy by computing the confusion matrix with each row corresponding to the true class.
-#The classification_report function builds a text report showing the main classification metrics.
-from sklearn.metrics import confusion_matrix, classification_report
-pred_rfc = rfc.predict(X_test)
-print(classification_report(y_test, pred_rfc))
-print(confusion_matrix(y_test, pred_rfc))
-```
+    ```python
+    #The confusion_matrix function evaluates classification accuracy by computing the confusion matrix with each row corresponding to the true class.
+    #The classification_report function builds a text report showing the main classification metrics.
+    from sklearn.metrics import confusion_matrix, classification_report
+    pred_rfc = rfc.predict(X_test)
+    print(classification_report(y_test, pred_rfc))
+    print(confusion_matrix(y_test, pred_rfc))
+    ```
 
-```python
-#The accuracy_score function computes the accuracy, either the fraction or the count of correct predictions.
-from sklearn.metrics import accuracy_score
-cm = accuracy_score(y_test, pred_rfc)
-cm
-```
+    ```python
+    #The accuracy_score function computes the accuracy, either the fraction or the count of correct predictions.
+    from sklearn.metrics import accuracy_score
+    cm = accuracy_score(y_test, pred_rfc)
+    cm
+    ```
 
 ### Test the model by giving new parameters
 
-```python
-df.head(10)
-```
+    ```python
+    df.head(10)
+    ```
     
-```python
-Xnew = [[7.0,	0.27,	0.36,	20.7,	0.045,	45.0,	170.0,	1.0010,	3.00,	0.45,	8.8]]
-ynew = rfc.predict(Xnew)
-print('The quality of wine with given parameters is:') 
-print(ynew)
-```
+    ```python
+    Xnew = [[7.0,	0.27,	0.36,	20.7,	0.045,	45.0,	170.0,	1.0010,	3.00,	0.45,	8.8]]
+    ynew = rfc.predict(Xnew)
+    print('The quality of wine with given parameters is:') 
+    print(ynew)
+    ```
 
 ## Exercise 2: Convert the Notebook to Python scripts
+
 Though the Jupyter notebook is ideal for experimentation, it’s not a good fit for production workloads. Your next task will be to convert the notebooks to scripts and to run the model training as an Azure Machine Learning job, so that the workflow can easily be triggered and automated.
 
 To make a machine learning model ready for production, you should first get your code ready for production. When you have a Jupyter notebook that needs to be converted to production code, you’ll need to:
@@ -160,9 +170,11 @@ To make a machine learning model ready for production, you should first get your
 - Use parameters in your scripts.
 
 ### Creating python script
+
 1. Go to **Notebooks** and click on **⊕** and **Create new folder** and give ```src``` as Folder Name. Click **Create**.
 
     ![newfolder](./assets/14_new_folder.jpg "new_folder")
+    
     ![create](./assets/15_create.jpg "create")
 
 2. Now when you hover on the folder **src**, you will see **...**  . Click on it and select **Create new file**.
@@ -179,15 +191,15 @@ To make a machine learning model ready for production, you should first get your
 
 Add the following snippets to the python script
 
-```python
-# Import libraries
-import argparse
-import glob
-import os
-import pandas as pd
-from sklearn.model_selection import train_test_split
-from sklearn.ensemble import RandomForestClassifier
-import mlflow
+    ```python
+    # Import libraries
+    import argparse
+    import glob
+    import os
+    import pandas as pd
+    from sklearn.model_selection import train_test_split
+    from sklearn.ensemble import RandomForestClassifier
+    import mlflow
 
 
 def main(args):
@@ -265,11 +277,12 @@ if __name__ == "__main__":
     # add space in logs
     print("*" * 60)
     print("\n\n")
-```
+    ```
 
 By using functions in your scripts, it will be easier to test your code quality. When you have a script that you want to execute, you can use an Azure Machine Learning job to run the code.
 
 ## Exercise 3: Define Azure Machine Learning Job
+
 To define a job in Azure Machine Learning, you can create a YAML file. Whether you want to run one script as a command job or multiple scripts sequentially as a pipeline. For both command and pipeline jobs, you'll need to create a YAML file, which details:
 - Which scripts to run.
 - What the inputs and outputs are for each script.
@@ -277,6 +290,7 @@ To define a job in Azure Machine Learning, you can create a YAML file. Whether y
 - The environment that needs to be installed on the compute to run the scripts.
 
 ### Creating YAML Job
+
 1. Go to **Notebooks** and click on **⊕** and **Create new file**.
 
 2. Give ```job.yaml``` as File name and Select **Yaml** as File type from Dropdown. Click **Create**.
@@ -289,21 +303,22 @@ To define a job in Azure Machine Learning, you can create a YAML file. Whether y
  
 An example of a command job that uses a registered data asset as input when running the ```main.py``` script is shown in the following YAML. Paste it in the Yaml file you created.
 
-```yaml
-$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
-code: src
-command: python main.py --training_data ${{inputs.training_data}}
-inputs:
-training_data: 
-    path: <Registered-Data-Asset-Path>
-    mode: ro_mount  
-environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
-compute: azureml:<Compute-instance-name>
-experiment_name: wine-quality-data-example
-description: Train a classification model on wine quality data using a registered dataset as input.
-```
+    ```yaml
+    $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
+    code: src
+    command: python main.py --training_data ${{inputs.training_data}}
+    inputs:
+    training_data: 
+        path: <Registered-Data-Asset-Path>
+        mode: ro_mount  
+    environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
+    compute: azureml:<Compute-instance-name>
+    experiment_name: wine-quality-data-example
+    description: Train a classification model on wine quality data using a registered dataset as input.
+    ```
 
 In the YAML file, you'll find the necessary details you need to include:
+   
    - The ```code``` refers to the local folder, which stores the scripts you want to run. The ```command``` key specifies that the ```main.py``` script in the ```src``` folder should be executed, using the value of ```inputs.training_data``` for the ```training_data``` parameter.
    - ```<Registered-Data-Asset-Path>``` is the path of registered data asset ```wine-quality-data.csv``` in the Azure Machine Learning workspace is mounted to the compute to be used as input for the script.
    - The compute instance ```<Compute-instance-name>``` will be used to run the scripts.
@@ -342,24 +357,26 @@ For ```<Compute-instance-name>```, go to **compute**, under **Compute instances*
 To test the YAML definition of the job, you can trigger it using the CLI v2.
 
 ## Exercise 4: Trigger Azure Machine Learning Job
+
 Whenever you want to run an Azure Machine Learning job, you can use the CLI v2. The CLI v2 can be installed on your local device, or you can use the Azure Cloud Shell available on Azure Machine Learning Workspace.
+
 1. Click on **Open terminal** under Notebooks.
 
     ![openterminal](./assets/35_openterminal.jpg "openterminal")
 
 2. First login to your azure account using the below command.
     
-```cmd
-az login
-```
+    ```cmd
+    az login
+    ```
     
    ![azlogin](./assets/36_azlogin.jpg "azlogin")
 
 3. Now, you can submit an Azure Machine Learning job using the following command:
 
-```cmd
-az ml job create --file job.yaml
-```
+    ```cmd
+    az ml job create --file job.yaml
+    ```
     
    ![runjob](./assets/37_runjob.jpg "runjob")
 
