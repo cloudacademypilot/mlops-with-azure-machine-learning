@@ -6,7 +6,7 @@ Using the Azure Machine Learning CLI (v2), you want to set up an automated workf
 
 To get value from a machine learning model, you'll have to deploy it. Whenever you deploy a model you can generate predictions whenever necessary to give you insights.
 
-In other words, you need to deploy the model to a real-time endpoint. The web app should be able to send the patient's data to the endpoint and get a prediction in return.
+In other words, you need to deploy the model to a real-time endpoint. The web app should be able to send the wine quality data to the endpoint and get a prediction in return.
 
 When you want to deploy a model, you have a choice between an online endpoint for real-time predictions or a batch endpoint for batch predictions. As the model will be integrated with a web app where the you will input wine data expecting to get a direct response, you choose to deploy the model to an online endpoint.
 
@@ -29,13 +29,35 @@ You can deploy the model manually in the Azure Machine Learning workspace. Howev
 
 Whenever you want to deploy a model with the Azure Machine Learning workspace, you'll need to save the model's output and register the model in the workspace. When you register the model, you specify whether you have an MLflow or custom model.
 
-When you create and log a model with MLflow, you can use no-code deployment.
+When you register the model as an MLflow model, you can opt for no-code deployment in the Azure Machine Learning workspace. when you use no-code deployment, you don't need to create the scoring script and environment for the deployment to work.
 
 To log your model with MLflow, enable autologging in your training script by using mlflow.autolog().
 
 When you log a model during model training, the model is stored in the job output. Alternatively, you can store the model in an Azure Machine Learning datastore.
 
 To register the model, you can point to either a job's output, or to a location in an Azure Machine Learning datastore.
+
+1. Go to Azure ML workspace, navigate to **Jobs** > **All jobs** and select the successfull job run from previous module. 
+
+    ![Jobs](./assets/1_jobs.jpg "Jobs")
+    
+2. Select **➕Register model**. Select ```MLflow``` as **Model type** and leave **Job output** as default. Click **Next**.
+
+    ![Register](./assets/2_register.jpg "Register")
+    
+    ![Register](./assets/3_mlflow.jpg "Register")
+
+3. Give **Name** as ```Wine-Quality``` and Click **Next**.
+
+    ![Register](./assets/4_name.jpg "Register")
+    
+4. Review and Select **Register**.
+
+    ![Register](./assets/5_register.jpg "Register")
+
+5. Navigate to **Models** to view the model.
+
+    ![Register](./assets/6_model.jpg "Register")
 
 ## Exercise 2: Create an endpoint and deploy the model
 
@@ -67,17 +89,17 @@ Include the following parameters in the YAML configuration to create a managed o
 
 For example, to create a key-based authenticated endpoint, use this YAML configuration:
 
-```yaml
+```yaml create-endpoint.yml
 $schema: https://azuremlschemas.azureedge.net/latest/managedOnlineEndpoint.schema.json
 name: mlflow-endpoint
 auth_mode: key
 ```
 
-To actually create the endpoint, use the following command:
+1. Goto your GitHub Repo, inside ```src``` folder create a yaml file with name ```create-endpoint.yaml``` and paste the above configuration and Commit.
 
-```
-az ml online-endpoint create --name diabetes-mlflow -f create-endpoint.yml
-```
+    ![create](./assets/7_create.jpg "create")
+    
+    ![create](./assets/8_create.jpg "create")
 
 #### Deploy a model to an endpoint
 
@@ -97,25 +119,29 @@ To define the deployment for a MLflow model, use a YAML configuration like this:
 ```yaml
 $schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
 name: mlflow-deployment
-endpoint_name: churn-endpoint
+endpoint_name: wine-prediction-ep
 model:
   name: mlflow-sklearn-model
   version: 1
-  local_path: model
+  local_path: <path to model files>
   model_format: mlflow
-instance_type: Standard_F2s_v2
+instance_type: Standard_DS2_v2
 instance_count: 1
 ```
 
-In this example, we're taking the model files from a local path. The files are all stored in a local folder called model. When this YAML is submitted to deploy the model to the endpoint churn-endpoint, the model will be registered in the Azure Machine Learning workspace as mlflow-sklearn-model, version 1.
+In this example, we're taking the model files from a local path. The files are all stored in a local folder called model. When this YAML is submitted to deploy the model to the endpoint , the model will be registered in the Azure Machine Learning workspace as mlflow-sklearn-model, version 1.
 
-To deploy (and automatically register) the model, run the following command:
+1. Goto your GitHub Repo, inside ```src``` folder create a yaml file with name ```mlflow-deployment.yaml``` and paste the above configuration and Commit.
 
-```
-az ml online-deployment create --name mlflow-deployment --endpoint diabetes-mlflow -f mlflow-deployment.yaml --all-traffic
-```
+    ![create](./assets/7_create.jpg "create")
+    
+    ![create](./assets/9_create.jpg "create")
 
 ## Exercise 3: Trigger model deployment with GitHub Actions
+
+To trigger the model deployment with Github actions, you need to create a workflow that has two jobs: Creating endpoint and Deploying model to the endpoint.
+
+1. Goto your GitHub Repo, inside ```.github/workflows``` folder create a yaml file with name ```05_model-deployment.yaml``` and paste the below code and Commit.
 
 ```yaml
 ---
@@ -138,7 +164,7 @@ jobs:
       - name: set current directory
         run: cd src
       - name: Create endpoint
-        run: az ml online-endpoint create --name diabetes-mlflow-sameer-ep -f src/create-endpoint.yaml
+        run: az ml online-endpoint create --name wine-prediction-ep -f src/create-endpoint.yaml
   deploy:
     name: deploy model
     needs: create
@@ -155,7 +181,7 @@ jobs:
       - name: set current directory
         run: cd src
       - name: deploy model
-        run: az ml online-deployment create --name mlflow-deployment3 --endpoint diabetes-mlflow-sameer-ep -f src/mlflow-deployment.yaml --all-traffic 
+        run: az ml online-deployment create --name mlflow-deployment --endpoint wine-prediction-ep -f src/mlflow-deployment.yaml --all-traffic 
 ```
 
 ## Exercise 4: Test the deployed model
