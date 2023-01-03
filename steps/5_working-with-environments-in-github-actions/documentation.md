@@ -82,7 +82,7 @@ jobs:
     name: dev
     runs-on: ubuntu-latest
     environment:
-      name: dev
+      name: development environment
     steps:
       - name: check out repo
         uses: actions/checkout@v2
@@ -101,7 +101,7 @@ jobs:
     needs: dev
     runs-on: ubuntu-latest
     environment:
-      name: prod
+      name: production environment
     steps:
       - name: check out repo
         uses: actions/checkout@v2
@@ -171,5 +171,35 @@ description: Train a classification model on wine quality data using a registere
     ![pull](./assets/12_pull.jpg "pull")
    
     ![pull](./assets/13_pull.jpg "pull")
+    
+2. Now you can also see that, linting and unit test checks will also run. After all the checks are successfull, Click on **Merge request** and **Confirm merge**.
+
+    ![pull](./assets/14_pull.jpg "pull")
+    
+    ![pull](./assets/15_pull.jpg "pull")
+    
+3. Now navigate to **Actions** tab and Select **Environments** workflow. Select the workflow running.
+
+    ![pull](./assets/16_pull.jpg "pull")
+    
+4. You can see pipeline where the workflow will run in ```development environment``` follwed by ```production environment```.
+
+    ![pull](./assets/17_pull.jpg "pull")
+    
+5. Once the workflow runs in development environment successfully, it will ask for review, because you added a approval check. Click on **Review deployments** and **✔️Check**  the ```production environment```. Select Approve and deploy.
+
+    ![pull](./assets/18_pull.jpg "pull")
+    
+    ![pull](./assets/19_pull.jpg "pull")
+
+6. Now you can see that job is deploying into ```production environment``` and wait until workflow run successfully.
+
+    ![pull](./assets/20_pull.jpg "pull")
+    
+    ![pull](./assets/21_pull.jpg "pull")
+
+7. Now go to Azure ML workspace, navigate to **Jobs** > **All jobs**. You will two job runs successfully.
+
+    ![pull](./assets/22_pull.jpg "pull")
 
 [ ⏮️ Previous Module](../4_working-with-linting-and-unit-testing-in-github-actions/documentation.md) - [Next Module ⏭️ ](../6_deploying-a-model-with-github-actions/documentation.md)
