@@ -120,18 +120,15 @@ To define the deployment for a MLflow model, use a YAML configuration like this:
 $schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
 name: mlflow-deployment
 endpoint_name: wine-prediction-ep
-model:
-  name: mlflow-sklearn-model
-  version: 1
-  local_path: <path to model files>
-  model_format: mlflow
+model: azureml: <Model name>
 instance_type: Standard_DS2_v2
 instance_count: 1
 ```
 
-In this example, we're taking the model files from a local path. The files are all stored in a local folder called model. When this YAML is submitted to deploy the model to the endpoint , the model will be registered in the Azure Machine Learning workspace as mlflow-sklearn-model, version 1.
+In this example, we're taking the model which you registered in Exercise 1. For ```<Model name>``` goto Azure ML workspace, select the model you registered and copy the name.
+    ![copy](./assets/10_copy.jpg "copy")    
 
-1. Goto your GitHub Repo, inside ```src``` folder create a yaml file with name ```mlflow-deployment.yaml``` and paste the above configuration and Commit.
+1. Goto your GitHub Repo, inside ```src``` folder create a yaml file with name ```mlflow-deployment.yaml``` and paste the above configuration by replacing ```<Model name>``` with the model name from Azure ML workspace and Commit.
 
     ![create](./assets/7_create.jpg "create")
     
@@ -141,7 +138,9 @@ In this example, we're taking the model files from a local path. The files are a
 
 To trigger the model deployment with Github actions, you need to create a workflow that has two jobs: Creating endpoint and Deploying model to the endpoint.
 
-1. Goto your GitHub Repo, inside ```.github/workflows``` folder create a yaml file with name ```05_model-deployment.yaml``` and paste the below code and Commit.
+1. Goto your GitHub Repo, inside ```.github/workflows``` folder create a yaml file with name ```05_model-deployment.yaml``` and paste the below code by replacing ```<rg-name>``` with your resource group name and ```<ml-workspace-name>``` with your Azure ML workspace name and Commit.
+
+    ![workflow](./assets/12_workflow.jpg "workflow")
 
 ```yaml
 ---
@@ -164,7 +163,7 @@ jobs:
       - name: set current directory
         run: cd src
       - name: Create endpoint
-        run: az ml online-endpoint create --name wine-prediction-ep -f src/create-endpoint.yaml
+        run: az ml online-endpoint create --name wine-prediction-ep -f src/create-endpoint.yaml --resource-group <rg-name> --workspace-name <ml-workspace-name>
   deploy:
     name: deploy model
     needs: create
@@ -181,21 +180,53 @@ jobs:
       - name: set current directory
         run: cd src
       - name: deploy model
-        run: az ml online-deployment create --name mlflow-deployment --endpoint wine-prediction-ep -f src/mlflow-deployment.yaml --all-traffic 
+        run: az ml online-deployment create --name mlflow-deployment --endpoint wine-prediction-ep -f src/mlflow-deployment.yaml --resource-group <rg-name> --workspace-name <ml-workspace-name> --all-traffic
 ```
+
+2. Goto your Github repo and navigate to Actions and select ```Register and Deploy a Azure Machine Learning Model``` workflow. Select **Run workflow**.
+
+    ![run](./assets/11_run.jpg "run")
+    
+3. You can two jobs running. One for creating endpoint and another for deploying the model.
+
+    ![workflow](./assets/13_workflow.jpg "workflow")
+    
+4. Goto your Azure ML workspace to check the endpoint created and model deployed to it.
+
+    ![run](./assets/14_endpoint.jpg "run")
+    
+    ![run](./assets/15_details.jpg "run")
 
 ## Exercise 4: Test the deployed model
 
 Finally, you'll want to test the deployed model before integrating the endpoint with the web app. Or before converting all traffic of an endpoint to the updated model. You can manually test an online endpoint or you can automate testing the endpoint with GitHub Actions.
 
+1. Navigate to **Endpoints** and click the endpoint created in previous exercise and select **Test** to test the model. You will see the below page.
 
+    ![test](./assets/16_test.jpg "test")
 
+2. Replace the input data with:
 
+```
+7.0,
+0.27,
+0.36,
+20.7,
+0.045,
+45.0,
+170.0,
+1.0010,	
+3.00,
+0.45,
+8.8
+```
 
+3. Click **Test**.
 
+    ![test](./assets/17_test.jpg "test")
 
+4. Next you will see the predicted test result.
 
-
-
+    ![result](./assets/18_result.jpg "result")
 
 [ ⏮️ Previous Module](../5_working-with-environments-in-github-actions/documentation.md)
