@@ -108,7 +108,7 @@ df
 
 ```python
 # X will contain the data for 11 columns used for predicting.
-X = df[['fixed acidity','volatile acidity','citric acid','residual sugar','chlorides','free sulfur dioxide','total sulfur        dioxide','density','pH','sulphates','alcohol']].values
+X = df[['fixed acidity','volatile acidity','citric acid','residual sugar','chlorides','free sulfur dioxide', 'total sulfur dioxide' ,'density','pH','sulphates','alcohol']].values
 # y is the target column i.e., it has wine quality with scores from 0 to 10.
 y = df['quality']
 ```
