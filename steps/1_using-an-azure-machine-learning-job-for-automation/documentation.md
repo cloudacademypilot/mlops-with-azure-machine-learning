@@ -307,13 +307,15 @@ An example of a command job that uses a registered data asset as input when runn
 ```yaml
 $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
 code: src
-command: python main.py --training_data ${{inputs.training_data}}
+command: >-
+  python main.py 
+  --training_data ${{inputs.training_data}}
 inputs:
-training_data: 
+  training_data: 
     path: <Registered-Data-Asset-Path>
     mode: ro_mount  
 environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
-compute: azureml:<Compute-instance-name>
+compute: <Compute-instance-name>
 experiment_name: wine-quality-data-example
 description: Train a classification model on wine quality data using a registered dataset as input.
 ```
@@ -331,17 +333,21 @@ To get ```<Registered-Data-Asset-Path>``` field value, First you need to create 
 
     ![datastore](./assets/20_data_store.jpg "data_store")
 
-- Under Browse Preview, you will see the **wine-quality-data.csv** file. Click on it.
+- Under **Overview**, you will see the **Create data asset**.
 
-    ![preview](./assets/21_preview.jpg "preview")
+    ![preview](./assets/40_create.jpg "preview")
 
-- Now you can preview the csv file data. On the right side, click on **Create as data asset**.
+- Now give ```wine-quality``` as **Name** and select ```Folder(uri folder)``` as **Type** from dropdown. Click on **Next**.
 
-    ![dataasset](./assets/22_dataasset.jpg "dataasset")
+    ![dataasset](./assets/41_name.jpg "dataasset")
 
-- Now give ```wine-quality``` as Name and let other fields be default. Click **Create**.
+- Under **Choose a storage path**, select **Enter storage path manually** and give ```/``` as **Storage path**. Click **Next**.
 
-    ![create](./assets/23_create.jpg "create")
+    ![create](./assets/42_path.jpg "create")
+    
+- Review and Select **Create**.
+
+    ![create](./assets/43_create.jpg "create")
 
 - Now Go to **Data**, select **Data assets** and you will see the data asset you created. Open it.
 
