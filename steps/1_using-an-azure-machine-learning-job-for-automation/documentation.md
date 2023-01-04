@@ -66,7 +66,7 @@ Machine learning operations (MLOps) applies DevOps principles to machine learnin
 
     ![create](./assets/12_create.jpg "create")
 
-6. Select **compute instance** starting with ```instance{*}``` that is already created for you. Click on **Start compute**, if the instance is in stopped state.
+6. Select **compute instance** starting with ```instance{*}``` that is already created for you. Click on **Start compute**, if the instance is in stopped state. Choose Python 3.8 - AzureML (from drop down kernal list)
 
     ![compute](./assets/13_compute.jpg "compute")
 
