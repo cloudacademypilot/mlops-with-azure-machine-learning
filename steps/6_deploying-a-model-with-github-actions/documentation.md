@@ -162,7 +162,7 @@ jobs:
       - name: set current directory
         run: cd src
       - name: Create endpoint
-        run: az ml online-endpoint create --name wine-prediction-ep -f src/create-endpoint.yaml --resource-group <rg-name> --workspace-name <ml-workspace-name>
+        run: az ml online-endpoint create --name price-prediction-ep -f src/create-endpoint.yaml --resource-group <rg-name> --workspace-name <ml-workspace-name>
   deploy:
     name: deploy model
     needs: create
@@ -179,7 +179,7 @@ jobs:
       - name: set current directory
         run: cd src
       - name: deploy model
-        run: az ml online-deployment create --name mlflow-deployment --endpoint wine-prediction-ep -f src/mlflow-deployment.yaml --resource-group <rg-name> --workspace-name <ml-workspace-name> --all-traffic
+        run: az ml online-deployment create --name mlflow-deployment --endpoint price-prediction-ep -f src/mlflow-deployment.yaml --resource-group <rg-name> --workspace-name <ml-workspace-name> --all-traffic
 ```
 
 2. Goto your Github repo and navigate to Actions and select ```Register and Deploy a Azure Machine Learning Model``` workflow. Select **Run workflow**.
