@@ -86,7 +86,7 @@ Before running the notebook, you need to upload **nyc-taxi-data.csv** file to yo
     
     ![browse](./assets/30_browse.jpg "browse")
     
-    ![upload](./assets/31_upload.jpg "upload")
+    ![upload](./assets/5_upload.jpg "upload")
 
 9. Now open the Notebook you created and Run all the below scripts in the command cell. And use (+Code) icon for new cells.
 
@@ -117,7 +117,7 @@ df.head(10)
 
 ### Cleanse data
 
-You will use only some of the columns that you need for training. You will hold those columns in another dataframe.
+You will use only the columns that you need for training. You will hold those columns in another dataframe.
 
 ```python
 taxi_df = df[['vendorID','passengerCount','tripDistance','pickupLongitude','pickupLatitude','dropoffLongitude','dropoffLatitude','totalAmount']]
@@ -175,6 +175,8 @@ The purpose of this step is to have data points to test the finished model that 
 In other words, a well-trained model should be able to accurately make predictions from data it hasn't already seen.
 
 ### Train the regression model
+
+```Linear Regression``` is a machine learning algorithm based on supervised learning. It performs a regression task. Regression models a target prediction value based on independent variables. It is mostly used for finding out the relationship between variables and forecasting.
 
 ```python
 model=LinearRegression()
@@ -235,13 +237,27 @@ To make a machine learning model ready for production, you should first get your
 
 1. Go to **Notebooks** and Click on **Open terminal** under Notebooks.
 
-    ![openterminal](./assets/35_openterminal.jpg "openterminal")    
+    ![openterminal](./assets/1_terminal.jpg "openterminal")    
 
-2. Run the following command to convert the notebook into python script.
+2. Run the following command to convert the notebook into python script. Click on **Refresh** button under **Notebooks** to see the ```main.py``` script created.
+
+    ![openterminal](./assets/6_python.jpg "openterminal") 
 
 ```
 jupyter nbconvert --to python main.ipynb
 ```
+
+3. Go to **Notebooks** and click on **⊕** and **Create new folder** and give ```src``` as Folder Name. Click **Create**.
+
+    ![newfolder](./assets/14_new_folder.jpg "new_folder")
+    
+    ![create](./assets/15_create.jpg "create")
+
+4. Now when you hover on the ```main.py``` file, you will see **...**  . Click on it and select **Move**. Then click on ```src``` as target directory. Click **Move**.
+
+    ![create](./assets/7_move.jpg "create")
+    
+    ![create](./assets/8_move.jpg "create")
 
 By using functions in your scripts, it will be easier to test your code quality. When you have a script that you want to execute, you can use an Azure Machine Learning job to run the code.
 
@@ -270,17 +286,22 @@ An example of a command job that uses a registered data asset as input when runn
 ```yaml
 $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
 code: src
-command: python main.py
+command: >-
+  python main.py 
+  --training_data ${{inputs.training_data}}
+inputs:
+  training_data: 
+    path: <Registered-Data-Asset-Path>
+    mode: ro_mount  
 environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
-compute: azureml:instance20230104T054749Z
-experiment_name: NYC Taxi Fares
-description: Train a classification model on nyc taxi data to predict taxi fares.
+compute: <Compute-instance-name>
+experiment_name: NYC Taxi Fare Prices
+description: Train a classification model on nyc taxi data to predict taxi fare prices.
 ```
-
 In the YAML file, you'll find the necessary details you need to include:
    
    - The ```code``` refers to the local folder, which stores the scripts you want to run. The ```command``` key specifies that the ```main.py``` script in the ```src``` folder should be executed, using the value of ```inputs.training_data``` for the ```training_data``` parameter.
-   - ```<Registered-Data-Asset-Path>``` is the path of registered data asset ```wine-quality-data.csv``` in the Azure Machine Learning workspace is mounted to the compute to be used as input for the script.
+   - ```<Registered-Data-Asset-Path>``` is the path of registered data asset ```nyc-taxi-data.csv``` in the Azure Machine Learning workspace is mounted to the compute to be used as input for the script.
    - The compute instance ```<Compute-instance-name>``` will be used to run the scripts.
    - The latest version of the registered custom sklearn environment will be installed on the compute instance before running the script.
 
@@ -294,7 +315,7 @@ To get ```<Registered-Data-Asset-Path>``` field value, First you need to create 
 
     ![preview](./assets/40_create.jpg "preview")
 
-- Now give ```wine-quality``` as **Name** and select ```Folder(uri folder)``` as **Type** from dropdown. Click on **Next**.
+- Now give ```nyc-taxi-data``` as **Name** and select ```Folder(uri folder)``` as **Type** from dropdown. Click on **Next**.
 
     ![dataasset](./assets/41_name.jpg "dataasset")
 
