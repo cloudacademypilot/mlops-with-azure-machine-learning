@@ -261,6 +261,10 @@ jupyter nbconvert --to python main.ipynb
 
 By using functions in your scripts, it will be easier to test your code quality. When you have a script that you want to execute, you can use an Azure Machine Learning job to run the code.
 
+5. You need to make some changes to the python script before using it to create Azure Machine Learning job.
+
+    1. Open the ```main.py``` file from ```src``` folder.
+
 ## Exercise 3: Define Azure Machine Learning Job
 
 To define a job in Azure Machine Learning, you can create a YAML file. Whether you want to run one script as a command job or multiple scripts sequentially as a pipeline. For both command and pipeline jobs, you'll need to create a YAML file, which details:
