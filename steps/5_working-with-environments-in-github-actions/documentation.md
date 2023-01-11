@@ -203,7 +203,7 @@ description: Train a classification model on nyc taxi data to predict taxi fare 
     
     ![pull](./assets/21_pull.jpg "pull")
 
-7. Now go to Azure ML workspace, navigate to **Jobs** > **All jobs**. You will two job runs successfully.
+7. Now go to Azure ML workspace, navigate to **Jobs** > **All jobs**. You will see two job runs successfully.
 
     ![pull](./assets/22_pull.jpg "pull")
 
