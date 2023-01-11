@@ -22,7 +22,7 @@ $res2 = Invoke-RestMethod -Method Get -ContentType "application/json" -Uri $endp
 
 if($res2.value.properties.provisioningState -eq 'Succeeded')
 {
-    Write-Host "Endpoint is created"
+    Write-Host "Endpoint is created successfully"
 }
 else
 {
