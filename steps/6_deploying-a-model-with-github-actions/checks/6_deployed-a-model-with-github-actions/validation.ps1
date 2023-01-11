@@ -20,7 +20,7 @@ $endpointUri = "https://management.azure.com/subscriptions/"+$SubscriptionId+"/r
 $headers = @{ Authorization = "Bearer $token"; 'ContentType' = "application/json"}
 $res2 = Invoke-RestMethod -Method Get -ContentType "application/json" -Uri $endpointUri -Headers $headers
 
-if($res2.value.properties.provisioningState -eq 'Succeeded')
+if($res2.value.name -and $res2.value.properties.provisioningState -eq 'Succeeded')
 {
     Write-Host "Endpoint is created successfully"
 }
