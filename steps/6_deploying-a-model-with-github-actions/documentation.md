@@ -47,7 +47,7 @@ To register the model, you can point to either a job's output, or to a location 
     
     ![Register](./assets/3_mlflow.jpg "Register")
 
-3. Give **Name** as ```Wine-Quality``` and Click **Next**.
+3. Give **Name** as ```Taxi-Data``` and Click **Next**.
 
     ![Register](./assets/4_name.jpg "Register")
     
@@ -119,7 +119,7 @@ To define the deployment for a MLflow model, use a YAML configuration like this:
 ```yaml
 $schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
 name: mlflow-deployment
-endpoint_name: wine-prediction-ep
+endpoint_name: price-prediction-ep
 model: azureml: <Model name>
 instance_type: Standard_DS2_v2
 instance_count: 1
@@ -208,17 +208,7 @@ Finally, you'll want to test the deployed model before integrating the endpoint 
 2. Replace the input data with:
 
 ```
-7.0,
-0.27,
-0.36,
-20.7,
-0.045,
-45.0,
-170.0,
-1.0010,	
-3.00,
-0.45,
-8.8
+
 ```
 
 3. Click **Test**.
