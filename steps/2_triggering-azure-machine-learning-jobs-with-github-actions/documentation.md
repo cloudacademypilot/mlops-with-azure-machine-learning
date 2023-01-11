@@ -117,7 +117,7 @@ jobs:
     
     ![py_script](./assets/12_py_script.jpg "py_script")
     
-12. Go to ```src``` folder and click on **Add file** and select **Create new file** to create a Azure ML job with the name ```job.yaml```, which will be the same job you defined in previous module. Only change will be the **cluster name**. Here we will use **Compute Cluster** instead of **Cluster Instance**. Because, GitHub is authenticated to use your Azure Machine Learning workspace with a service principal. The service principal is only allowed to submit jobs that use a compute cluster, not a compute instance. You can get compute cluster name from your ML Workspace in **Compute** under **Compute Clusters** starting with **cluster{\*}**. Replace the instance name with cluster name and Paste. Click **Commit**.
+12. Go to ```src``` folder and click on **Add file** and select **Create new file** to create a Azure ML job with the name ```job.yaml```, which will be the same job you defined in previous module. Only change will be the ```code``` and **cluster name**. Here change it to ```model``` because the ```main.py``` is in model directory. And we will use **Compute Cluster** instead of **Cluster Instance**. Because, GitHub is authenticated to use your Azure Machine Learning workspace with a service principal. The service principal is only allowed to submit jobs that use a compute cluster, not a compute instance. You can get compute cluster name from your ML Workspace in **Compute** under **Compute Clusters** starting with **cluster{\*}**. Replace the instance name with cluster name and Paste. Click **Commit**.
 
     ![create](./assets/13_create.jpg "create")
    
@@ -125,7 +125,7 @@ jobs:
    
 ```yaml
 $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
-code: src
+code: model
 command: >-
   python main.py 
   --training_data ${{inputs.training_data}}
