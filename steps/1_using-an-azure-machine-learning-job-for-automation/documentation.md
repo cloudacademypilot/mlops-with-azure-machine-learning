@@ -39,7 +39,7 @@ Machine learning operations (MLOps) applies DevOps principles to machine learnin
 ## Learning Objectives
 
 - Create a Notebook that trains a model
-- Convert the Notebook to Python scripts
+- Convert the Notebook to Python script
 - Define Azure Machine Learning Job
 - Trigger Azure Machine Learning Job  
 
@@ -62,7 +62,7 @@ Machine learning operations (MLOps) applies DevOps principles to machine learnin
 
     ![Notebook](./assets/11_notebook.jpg "Notebook")
 
-5. Give ```train-classification-model.ipynb``` as File name and Select **Notebook** as File type from Dropdown. Click **Create**.
+5. Give ```main.ipynb``` as File name and Select **Notebook** as File type from Dropdown. Click **Create**.
 
     ![create](./assets/12_create.jpg "create")
 
@@ -70,9 +70,9 @@ Machine learning operations (MLOps) applies DevOps principles to machine learnin
 
     ![compute](./assets/13_compute.jpg "compute")
 
-Before running the notebook, you need to upload **wine-quality-data.csv** file to your workspace.
+Before running the notebook, you need to upload **nyc-taxi-data.csv** file to your workspace.
 
-7. Go to the resource group deployed in the Azure Portal. Amongst the list of resources, open the Storage account. On the left side, click on **Containers**. Then open **azureml** container. Inside you will see the **wine-quality-data.csv** file. On the right side, click on **...** and **Downlaod**. The csv file will be downloaded to your local system in **Downloads** folder.
+7. Go to the resource group deployed in the Azure Portal. Amongst the list of resources, open the Storage account. On the left side, click on **Containers**. Then open **azureml** container. Inside you will see the **nyc-taxi-data.csv** file. On the right side, click on **...** and **Downlaod**. The csv file will be downloaded to your local system in **Downloads** folder.
 
     ![storage](./assets/25_storage.jpg "storage")
     
@@ -94,71 +94,134 @@ Before running the notebook, you need to upload **wine-quality-data.csv** file t
 
    ![runscripts](./assets/32_run_scripts.jpg "run_scripts")
 
-Here you will read a CSV file and train a model to predict quality of wine.
+Here you use Azure Machine Learning service to create a regression model to predict NYC taxi fare prices.
 
-### Read data from a CSV file
+### Import Libraries
+
+Import all the libraries we require to process the data and train the model.
       
 ```python
 import pandas as pd
-df = pd.read_csv('wine-quality-data.csv')
-df
-```
-      
-### Split data
-
-```python
-# X will contain the data for 11 columns used for predicting.
-X = df[['fixed acidity','volatile acidity','citric acid','residual sugar','chlorides','free sulfur dioxide', 'total sulfur dioxide' ,'density','pH','sulphates','alcohol']].values
-# y is the target column i.e., it has wine quality with scores from 0 to 10.
-y = df['quality']
-```
-
-```python
-# train_test_split library is used to split our data into train and test sets.
 from sklearn.model_selection import train_test_split
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error
+from math import sqrt
 ```
 
-### Train model
+### Download and Prepare data
+
+Begin by creating a dataframe to hold the taxi data. Then preview the data.
 
 ```python
-#The random forest classifier is a supervised learning algorithm which you can use for regression and classification problems.
-#n_estimators is the number of trees in the forest.
-from sklearn.ensemble import RandomForestClassifier
-rfc = RandomForestClassifier(n_estimators=200) 
-rfc.fit(X_train, y_train)
-```
-
-### Evaluate model
-
-```python
-#The confusion_matrix function evaluates classification accuracy by computing the confusion matrix with each row corresponding to the true class.
-#The classification_report function builds a text report showing the main classification metrics.
-from sklearn.metrics import confusion_matrix, classification_report
-pred_rfc = rfc.predict(X_test)
-print(classification_report(y_test, pred_rfc))
-print(confusion_matrix(y_test, pred_rfc))
-```
-
-```python
-#The accuracy_score function computes the accuracy, either the fraction or the count of correct predictions.
-from sklearn.metrics import accuracy_score
-cm = accuracy_score(y_test, pred_rfc)
-cm
-```
-
-### Test the model by giving new parameters
-
-```python
+df = pd.read_csv('nyc-taxi-data.csv') 
 df.head(10)
 ```
-    
+
+### Cleanse data
+
+You will use only some of the columns that you need for training. You will hold those columns in another dataframe.
+
 ```python
-Xnew = [[7.0,	0.27,	0.36,	20.7,	0.045,	45.0,	170.0,	1.0010,	3.00,	0.45,	8.8]]
-ynew = rfc.predict(Xnew)
-print('The quality of wine with given parameters is:') 
-print(ynew)
+taxi_df = df[['vendorID','passengerCount','tripDistance','pickupLongitude','pickupLatitude','dropoffLongitude','dropoffLatitude','totalAmount']]
 ```
+
+Run the ```describe()``` function on the new dataframe to see summary statistics for each field.
+
+```python
+taxi_df.describe()
+```
+
+From the summary statistics, you see that there are several fields that have outliers or values that will reduce model accuracy. First filter the latitude/longitude fields to be within the bounds of the Manhattan area. This will filter out longer taxi trips or trips that are outliers in respect to their relationship with other features.
+
+Additionally filter the ```tripDistance``` field to be greater than zero but less than 31 miles (the haversine distance between the two latitude/longitude pairs). This eliminates long outlier trips that have inconsistent trip cost.
+
+Lastly, the ```totalAmount``` field has negative values for the taxi fares, which don't make sense in the context of our model, and the ```passengerCount``` field has bad data with the minimum values being zero.
+
+Filter out these anomalies using query functions
+
+```python
+final_df = taxi_df.query("pickupLatitude>=40.53 and pickupLatitude<=40.88")
+final_df = final_df.query("pickupLongitude>=-74.09 and pickupLongitude<=-73.72")
+final_df = final_df.query("tripDistance>=0.25 and tripDistance<31")
+final_df = final_df.query("passengerCount>0 and totalAmount>0")
+```
+
+Now since you have filtered out latitude/longitude, you don't require those columns for training.
+
+```python
+columns_to_remove_for_training = ["pickupLongitude", "pickupLatitude", "dropoffLongitude", "dropoffLatitude"]
+for col in columns_to_remove_for_training:
+    final_df.pop(col)
+```
+
+Call describe() again on the data to ensure cleansing worked as expected. You now have a prepared and cleansed set of taxi data to use for machine learning model training.
+
+```python
+final_df.describe()
+```
+### Split the data into train and test sets
+
+Split the data into training and test sets by using the ```train_test_split``` function in the ```scikit-learn``` library. This function segregates the data into the x (**features**) data set for model training and the y (**values to predict**) data set for testing. The ```test_size``` parameter determines the percentage of data to allocate to testing. The ```random_state``` parameter sets a seed to the random generator, so that your train-test splits are deterministic.
+
+```python
+# X will hold the data set for model training.
+X = final_df.drop(["totalAmount"], axis=1)
+# y is the target column i.e., values to predict.
+y = final_df["totalAmount"]
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=223)
+```
+
+The purpose of this step is to have data points to test the finished model that haven't been used to train the model, in order to measure true accuracy.
+
+In other words, a well-trained model should be able to accurately make predictions from data it hasn't already seen.
+
+### Train the regression model
+
+```python
+model=LinearRegression()
+model.fit(X_train, y_train)
+```
+
+### Test the model accuracy
+
+Use the model to run predictions on the test data set to predict taxi fares. The function ```predict``` uses the model and predicts the values of y, **trip cost**, from the X_test data set.
+
+```python
+y_predict = model.predict(X_test)
+```
+
+Calculate the ```root mean squared error``` of the results. Convert the y_test dataframe to a list to compare to the predicted values. The function mean_squared_error takes two arrays of values and calculates the average squared error between them. Taking the square root of the result gives an error in the same units as the y variable, cost. It indicates roughly how far the taxi fare predictions are from the actual fares.
+
+```python
+y_actual = y_test.values.flatten().tolist()
+rmse = sqrt(mean_squared_error(y_actual, y_predict))
+rmse
+```
+
+Run the following code to calculate mean absolute percent error (MAPE) by using the full y_actual and y_predict data sets. This metric calculates an absolute difference between each predicted and actual value and sums all the differences. Then it expresses that sum as a percent of the total of the actual values.
+
+
+```python
+sum_actuals = sum_errors = 0
+
+for actual_val, predict_val in zip(y_actual, y_predict):
+    abs_error = actual_val - predict_val
+    if abs_error < 0:
+        abs_error = abs_error * -1
+
+    sum_errors = sum_errors + abs_error
+    sum_actuals = sum_actuals + actual_val
+
+mean_abs_percent_error = sum_errors / sum_actuals
+print("Model MAPE:")
+print(mean_abs_percent_error)
+print()
+print("Model Accuracy:")
+print(1 - mean_abs_percent_error)
+```
+
+From the two prediction accuracy metrics, you see that the model is fairly good at predicting taxi fares from the data set's features, typically within +- $4.00, and approximately 15% error.
 
 ## Exercise 2: Convert the Notebook to Python scripts
 
