@@ -120,7 +120,7 @@ To define the deployment for a MLflow model, use a YAML configuration like this:
 $schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
 name: mlflow-deployment
 endpoint_name: price-prediction-ep
-model: azureml: <Model name>
+model: azureml:<Model name>
 instance_type: Standard_DS2_v2
 instance_count: 1
 ```
@@ -197,26 +197,5 @@ jobs:
     
     ![run](./assets/15_details.jpg "run")
 
-## Exercise 4: Test the deployed model
-
-Finally, you'll want to test the deployed model before integrating the endpoint with the web app. Or before converting all traffic of an endpoint to the updated model. You can manually test an online endpoint or you can automate testing the endpoint with GitHub Actions.
-
-1. Navigate to **Endpoints** and click the endpoint created in previous exercise and select **Test** to test the model. You will see the below page.
-
-    ![test](./assets/16_test.jpg "test")
-
-2. Replace the input data with:
-
-```
-
-```
-
-3. Click **Test**.
-
-    ![test](./assets/17_test.jpg "test")
-
-4. Next you will see the predicted test result.
-
-    ![result](./assets/18_result.jpg "result")
 
 [ ⏮️ Previous Module](../5_working-with-environments-in-github-actions/documentation.md)
