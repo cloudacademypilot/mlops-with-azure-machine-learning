@@ -23,7 +23,6 @@ You can deploy the model manually in the Azure Machine Learning workspace. Howev
 - Package and register the model.
 - Create an endpoint and deploy the model
 - Trigger model deployment with GitHub Actions
-- Test the deployed model
 
 ## Exercise 1: Package and register the model
 
