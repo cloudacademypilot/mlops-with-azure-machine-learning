@@ -233,37 +233,112 @@ To make a machine learning model ready for production, you should first get your
 - Use functions in your scripts.
 - Use parameters in your scripts.
 
-### Creating python script
+### Creating python script 
 
-1. Go to **Notebooks** and Click on **Open terminal** under Notebooks.
+You will use code snippets from the notebook and create different functions for reading csv, cleansing data, splitting data, trainining model to make it production ready.
 
-    ![openterminal](./assets/1_terminal.jpg "openterminal")    
+> You can convert the notebook into python script by running the command ```jupyter nbconvert --to python main.ipynb``` in terminal.
 
-2. Run the following command to convert the notebook into python script. Click on **Refresh** button under **Notebooks** to see the ```main.py``` script created.
-
-    ![openterminal](./assets/6_python.jpg "openterminal") 
-
-```
-jupyter nbconvert --to python main.ipynb
-```
-
-3. Go to **Notebooks** and click on **⊕** and **Create new folder** and give ```src``` as Folder Name. Click **Create**.
+1. Go to **Notebooks** and click on **⊕** and **Create new folder** and give ```src``` as Folder Name. Click **Create**.
 
     ![newfolder](./assets/14_new_folder.jpg "new_folder")
     
     ![create](./assets/15_create.jpg "create")
 
-4. Now when you hover on the ```main.py``` file, you will see **...**  . Click on it and select **Move**. Then click on ```src``` as target directory. Click **Move**.
+2. Now when you hover on the folder **src**, you will see **...**  . Click on it and select **Create new file**.
 
-    ![create](./assets/7_move.jpg "create")
-    
-    ![create](./assets/8_move.jpg "create")
+    ![create](./assets/16_create_file.jpg "create")
+
+3. Give ```main.py``` as File name and Select **Python** as File type from Dropdown. Click **Create**.
+
+    ![create](./assets/17_create.jpg "create")
+
+4. Select **compute instance** starting with ```instance{*}``` that is already created for you. Click on **Start compute**, if the instance is in stopped state.
+
+    ![compute](./assets/18_python_script.jpg "compute")
+
+Go throught the following code and add it to the python script ```main.py```.
+
+```python
+import os
+import glob
+import argparse
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+import mlflow
+
+# define functions
+def main(args):
+    # enable auto logging
+    mlflow.autolog()
+
+    # read in data
+    df = get_csvs_df(args.training_data)
+
+    # Cleanse data
+    final_df = cleanse_data(df)
+
+    # split data
+    X_train, X_test, y_train, y_test = split_data(final_df)
+
+    # train model
+    model = train_model(X_train, X_test, y_train, y_test)
+
+def get_csvs_df(path):
+    if not os.path.exists(path):
+        raise RuntimeError(f"Cannot use non-existent path provided: {path}")
+    csv_files = glob.glob(f"{path}/*.csv")
+    if not csv_files:
+        raise RuntimeError(f"No CSV files found in provided data path: {path}")
+    return pd.concat((pd.read_csv(f) for f in csv_files), sort=False)   
+
+def cleanse_data(df):
+    taxi_df = df[['vendorID','passengerCount','tripDistance','pickupLongitude','pickupLatitude','dropoffLongitude','dropoffLatitude','totalAmount']]
+    final_df = taxi_df.query("pickupLatitude>=40.53 and pickupLatitude<=40.88")
+    final_df = final_df.query("pickupLongitude>=-74.09 and pickupLongitude<=-73.72")
+    final_df = final_df.query("tripDistance>=0.25 and tripDistance<31")
+    final_df = final_df.query("passengerCount>0 and totalAmount>0")
+    columns_to_remove_for_training = ["pickupLongitude", "pickupLatitude", "dropoffLongitude", "dropoffLatitude"]
+    for col in columns_to_remove_for_training:
+        final_df.pop(col)
+    return final_df
+
+def split_data(final_df):
+    X = final_df.drop(["totalAmount"], axis=1)
+    y = final_df["totalAmount"]
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=223)
+    return X_train, X_test, y_train, y_test
+
+def train_model(X_train, X_test, y_train, y_test):
+    model=LinearRegression()
+    model.fit(X_train, y_train)
+
+def parse_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--training_data", dest='training_data',
+                        type=str)
+    args = parser.parse_args()
+    return args
+
+if __name__ == "__main__":
+
+    # add space in logs
+    print("\n\n")
+    print("*" * 60)
+
+    # parse args
+    args = parse_args()
+
+    # run main function
+    main(args)
+
+    # add space in logs
+    print("*" * 60)
+    print("\n\n")
+```
 
 By using functions in your scripts, it will be easier to test your code quality. When you have a script that you want to execute, you can use an Azure Machine Learning job to run the code.
-
-5. You need to make some changes to the python script before using it to create Azure Machine Learning job.
-
-    1. Open the ```main.py``` file from ```src``` folder.
 
 ## Exercise 3: Define Azure Machine Learning Job
 
