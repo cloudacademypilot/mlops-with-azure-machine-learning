@@ -125,15 +125,17 @@ Goto ```src```folder in cycle-2 branch in your repo. Select **Add file** and **C
 ```yaml
 $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
 code: model
-command: python main.py --training_data ${{inputs.training_data}}
+command: >-
+  python main.py 
+  --training_data ${{inputs.training_data}}
 inputs:
   training_data: 
-    path: azureml:wine-quality:1
+    path: azureml:nyc-taxi-data:1
     mode: ro_mount  
 environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
-compute: azureml:<Compute Cluster name>
-experiment_name: wine-quality-data-example
-description: Train a classification model on wine quality data using a registered dataset as input.
+compute: <Compute Cluster name>
+experiment_name: nyc-taxi-fare-prices
+description: Train a classification model on nyc taxi data to predict taxi fare prices.
 ```
 
    ![job](./assets/7_job.jpg "job")
@@ -143,19 +145,22 @@ description: Train a classification model on wine quality data using a registere
 ### Define production job to run in **production environment**:
 
 Goto ```src``` folder in cycle-2 branch in your repo. Select **Add file** and **Create new file**. Give name (For ex- ```production.yaml```) and paste the following code after changing the ```<Compute Cluster name>``` to your **Compute cluster name** from your Azure ML workspace. Select Commit.
+You can also use different input training data by creating one more **Data assets** in Azure ML workspace with different Data source and change the ```path``` accordingly.
 
 ```yaml
 $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
 code: model
-command: python main.py --training_data ${{inputs.training_data}}
+command: >-
+  python main.py 
+  --training_data ${{inputs.training_data}}
 inputs:
   training_data: 
-    path: azureml:wine-quality:1
+    path: azureml:nyc-taxi-data:1
     mode: ro_mount  
 environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
-compute: azureml:<Compute Cluster name>
-experiment_name: wine-quality-data-example
-description: Train a classification model on wine quality data using a registered dataset as input.
+compute: <Compute Cluster name>
+experiment_name: nyc-taxi-fare-prices
+description: Train a classification model on nyc taxi data to predict taxi fare prices.
 ```
   
    ![job](./assets/9_job.jpg "job")
