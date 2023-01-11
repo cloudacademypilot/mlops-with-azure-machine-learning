@@ -169,7 +169,7 @@ description: Train a classification model on nyc taxi data to predict taxi fare 
 
 ### Creating pull request
 
-1. Navigate to the Pull requests tab in your repo. Select New pull request and select base:main and compare:cycle-2. Click Create pull request.
+1. Navigate to the **Pull requests** tab in your repo. Select **New pull request** and select ```base:main``` and ```compare:cycle-2```. Click **Create pull request**.
 
     ![pull](./assets/11_pull.jpg "pull")
    
@@ -177,7 +177,7 @@ description: Train a classification model on nyc taxi data to predict taxi fare 
    
     ![pull](./assets/13_pull.jpg "pull")
     
-2. Now you can also see that, linting and unit test checks will also run. After all the checks are successfull, Click on **Merge request** and **Confirm merge**.
+2. Now you can also see that, ```linting and unit test``` checks will also run. After all the checks are successfull, Click on **Merge request** and **Confirm merge**.
 
     ![pull](./assets/14_pull.jpg "pull")
     
