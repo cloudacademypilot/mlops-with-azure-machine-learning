@@ -187,7 +187,7 @@ The Azure credentials you need to authenticate should not be stored in your code
 
 To add a secret to your GitHub repository:
 
-1. Navigate to the **Settings** tab. In the **Settings** tab, under **Security**, expand the **Secrets** option and select **Actions**.
+1. Navigate to the **Settings** tab. In the **Settings** tab, under **Security**, expand the **Secrets and variables** option and select **Actions**.
 
     ![secrets](./assets/18_secrets.jpg "secrets")
 
