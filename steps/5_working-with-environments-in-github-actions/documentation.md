@@ -31,7 +31,7 @@ To work with environments, you'll want to:
 
 To implement environments when working with machine learning models, you can use a platform like GitHub. To automate tasks that need to run in separate environments, you'll need to:
 
-- Set up the environments in GitHub.
+- Set up the environments in GitHub: You can create secrets for each environments if you're using different Azure ML workspaces for development and production. But since we are using only one workspace, we will use same secret we created in ```step 2```.
 - Use the environments in GitHub Actions.
 - Add approvals to assign required reviewers.
 
