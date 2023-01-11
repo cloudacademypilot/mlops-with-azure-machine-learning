@@ -79,7 +79,9 @@ If you want a workflow to run whenever a pull request is merged, you'll need to 
 name: Trigger a workflow to run when a pull request is merged 
 
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - main
 
 jobs:
   test:
