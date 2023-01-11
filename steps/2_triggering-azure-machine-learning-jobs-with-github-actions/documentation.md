@@ -125,16 +125,18 @@ jobs:
    
 ```yaml
 $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
-code: model
-command: python main.py --training_data ${{inputs.training_data}}
+code: src
+command: >-
+  python main.py 
+  --training_data ${{inputs.training_data}}
 inputs:
   training_data: 
-    path: azureml:wine-quality:1
+    path: azureml:nyc-taxi-data:1
     mode: ro_mount  
 environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
-compute: azureml:<Compute Cluster Name>
-experiment_name: wine-quality-data-example
-description: Train a classification model on wine quality data using a registered dataset as input.
+compute: cluster20230111T062714Z
+experiment_name: nyc-taxi-fare-prices
+description: Train a classification model on nyc taxi data to predict taxi fare prices.
 ```    
 
 ## Exercise 2: Create a service principal needed to run an Azure Machine Learning job
