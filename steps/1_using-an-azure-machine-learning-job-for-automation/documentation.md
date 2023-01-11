@@ -74,14 +74,12 @@ Before running the notebook, you need to upload **nyc-taxi-data.csv** file to yo
 
 7. Go to the resource group deployed in the Azure Portal. Amongst the list of resources, open the Storage account. On the left side, click on **Containers**. Then open **azureml** container. Inside you will see the **nyc-taxi-data.csv** file. On the right side, click on **...** and **Downlaod**. The csv file will be downloaded to your local system in **Downloads** folder.
 
-    ![storage](./assets/25_storage.jpg "storage")
+    ![storage](./assets/2_storage.jpg "storage")
     
-    ![containers](./assets/26_containers.jpg "containers")
+    ![containers](./assets/3_containers.jpg "containers")
     
-    ![azureml](./assets/27_azureml.jpg "azureml")
+    ![azureml](./assets/4_download.jpg "azureml")
     
-    ![download](./assets/28_download.jpg "download")
-
 8. Now go back to the Azure ML workspace, Go to **Notebooks** and click on **⊕** and **Upload files**. Browse and select the csv file you downloaded. Click **Upload**. 
 
     ![upload](./assets/29_upload.jpg "upload")
@@ -90,7 +88,7 @@ Before running the notebook, you need to upload **nyc-taxi-data.csv** file to yo
     
     ![upload](./assets/31_upload.jpg "upload")
 
-9. Now open the Notebook you created and Run the below scripts in the command cell. And use (+Code) icon for new cells.
+9. Now open the Notebook you created and Run all the below scripts in the command cell. And use (+Code) icon for new cells.
 
    ![runscripts](./assets/32_run_scripts.jpg "run_scripts")
 
@@ -223,7 +221,7 @@ print(1 - mean_abs_percent_error)
 
 From the two prediction accuracy metrics, you see that the model is fairly good at predicting taxi fares from the data set's features, typically within +- $4.00, and approximately 15% error.
 
-## Exercise 2: Convert the Notebook to Python scripts
+## Exercise 2: Convert the Notebook to Python script
 
 Though the Jupyter notebook is ideal for experimentation, it’s not a good fit for production workloads. Your next task will be to convert the notebooks to scripts and to run the model training as an Azure Machine Learning job, so that the workflow can easily be triggered and automated.
 
@@ -235,112 +233,14 @@ To make a machine learning model ready for production, you should first get your
 
 ### Creating python script
 
-1. Go to **Notebooks** and click on **⊕** and **Create new folder** and give ```src``` as Folder Name. Click **Create**.
+1. Go to **Notebooks** and Click on **Open terminal** under Notebooks.
 
-    ![newfolder](./assets/14_new_folder.jpg "new_folder")
-    
-    ![create](./assets/15_create.jpg "create")
+    ![openterminal](./assets/35_openterminal.jpg "openterminal")    
 
-2. Now when you hover on the folder **src**, you will see **...**  . Click on it and select **Create new file**.
+2. Run the following command to convert the notebook into python script.
 
-    ![create](./assets/16_create_file.jpg "create")
-
-3. Give ```main.py``` as File name and Select **Python** as File type from Dropdown. Click **Create**.
-
-    ![create](./assets/17_create.jpg "create")
-
-4. Select **compute instance** starting with ```instance{*}``` that is already created for you. Click on **Start compute**, if the instance is in stopped state.
-
-    ![compute](./assets/18_python_script.jpg "compute")
-
-Add the following code to the python script ```main.py```
-
-```python
-# Import libraries
-import argparse
-import glob
-import os
-import pandas as pd
-from sklearn.model_selection import train_test_split
-from sklearn.ensemble import RandomForestClassifier
-import mlflow
-
-
-def main(args):
-    # enable autologging
-    mlflow.autolog()
-
-    # read data
-    df = get_csvs_df(args.training_data)
-
-    # split data
-    X_train, X_test, y_train, y_test = split_data(df)
-
-    # train model
-    train_model(args.n_estimators, X_train, X_test, y_train, y_test)
-
-
-# function to read CSV file
-def get_csvs_df(path):
-    if not os.path.exists(path):
-        raise RuntimeError(f"Cannot use non-existent path provided: {path}")
-    csv_files = glob.glob(f"{path}/*.csv")
-    if not csv_files:
-        raise RuntimeError(f"No CSV files found in provided data path: {path}")
-    return pd.concat((pd.read_csv(f) for f in csv_files), sort=False)
-
-
-# function to split data
-def split_data(df):
-    X = df[['fixed acidity', 'volatile acidity',
-            'citric acid', 'residual sugar', 'chlorides',
-            'free sulfur dioxide', 'total sulfur dioxide',
-            'density', 'pH', 'sulphates', 'alcohol']].values
-    y = df['quality']
-    X_train, X_test, y_train, y_test = train_test_split(
-        X, y, test_size=0.30, random_state=0)
-    return X_train, X_test, y_train, y_test
-
-
-# function to train model
-def train_model(n_estimators, X_train, X_test, y_train, y_test):
-    RandomForestClassifier(n_estimators=n_estimators).fit(X_train, y_train)
-
-
-# function to read input arguments
-def parse_args():
-    # setup arg parser
-    parser = argparse.ArgumentParser()
-
-    # add arguments
-    parser.add_argument("--training_data", dest='training_data',
-                        type=str)
-    parser.add_argument("--n_estimators", dest='n_estimators',
-                        type=float, default=200)
-
-    # parse args
-    args = parser.parse_args()
-
-    # return args
-    return args
-
-
-# run script
-if __name__ == "__main__":
-
-    # add space in logs
-    print("\n\n")
-    print("*" * 60)
-
-    # parse args
-    args = parse_args()
-
-    # run main function
-    main(args)
-
-    # add space in logs
-    print("*" * 60)
-    print("\n\n")
+```
+jupyter nbconvert --to python main.ipynb
 ```
 
 By using functions in your scripts, it will be easier to test your code quality. When you have a script that you want to execute, you can use an Azure Machine Learning job to run the code.
@@ -370,17 +270,11 @@ An example of a command job that uses a registered data asset as input when runn
 ```yaml
 $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
 code: src
-command: >-
-  python main.py 
-  --training_data ${{inputs.training_data}}
-inputs:
-  training_data: 
-    path: <Registered-Data-Asset-Path>
-    mode: ro_mount  
+command: python main.py
 environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
-compute: <Compute-instance-name>
-experiment_name: wine-quality-data-example
-description: Train a classification model on wine quality data using a registered dataset as input.
+compute: azureml:instance20230104T054749Z
+experiment_name: NYC Taxi Fares
+description: Train a classification model on nyc taxi data to predict taxi fares.
 ```
 
 In the YAML file, you'll find the necessary details you need to include:
