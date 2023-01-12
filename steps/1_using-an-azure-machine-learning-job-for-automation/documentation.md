@@ -405,7 +405,7 @@ To get ```<Registered-Data-Asset-Path>``` field value, First you need to create 
 
     ![preview](./assets/40_create.jpg "preview")
 
-- Now give ```nyc-taxi-data``` as **Name** and select ```Folder(uri folder)``` as **Type** from dropdown. Click on **Next**.
+- Now give ```nyc-taxi-data``` as **Name** because we will use this name for validations and select ```Folder(uri folder)``` as **Type** from dropdown. Click on **Next**.
 
     ![dataasset](./assets/41_name.jpg "dataasset")
 
