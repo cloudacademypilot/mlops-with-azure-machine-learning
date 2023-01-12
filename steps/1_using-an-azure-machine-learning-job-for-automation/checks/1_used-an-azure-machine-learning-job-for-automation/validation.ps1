@@ -28,3 +28,12 @@ else
 {
    Write-Host "Job is not created" 
 }
+
+#Get data assets
+$res3 = Get-AzMLWorkspaceDataContainer -ResourceGroupName $Resourcegroupname -WorkspaceName $WorkSpacename 
+
+if ($res3.Name -contains 'nyc-taxi-data') {
+    Write-Host "Data asset created"
+} else {
+    Write-Host "Data asset not created"
+}
