@@ -385,7 +385,7 @@ inputs:
     mode: ro_mount  
 environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
 compute: <Compute-instance-name>
-experiment_name: NYC Taxi Fare Prices
+experiment_name: nyc-taxi-fare-prices
 description: Train a classification model on nyc taxi data to predict taxi fare prices.
 ```
 In the YAML file, you'll find the necessary details you need to include:
