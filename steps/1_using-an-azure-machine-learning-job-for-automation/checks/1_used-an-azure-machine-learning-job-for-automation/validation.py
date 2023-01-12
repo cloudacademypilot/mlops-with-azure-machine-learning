@@ -53,8 +53,6 @@ def handler():
             else:
                 print("Jobs not created")
 
-        
-
     except Exception as e:
         logging.error(e)
         
