@@ -205,6 +205,6 @@ description: Train a classification model on nyc taxi data to predict taxi fare 
 
 7. Now go to Azure ML workspace, navigate to **Jobs** > **All jobs**. You will see two job runs successfully.
 
-    ![pull](./assets/22_pull.jpg "pull")
+    ![pull](./assets/23_pull.jpg "pull")
 
 [ ⏮️ Previous Module](../4_working-with-linting-and-unit-testing-in-github-actions/documentation.md) - [Next Module ⏭️ ](../6_deploying-a-model-with-github-actions/documentation.md)
