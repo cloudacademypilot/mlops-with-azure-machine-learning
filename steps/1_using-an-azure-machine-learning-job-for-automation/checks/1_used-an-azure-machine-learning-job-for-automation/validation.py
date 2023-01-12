@@ -2,8 +2,6 @@ import json
 import logging
 import requests
 from azure.identity import AzureCliCredential
-from azure.mgmt.resource import ResourceManagementClient
-from azure.mgmt.subscription import SubscriptionClient
 
 def handler():
     try:
