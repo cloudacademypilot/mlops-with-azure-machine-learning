@@ -1,4 +1,4 @@
-# MLOps with Azure Machine Learning
+# Train & deploy models using Azure Machine Learning, Manage MLOps
 
 ## What is MLOps?
 MLOps is based on DevOps principles and practices that increase the efficiency of workflows. Examples include continuous integration, delivery, and deployment. MLOps applies these principles to the machine learning process, with the goal of:
