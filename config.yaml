@@ -3,7 +3,7 @@ slug: mlops-with-azure-machine-learning
 short_description: Get Started with MLOps
 lab_features: # cloud-environment|remote-desktop|cli|code-ide
   - cloud-environment
-duration: 3600
+duration: 10800
 #step_variables:
 #  - "required_step_var: This <strong>string</strong> will be substituted in lab steps with {LabStep.required_step_var} and available in VCFs."
 #  - "?optional_step_var: Substituted in lab steps with {LabStep.?optional_step_var} and available in VCFs. Optional step variables are not required to be defined in a lab and will be substituted with nothing in that case."
