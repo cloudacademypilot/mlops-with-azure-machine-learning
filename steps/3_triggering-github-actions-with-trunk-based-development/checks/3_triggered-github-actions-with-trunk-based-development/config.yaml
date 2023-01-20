@@ -1,6 +1,0 @@
-title: Triggered GitHub Actions with trunk-based development
-internal_name: Triggered GitHub Actions with trunk-based development
-vendor: azure
-runtime: python3.8
-memory: 128
-timeout: 10

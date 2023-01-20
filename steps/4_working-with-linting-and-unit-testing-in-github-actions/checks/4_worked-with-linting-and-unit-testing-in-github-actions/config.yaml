@@ -1,6 +1,0 @@
-title: Worked with linting and unit testing in GitHub Actions
-internal_name: Worked with linting and unit testing in GitHub Actions
-vendor: azure
-runtime: python3.8
-memory: 128
-timeout: 10
