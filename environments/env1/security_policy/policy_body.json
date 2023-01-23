@@ -57,7 +57,7 @@
   },
   "parameters_values": {
     "allowedLocations": {
-      "value": ["{RGLocation}"]
+      "value": ["{RGLocation}","westus"]
     },
     "allowedServices": {
       "value": [
@@ -68,10 +68,13 @@
         "Microsoft.Authorization/roleAssignments",
         "Microsoft.KeyVault/vaults",
         "Microsoft.Insights/components",
+        "microsoft.insights/actionGroups",
         "Microsoft.ContainerRegistry/registries",
         "Microsoft.MachineLearningServices/workspaces",
         "Microsoft.MachineLearningServices/workspaces/computes",
-        "Microsoft.ContainerInstance/containerGroups"
+        "Microsoft.ContainerInstance/containerGroups",
+        "Microsoft.Notebooks/NotebookProxies",
+        "Microsoft.KeyVault/vaults/accessPolicies"
       ]
     }
   }
