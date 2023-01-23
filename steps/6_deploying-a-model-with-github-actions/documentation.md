@@ -198,5 +198,3 @@ jobs:
     
     ![run](./assets/15_details.jpg "run")
 
-
-[ ⏮️ Previous Module](../5_working-with-environments-in-github-actions/documentation.md)

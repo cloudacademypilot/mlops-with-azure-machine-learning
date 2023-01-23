@@ -462,5 +462,3 @@ az ml job create --file job.yaml
 
     ![jobdetails](./assets/39_jobdetails.jpg "jobdetails")
 
-
-[Next Module ⏭️](../2_triggering-azure-machine-learning-jobs-with-github-actions/documentation.md)
