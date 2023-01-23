@@ -88,28 +88,28 @@ A runner is a server that runs your workflows when they're triggered. Each runne
    
     ![commit](./assets/10_commit.jpg "commit")
    
-```yaml
-name: Manually trigger an Azure Machine Learning job
+    ```yaml
+    name: Manually trigger an Azure Machine Learning job
 
-on: 
-  workflow_dispatch:
+    on: 
+      workflow_dispatch:
 
-jobs:
-  train:
-    runs-on: ubuntu-latest
-    steps:
-    - name: Check out repo
-      uses: actions/checkout@main
-    - name: Install az ml extension
-      run: az extension add -n ml -y
-    - name: Azure login
-      uses: azure/login@v1
-      with:
-        creds: ${{secrets.AZURE_CREDENTIALS}}
-    - name: run ml job
-      run: az ml job create --file job.yaml --resource-group <resource group name> --workspace-name <Azure ML workspace name>
-      working-directory: src
-```
+    jobs:
+      train:
+        runs-on: ubuntu-latest
+        steps:
+        - name: Check out repo
+          uses: actions/checkout@main
+        - name: Install az ml extension
+          run: az extension add -n ml -y
+        - name: Azure login
+          uses: azure/login@v1
+          with:
+            creds: ${{secrets.AZURE_CREDENTIALS}}
+        - name: run ml job
+          run: az ml job create --file job.yaml --resource-group <resource group name> --workspace-name <Azure ML workspace name>
+          working-directory: src
+    ```
 
 11. Click on **Add file** and select **Create new file** to create one more directory with the name ```src/model/``` and create a ```main.py``` file, which will be the python script you created in the previous module to train model. Copy-paste the python code from the main.py script created in Azure ML workspace. And Click on **Commit new file** at the bottom of the page.
     
@@ -123,21 +123,21 @@ jobs:
    
     ![job](./assets/14_job.jpg "job")
    
-```yaml
-$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
-code: model
-command: >-
-  python main.py 
-  --training_data ${{inputs.training_data}}
-inputs:
-  training_data: 
-    path: azureml:nyc-taxi-data:1
-    mode: ro_mount  
-environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
-compute: cluster20230111T062714Z
-experiment_name: nyc-taxi-fare-prices
-description: Train a classification model on nyc taxi data to predict taxi fare prices.
-```    
+    ```yaml
+    $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
+    code: model
+    command: >-
+      python main.py 
+      --training_data ${{inputs.training_data}}
+    inputs:
+      training_data: 
+        path: azureml:nyc-taxi-data:1
+        mode: ro_mount  
+    environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
+    compute: cluster20230111T062714Z
+    experiment_name: nyc-taxi-fare-prices
+    description: Train a classification model on nyc taxi data to predict taxi fare prices.
+    ```    
 
 ## Exercise 2: Create a service principal needed to run an Azure Machine Learning job
 
