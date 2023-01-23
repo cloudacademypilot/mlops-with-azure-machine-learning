@@ -2,6 +2,7 @@ In this lab, you will taken through a series of steps to implement MLOps with Az
 
 ## Learning Objectives
 The objective of this lab is to provide participants solid understanding and experience of using Azure Machine Learning Workspace and GitHub Actions. The following are the main topics covered in the lab.
+
 1. Using an Azure Machine Learning job for automation
 2. Triggering Azure Machine Learning jobs with GitHub Actions
 3. Triggering GitHub Actions with trunk-based development
