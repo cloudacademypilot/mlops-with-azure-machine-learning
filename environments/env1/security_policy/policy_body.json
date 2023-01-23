@@ -7,7 +7,11 @@
         "Microsoft.Authorization/*/Delete",
         "Microsoft.Authorization/*/Write",
         "Microsoft.Authorization/elevateAccess/Action",
-        "Microsoft.MarketplaceOrdering/*"
+        "Microsoft.MarketplaceOrdering/*",
+        "Microsoft.Resources/deploymentScripts/*",
+        "Microsoft.ManagedIdentity/userAssignedIdentities/*",
+        "Microsoft.ContainerInstance/containerGroups/*",
+        "Microsoft.Storage/storageAccounts/fileServices/*"
       ]
     }
   ],
@@ -61,7 +65,13 @@
         "Microsoft.Storage/storageAccounts/blobServices/containers",
         "Microsoft.Resources/deploymentScripts",
         "Microsoft.ManagedIdentity/userAssignedIdentities",
-        "Microsoft.Authorization/roleAssignments"
+        "Microsoft.Authorization/roleAssignments",
+        "Microsoft.KeyVault/vaults",
+        "Microsoft.Insights/components",
+        "Microsoft.ContainerRegistry/registries",
+        "Microsoft.MachineLearningServices/workspaces",
+        "Microsoft.MachineLearningServices/workspaces/computes",
+        "Microsoft.ContainerInstance/containerGroups"
       ]
     }
   }

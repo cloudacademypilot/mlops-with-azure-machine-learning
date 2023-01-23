@@ -17,7 +17,7 @@
       }
     },
     "fileuploaduri": {
-          "defaultValue": "https://raw.githubusercontent.com/CSALabsAutomation/mlops-with-azure-machine-learning/main/environments/env1/scripts/uploadfile.ps1",
+          "defaultValue": "https://mscalabshare.blob.core.windows.net/assets/mlops/uploadfile.ps1?sp=r&st=2023-01-23T03:33:57Z&se=2099-01-23T11:33:57Z&spr=https&sv=2021-06-08&sr=b&sig=1w8WG2DE97m1Om8uT4ijmsbWsbLsdGRRQikCDGjWAbo%3D",
           "type": "String",
           "metadata": {
               "description": "The URI of script file to upload blob container"
