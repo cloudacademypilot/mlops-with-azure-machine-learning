@@ -50,7 +50,7 @@
     },
     "vmSize": {
       "type": "string",
-      "defaultValue": "Standard_DS3_v2",
+      "defaultValue": "Standard_D4S_v3",
       "metadata": {
         "description": "Specifies the VM size of the Compute Instance to create under Azure Machine Learning workspace."
       }
@@ -115,7 +115,12 @@
     "fileuploadurivariable": "[parameters('fileuploaduri')]",
     "scriptParametersToUploadFile": "[format('-ResourceGroupName {0} -RawDataLakeAccountName {1}', resourceGroup().name, variables('storageAccountName'))]",
     "contributorRoleDefinitionId": "B24988ac-6180-42a0-ab88-20f7382dd24c",
-    "bootstrapRoleAssignmentId": "[guid(parameters('firstuniquestring'), parameters('seconduniquestring'))]"
+    "bootstrapRoleAssignmentId": "[guid(parameters('firstuniquestring'), parameters('seconduniquestring'))]",
+    "readerRoleDefinitionId": "acdd72a7-3385-48ef-bd42-f606fba81ae7",
+    "deploymentScriptName": "lab-user-retriever",
+    "deploymentScriptIdentityName": "[concat('caldeployer-',resourceGroup().name)]",
+    "deploymentScriptRoleDefinitionId": "[resourceId('Microsoft.Authorization/roleDefinitions', variables('readerRoleDefinitionId'))]",
+    "deploymentScriptRoleAssignmentName": "[guid(resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', variables('deploymentScriptIdentityName')), variables('deploymentScriptRoleDefinitionId'), resourceGroup().id)]"
     
     
   },
@@ -222,11 +227,18 @@
           "applicationSharingPolicy": "Personal",
           "sshSettings": {
             "sshPublicAccess": "[parameters('sshAccess')]"
+          },
+          "personalComputeInstanceSettings": {
+              "assignedUser": {
+                  "objectId": "[reference(variables('deploymentScriptName')).outputs.student]",
+                  "tenantId": "[tenant().tenantId]"
+              }
           }
         }
       },
         "dependsOn": [
-          "[resourceId('Microsoft.MachineLearningServices/workspaces', concat(variables('workspaceName')))]"
+          "[resourceId('Microsoft.MachineLearningServices/workspaces', concat(variables('workspaceName')))]",
+          "[variables('deploymentScriptName')]"
             ]
     },
     {
@@ -295,6 +307,45 @@
               "principalId": "[reference(resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('identityName')), '2018-11-30').principalId]",
               "scope": "[resourceGroup().id]",
               "principalType": "ServicePrincipal"
+          }
+      },
+      {
+        "type": "Microsoft.ManagedIdentity/userAssignedIdentities",
+        "name": "[variables('deploymentScriptIdentityName')]",
+        "apiVersion": "2018-11-30",
+        "location": "[resourceGroup().location]"
+      },
+      {
+        "type": "Microsoft.Authorization/roleAssignments",
+        "apiVersion": "2020-04-01-preview",
+        "name": "[variables('deploymentScriptRoleAssignmentName')]",
+        "dependsOn": [ "[variables('deploymentScriptIdentityName')]" ],
+        "properties": {
+          "roleDefinitionId": "[variables('deploymentScriptRoleDefinitionId')]",
+          "principalId": "[reference(variables('deploymentScriptIdentityName')).principalId]",
+          "scope": "[resourceGroup().id]",
+          "principalType": "ServicePrincipal"
+        }
+      },
+      {
+          "type": "Microsoft.Resources/deploymentScripts",
+          "apiVersion": "2020-10-01",
+          "name": "[variables('deploymentScriptName')]",
+          "location": "[resourceGroup().location]",
+          "dependsOn": ["[variables('deploymentScriptIdentityName')]", "[variables('deploymentScriptRoleAssignmentName')]"],
+          "kind": "AzureCLI",
+          "identity": {
+              "type": "UserAssigned",
+              "userAssignedIdentities": { "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', variables('deploymentScriptIdentityName'))]": {} }
+          },
+          "properties": {
+              "forceUpdateTag": "[parameters('utcValue')]",
+              "azCliVersion": "2.41.0",
+              "timeout": "PT10M",
+              "arguments": "[concat(subscription().subscriptionId,' ',resourceGroup().name)]",
+                  "scriptContent": "subscriptionId=$1; resourceGroup=$2; while [ -z $student ]; do echo \"searching for student\"; echo Running az role assignment list --subscription $subscriptionId --resource-group $resourceGroup --query \"[? contains(to_string(roleDefinitionName),'cal-role-')].principalId\" -o tsv; student=$(az role assignment list --subscription $1 --resource-group $2 --query \"[? contains(to_string(roleDefinitionName),'cal-role-')].principalId\" -o tsv); done; echo \"Found student/principalId: $student\"; echo {\\\"student\\\": \\\"$student\\\"} > $AZ_SCRIPTS_OUTPUT_PATH",
+              "cleanupPreference": "Always",
+              "retentionInterval": "PT1H"
           }
       }
       
