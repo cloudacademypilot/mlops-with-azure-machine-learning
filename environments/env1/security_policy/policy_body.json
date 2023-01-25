@@ -74,7 +74,9 @@
         "Microsoft.MachineLearningServices/workspaces/computes",
         "Microsoft.ContainerInstance/containerGroups",
         "Microsoft.Notebooks/NotebookProxies",
-        "Microsoft.KeyVault/vaults/accessPolicies"
+        "Microsoft.KeyVault/vaults/accessPolicies",
+        "Microsoft.MachineLearningServices/workspaces/codes/versions",
+        "Microsoft.MachineLearningServices/workspaces/jobs"
       ]
     }
   }
