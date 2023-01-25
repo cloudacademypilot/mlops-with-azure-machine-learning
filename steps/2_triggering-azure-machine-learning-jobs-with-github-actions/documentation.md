@@ -149,8 +149,8 @@ Create a service principal, using the Cloud Shell in the Azure portal, which has
 az ad sp create-for-rbac --name "<service-principal-name>" --role contributor --scopes /subscriptions/<subscription-id>/resourceGroups/<your-resource-group-name> --sdk-auth
 ```
 
-- Give ```gitserviceprincipal``` as **\<service-principal-name>**.
-- For **\<subscription-id>** and **\<your-resource-group-name>**, Goto the resource group created in Azure Portal, copy the **Resource group** name and **Subscription ID** will be available under **Essentials**. Copy and Paste in the required fields.
+- Give ```gitserviceprincipal``` as **\<service-principal-name\>**.
+- For **\<subscription-id\>** and **\<your-resource-group-name\>**, Goto the resource group created in Azure Portal, copy the **Resource group** name and **Subscription ID** will be available under **Essentials**. Copy and Paste in the required fields.
 
     ![subscription](./assets/15_subscription.jpg "subscription")
 
