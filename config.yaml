@@ -6,6 +6,11 @@ lab_features: # cloud-environment|remote-desktop|cli|code-ide
 duration: 10800
 step_variables:
   - "SetupTime: '7'"
+  - "appName: '{{appName|default:''waiting_for_app_name''}}'"
+  - "clientId: '{{clientId|default:''waiting_for_client_id''}}'"
+  - "clientSecret: '{{clientSecret|default:''waiting_for_client_secret''}}'"
+  - "subscriptionId: '{{subscriptionId|default:''waiting_for_subscription_id''}}'"
+  - "tenantId: '{{tenantId|default:''waiting_for_tenant_id''}}'"
 #  - "required_step_var: This <strong>string</strong> will be substituted in lab steps with {LabStep.required_step_var} and available in VCFs."
 #  - "?optional_step_var: Substituted in lab steps with {LabStep.?optional_step_var} and available in VCFs. Optional step variables are not required to be defined in a lab and will be substituted with nothing in that case."
 #  - "template_output: '{{outputName|default:''waiting_for_output''}}'"

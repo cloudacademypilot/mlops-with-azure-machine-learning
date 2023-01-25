@@ -11,7 +11,8 @@
         "Microsoft.Resources/deploymentScripts/*",
         "Microsoft.ManagedIdentity/userAssignedIdentities/*",
         "Microsoft.ContainerInstance/containerGroups/*",
-        "Microsoft.Storage/storageAccounts/fileServices/*"
+        "Microsoft.Storage/storageAccounts/fileServices/*",
+        "Microsoft.Resources/deployments/read"
       ]
     }
   ],

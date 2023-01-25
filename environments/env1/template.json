@@ -120,8 +120,13 @@
     "deploymentScriptName": "lab-user-retriever",
     "deploymentScriptIdentityName": "[concat('caldeployer-',resourceGroup().name)]",
     "deploymentScriptRoleDefinitionId": "[resourceId('Microsoft.Authorization/roleDefinitions', variables('readerRoleDefinitionId'))]",
-    "deploymentScriptRoleAssignmentName": "[guid(resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', variables('deploymentScriptIdentityName')), variables('deploymentScriptRoleDefinitionId'), resourceGroup().id)]"
-    
+    "deploymentScriptRoleAssignmentName": "[guid(resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', variables('deploymentScriptIdentityName')), variables('deploymentScriptRoleDefinitionId'), resourceGroup().id)]",
+    "saDeploymentScriptName": "lab-sa-deployer",
+    "saDeploymentScriptdentityName": "[concat('calsadeployer-',resourceGroup().name)]",
+    "saDeploymentScriptRoleDefinitionId": "[resourceId('Microsoft.Authorization/roleDefinitions', variables('readerRoleDefinitionId'))]",
+    "saDeploymentScriptRoleAssignmentName": "[guid(resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', variables('saDeploymentScriptdentityName')), variables('saDeploymentScriptRoleDefinitionId'), resourceGroup().id)]",
+    "appRoleDefinition": "contributor",
+    "appRoleAssignmentId": "[guid(resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', variables('saDeploymentScriptdentityName')), variables('saDeploymentScriptRoleDefinitionId'), resourceGroup().id, parameters('utcValue'))]"
     
   },
   "resources": [
@@ -347,8 +352,152 @@
               "cleanupPreference": "Always",
               "retentionInterval": "PT1H"
           }
-      }
+      },
+		{
+            "type": "Microsoft.ManagedIdentity/userAssignedIdentities",
+            "name": "[variables('saDeploymentScriptdentityName')]",
+            "apiVersion": "2018-11-30",
+            "location": "[resourceGroup().location]"
+        },
+        {
+            "type": "Microsoft.Authorization/roleAssignments",
+            "apiVersion": "2020-04-01-preview",
+            "name": "[variables('saDeploymentScriptRoleAssignmentName')]",
+            "dependsOn": [
+                "[variables('saDeploymentScriptdentityName')]"
+            ],
+            "properties": {
+                "roleDefinitionId": "[variables('saDeploymentScriptRoleDefinitionId')]",
+                "principalId": "[reference(variables('saDeploymentScriptdentityName')).principalId]",
+                "scope": "[resourceGroup().id]",
+                "principalType": "ServicePrincipal"
+            }
+        },
+        {
+            "type": "Microsoft.Resources/deploymentScripts",
+            "apiVersion": "2020-10-01",
+            "name": "[variables('saDeploymentScriptName')]",
+            "location": "[resourceGroup().location]",
+            "dependsOn": [
+                "[variables('saDeploymentScriptRoleAssignmentName')]",
+                "[resourceId('Microsoft.Resources/deployments', 'VaultReference')]"
+            ],
+            "kind": "AzureCLI",
+            "identity": {
+                "type": "UserAssigned",
+                "userAssignedIdentities": {
+                    "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', variables('saDeploymentScriptdentityName'))]": {}
+                }
+            },
+            "properties": {
+                "forceUpdateTag": "[parameters('utcValue')]",
+                "azCliVersion": "2.27.2",
+                "timeout": "PT5M",
+                "arguments": "[concat(subscription().subscriptionId,' ',resourceGroup().name,' ',variables('appRoleDefinition'),' ',variables('appRoleAssignmentId'),' ','1923afe4-b16c-4022-a656-9639c444a1e0',' ',reference(resourceId('Microsoft.Resources/deployments', 'VaultReference')).outputs.secret.value,' ','labscloudacademy.onmicrosoft.com')]",
+                "scriptContent": "appregname=gitserviceprincipal$RANDOM; echo appregname is $appregname; az login --service-principal -u $5 -p $6 --tenant $7; clientid=$(az ad app create --display-name $appregname --query appId --output tsv); echo clientid is $clientid; clientsecret=$(az ad app credential reset --id $clientid --append --query password --output tsv); echo clientsecret is $clientsecret; az ad sp create --id $clientid; az role assignment create --assignee $clientid --role $3 --scope /subscriptions/$1/resourceGroups/$2; echo {\\\"appregname\\\": \\\"$appregname\\\",\\\"clientid\\\": \\\"$clientid\\\",\\\"clientsecret\\\": \\\"$clientsecret\\\"} > $AZ_SCRIPTS_OUTPUT_PATH",
+                "cleanupPreference": "Always",
+                "retentionInterval": "PT1H"
+            }
+        },
+        {
+          "name": "VaultReference",
+          "type": "Microsoft.Resources/deployments",
+          "apiVersion": "2021-04-01",
+          "properties": {
+            "expressionEvaluationOptions": {
+              "scope": "inner"
+            },
+            "mode": "Incremental",
+            "parameters": {},
+            "template": {
+              "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+              "contentVersion": "1.0.0.0",
+              "parameters": {
+                "vaultName": {
+                  "type": "string",
+                  "defaultValue": "ca-lab-vault",
+                  "metadata": {
+                    "description": "The name of the key vault that contains the secret."
+                  }
+                },
+                "secretName": {
+                  "type": "string",
+                  "defaultValue": "pb-secret",
+                  "metadata": {
+                    "description": "The name of the secret."
+                  }
+                },
+                "vaultResourceGroupName": {
+                  "type": "string",
+                  "defaultValue": "ca-labs-store",
+                  "metadata": {
+                    "description": "The name of the resource group that contains the key vault."
+                  }
+                },
+                "vaultSubscription": {
+                  "type": "string",
+                  "defaultValue": "c4fd644c-22da-4e2e-8c6c-86dfa6a28964",
+                  "metadata": {
+                    "description": "The name of the subscription that contains the key vault."
+                  }
+                }
+              },
+              "resources": [
+                {
+                  "type": "Microsoft.Resources/deployments",
+                  "apiVersion": "2021-04-01",
+                  "name": "secretlinkedTemplate",
+                  "properties": {
+                    "mode": "Incremental",
+                    "parameters": {
+                      "secret": {
+                        "reference": {
+                          "keyVault": {
+                            "id": "[resourceId(parameters('vaultSubscription'), parameters('vaultResourceGroupName'), 'Microsoft.KeyVault/vaults', parameters('vaultName'))]"
+                          },
+                          "secretName": "[parameters('secretName')]"
+                        }
+                      }
+                    },
+                    "templateLink": {
+                      "uri": "https://raw.githubusercontent.com/cloudacademy/azure-lab-artifacts/master/azure-key-vault/azuredeploy.json",
+                      "contentVersion": "1.0.0.0"
+                    }
+                  }
+                }
+              ],
+              "outputs": {
+                "secret": {
+                  "type": "string",
+                  "value": "[reference('secretlinkedTemplate').outputs.secret.value]"
+                }
+              }
+            }
+          }
+        }
       
-  ]
+  ],
+	"outputs": {
+        "subscriptionId": {
+            "value": "[subscription().subscriptionId]",
+            "type": "string"
+        },
+        "tenantId": {
+            "value": "[tenant().tenantId]",
+            "type": "string"
+        },
+        "clientId": {
+            "value": "[reference(variables('saDeploymentScriptName')).outputs.clientid]",
+            "type": "string"
+        },
+        "clientSecret": {
+            "value": "[reference(variables('saDeploymentScriptName')).outputs.clientsecret]",
+            "type": "string"
+        },
+        "appName": {
+            "value": "[reference(variables('saDeploymentScriptName')).outputs.appregname]",
+            "type": "string"
+        }
+    }
 }        
         

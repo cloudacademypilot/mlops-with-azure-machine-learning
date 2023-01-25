@@ -141,6 +141,8 @@ A runner is a server that runs your workflows when they're triggered. Each runne
 
 ## Exercise 2: Create a service principal needed to run an Azure Machine Learning job
 
+<ins>**Note**</ins> This exercise is for your information only. <ins>You will not be able to create a service principal and assign a role to it</ins> in the lab environment. Instead, the Cloud Academy lab environment has done this for you and the required JSON output is provided at the end of the exercise.
+
 When you use GitHub Actions to automate Azure Machine Learning jobs, you need to use a service principal to authenticate GitHub to manage the Azure Machine Learning workspace. For example, to train a model using Azure Machine Learning compute, you or any tool that you use, needs to be authorized to use that compute.
 
 Create a service principal, using the Cloud Shell in the Azure portal, which has contributor access to your resource group.  Use the following command:
@@ -172,6 +174,23 @@ Run the above command after updating all the fields in Azure Portal Cloud Shell.
 "clientSecret": "your-client-secret",
 "subscriptionId": "your-subscription-id",
 "tenantId": "your-tenant-id",
+"activeDirectoryEndpointUrl": "https://login.microsoftonline.com",
+"resourceManagerEndpointUrl": "https://management.azure.com/",
+"activeDirectoryGraphResourceId": "https://graph.windows.net/",
+"sqlManagementEndpointUrl": "https://management.core.windows.net:8443/",
+"galleryEndpointUrl": "https://gallery.azure.com/",
+"managementEndpointUrl": "https://management.core.windows.net/"
+}
+```
+
+- The output for the service principal created by the Cloud Academy lab environment for your current lab session is below:
+
+```
+{
+"clientId": "{LabStep.clientId}",
+"clientSecret": "{LabStep.clientSecret}",
+"subscriptionId": "{LabStep.subscriptionId}",
+"tenantId": "{LabStep.tenantId}",
 "activeDirectoryEndpointUrl": "https://login.microsoftonline.com",
 "resourceManagerEndpointUrl": "https://management.azure.com/",
 "activeDirectoryGraphResourceId": "https://graph.windows.net/",
