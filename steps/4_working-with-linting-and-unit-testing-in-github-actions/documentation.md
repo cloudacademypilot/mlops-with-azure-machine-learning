@@ -157,9 +157,9 @@ For example, to test the ```get_csvs_df``` function, you can create a ```dataset
 
 Goto your github repo ```tests``` folder. Select Add file > Create new file and give ```test_main.py``` as name and paste the above code.
 
-   ![tests](./assets/3_testmain.jpg "tests")
+![tests](./assets/3_testmain.jpg "tests")
    
-   ![tests](./assets/4_testmain.jpg "tests")
+![tests](./assets/4_testmain.jpg "tests")
     
 #### Creating datasets folder with csv files.
 
