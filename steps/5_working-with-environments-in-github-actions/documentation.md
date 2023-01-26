@@ -188,7 +188,7 @@ description: Train a classification model on nyc taxi data to predict taxi fare 
 
     ![pull](./assets/16_pull.jpg "pull")
     
-4. You can see pipeline where the workflow will run in ```development environment``` follwed by ```production environment```.
+4. You can see pipeline where the workflow will run in ```development environment``` followed by ```production environment```.
 
     ![pull](./assets/17_pull.jpg "pull")
     
