@@ -78,7 +78,8 @@
         "Microsoft.KeyVault/vaults/accessPolicies",
         "Microsoft.MachineLearningServices/workspaces/codes/versions",
         "Microsoft.MachineLearningServices/workspaces/jobs",
-        "Microsoft.MachineLearningServices/workspaces/onlineEndpoints"
+        "Microsoft.MachineLearningServices/workspaces/onlineEndpoints",
+        "Microsoft.MachineLearningServices/workspaces/onlineEndpoints/deployments"
       ]
     }
   }
