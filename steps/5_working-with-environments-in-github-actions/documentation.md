@@ -115,7 +115,8 @@ jobs:
         run: cd src
       - name: Run prod env job
         run: az ml job create --file src/production.yaml --resource-group <rg-name> --workspace-name <ml-workspace-name> --stream  
- ```
+```
+
 The above workflow will run experiment job in ```development environment``` and the production job, will run in ```production environment```, is only allowed to run when the experiment job ran successfully. Adding ```needs: dev``` to the workflow will wait for experiment job to run successfully before running production job. 
 
 ### Define experiment job to run in **development environment**:
