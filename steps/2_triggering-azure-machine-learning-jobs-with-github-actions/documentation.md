@@ -88,28 +88,28 @@ A runner is a server that runs your workflows when they're triggered. Each runne
    
     ![commit](./assets/10_commit.jpg "commit")
    
-```yaml
-name: Manually trigger an Azure Machine Learning job
+    ```yaml
+    name: Manually trigger an Azure Machine Learning job
 
-on: 
-  workflow_dispatch:
+    on: 
+      workflow_dispatch:
 
-jobs:
-  train:
-    runs-on: ubuntu-latest
-    steps:
-    - name: Check out repo
-      uses: actions/checkout@main
-    - name: Install az ml extension
-      run: az extension add -n ml -y
-    - name: Azure login
-      uses: azure/login@v1
-      with:
-        creds: ${{secrets.AZURE_CREDENTIALS}}
-    - name: run ml job
-      run: az ml job create --file job.yaml --resource-group <resource group name> --workspace-name <Azure ML workspace name>
-      working-directory: src
-```
+    jobs:
+      train:
+        runs-on: ubuntu-latest
+        steps:
+        - name: Check out repo
+          uses: actions/checkout@main
+        - name: Install az ml extension
+          run: az extension add -n ml -y
+        - name: Azure login
+          uses: azure/login@v1
+          with:
+            creds: ${{secrets.AZURE_CREDENTIALS}}
+        - name: run ml job
+          run: az ml job create --file job.yaml --resource-group <resource group name> --workspace-name <Azure ML workspace name>
+          working-directory: src
+    ```
 
 11. Click on **Add file** and select **Create new file** to create one more directory with the name ```src/model/``` and create a ```main.py``` file, which will be the python script you created in the previous module to train model. Copy-paste the python code from the main.py script created in Azure ML workspace. And Click on **Commit new file** at the bottom of the page.
     
@@ -123,23 +123,25 @@ jobs:
    
     ![job](./assets/14_job.jpg "job")
    
-```yaml
-$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
-code: model
-command: >-
-  python main.py 
-  --training_data ${{inputs.training_data}}
-inputs:
-  training_data: 
-    path: azureml:nyc-taxi-data:1
-    mode: ro_mount  
-environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
-compute: cluster20230111T062714Z
-experiment_name: nyc-taxi-fare-prices
-description: Train a classification model on nyc taxi data to predict taxi fare prices.
-```    
+    ```yaml
+    $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
+    code: model
+    command: >-
+      python main.py 
+      --training_data ${{inputs.training_data}}
+    inputs:
+      training_data: 
+        path: azureml:nyc-taxi-data:1
+        mode: ro_mount  
+    environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
+    compute: cluster20230111T062714Z
+    experiment_name: nyc-taxi-fare-prices
+    description: Train a classification model on nyc taxi data to predict taxi fare prices.
+    ```    
 
 ## Exercise 2: Create a service principal needed to run an Azure Machine Learning job
+
+<ins>**Note**</ins>: This exercise is for your information only. <ins>You will not be able to create a service principal and assign a role to it</ins> in the lab environment. Instead, the Cloud Academy lab environment has done this for you and the required JSON output is provided at the end of the exercise.
 
 When you use GitHub Actions to automate Azure Machine Learning jobs, you need to use a service principal to authenticate GitHub to manage the Azure Machine Learning workspace. For example, to train a model using Azure Machine Learning compute, you or any tool that you use, needs to be authorized to use that compute.
 
@@ -149,8 +151,8 @@ Create a service principal, using the Cloud Shell in the Azure portal, which has
 az ad sp create-for-rbac --name "<service-principal-name>" --role contributor --scopes /subscriptions/<subscription-id>/resourceGroups/<your-resource-group-name> --sdk-auth
 ```
 
-- Give ```gitserviceprincipal``` as **\<service-principal-name>**.
-- For **\<subscription-id>** and **\<your-resource-group-name>**, Goto the resource group created in Azure Portal, copy the **Resource group** name and **Subscription ID** will be available under **Essentials**. Copy and Paste in the required fields.
+- Give ```gitserviceprincipal``` as **<service-principal-name\>**.
+- For **<subscription-id\>** and **<your-resource-group-name\>**, Goto the resource group created in Azure Portal, copy the **Resource group** name and **Subscription ID** will be available under **Essentials**. Copy and Paste in the required fields.
 
     ![subscription](./assets/15_subscription.jpg "subscription")
 
@@ -181,6 +183,23 @@ Run the above command after updating all the fields in Azure Portal Cloud Shell.
 }
 ```
 
+- The output for the service principal created by the Cloud Academy lab environment for your current lab session is below:
+
+```
+{
+"clientId": "{LabStep.clientId}",
+"clientSecret": "{LabStep.clientSecret}",
+"subscriptionId": "{LabStep.subscriptionId}",
+"tenantId": "{LabStep.tenantId}",
+"activeDirectoryEndpointUrl": "https://login.microsoftonline.com",
+"resourceManagerEndpointUrl": "https://management.azure.com/",
+"activeDirectoryGraphResourceId": "https://graph.windows.net/",
+"sqlManagementEndpointUrl": "https://management.core.windows.net:8443/",
+"galleryEndpointUrl": "https://gallery.azure.com/",
+"managementEndpointUrl": "https://management.core.windows.net/"
+}
+```
+
 ## Exercise 3: Store Azure credentials securely using secrets in GitHub
 
 The Azure credentials you need to authenticate should not be stored in your code or plain text and should instead be stored in a GitHub secret.
@@ -191,7 +210,7 @@ To add a secret to your GitHub repository:
 
     ![secrets](./assets/18_secrets.jpg "secrets")
 
-2. Click on **New repositoty secret** to create a new secret.
+2. Click on **New repository secret** to create a new secret.
 
     ![repo_secret](./assets/19_repo_secret.jpg "repo_secret")
 
@@ -277,4 +296,3 @@ jobs:
 
     ![details](./assets/27_details.jpg "details")
 
-[ ⏮️ Previous Module](../1_using-an-azure-machine-learning-job-for-automation/documentation.md) - [Next Module ⏭️ ](../3_triggering-github-actions-with-trunk-based-development/documentation.md)

@@ -88,7 +88,7 @@ Include the following parameters in the YAML configuration to create a managed o
 
 For example, to create a key-based authenticated endpoint, use this YAML configuration:
 
-```yaml create-endpoint.yml
+```yaml
 $schema: https://azuremlschemas.azureedge.net/latest/managedOnlineEndpoint.schema.json
 name: mlflow-endpoint
 auth_mode: key
@@ -125,7 +125,8 @@ instance_count: 1
 ```
 
 In this example, we're taking the model which you registered in Exercise 1. For ```<Model name>``` goto Azure ML workspace, select the model you registered and copy the name.
-    ![copy](./assets/10_copy.jpg "copy")    
+
+![copy](./assets/10_copy.jpg "copy")    
 
 1. Goto your GitHub Repo, inside ```src``` folder create a yaml file with name ```mlflow-deployment.yaml``` and paste the above configuration by replacing ```<Model name>``` with the model name from Azure ML workspace and Commit.
 
@@ -143,46 +144,46 @@ Please cross-check the **endpoint** name you give in ```mlflow-deployment.yaml``
 
     ![workflow](./assets/12_workflow.jpg "workflow")
 
-```yaml
----
-name: Register and Deploy a Azure Machine Learning Model
-on:
-  workflow_dispatch: null
-jobs:
-  create:
-    name: create endpoint
-    runs-on: ubuntu-latest
-    steps:
-      - name: check out repo
-        uses: actions/checkout@v2
-      - name: install az ml extension
-        run: az extension add -n ml -y
-      - name: azure login
-        uses: azure/login@v1
-        with:
-          creds: ${{secrets.AZURE_CREDENTIALS}}
-      - name: set current directory
-        run: cd src
-      - name: Create endpoint
-        run: az ml online-endpoint create --name price-prediction-ep -f src/create-endpoint.yaml --resource-group <rg-name> --workspace-name <ml-workspace-name>
-  deploy:
-    name: deploy model
-    needs: create
-    runs-on: ubuntu-latest
-    steps:
-      - name: check out repo
-        uses: actions/checkout@v2
-      - name: install az ml extension
-        run: az extension add -n ml -y
-      - name: azure login
-        uses: azure/login@v1
-        with:
-          creds: ${{secrets.AZURE_CREDENTIALS}}
-      - name: set current directory
-        run: cd src
-      - name: deploy model
-        run: az ml online-deployment create --name mlflow-deployment --endpoint price-prediction-ep -f src/mlflow-deployment.yaml --resource-group <rg-name> --workspace-name <ml-workspace-name> --all-traffic
-```
+    ```yaml
+    ---
+    name: Register and Deploy a Azure Machine Learning Model
+    on:
+      workflow_dispatch: null
+    jobs:
+      create:
+        name: create endpoint
+        runs-on: ubuntu-latest
+        steps:
+          - name: check out repo
+            uses: actions/checkout@v2
+          - name: install az ml extension
+            run: az extension add -n ml -y
+          - name: azure login
+            uses: azure/login@v1
+            with:
+              creds: ${{secrets.AZURE_CREDENTIALS}}
+          - name: set current directory
+            run: cd src
+          - name: Create endpoint
+            run: az ml online-endpoint create --name price-prediction-ep -f src/create-endpoint.yaml --resource-group <rg-name> --workspace-name <ml-workspace-name>
+      deploy:
+        name: deploy model
+        needs: create
+        runs-on: ubuntu-latest
+        steps:
+          - name: check out repo
+            uses: actions/checkout@v2
+          - name: install az ml extension
+            run: az extension add -n ml -y
+          - name: azure login
+            uses: azure/login@v1
+            with:
+              creds: ${{secrets.AZURE_CREDENTIALS}}
+          - name: set current directory
+            run: cd src
+          - name: deploy model
+            run: az ml online-deployment create --name mlflow-deployment --endpoint price-prediction-ep -f src/mlflow-deployment.yaml --resource-group <rg-name> --workspace-name <ml-workspace-name> --all-traffic
+    ```
 
 2. Goto your Github repo and navigate to Actions and select ```Register and Deploy a Azure Machine Learning Model``` workflow. Select **Run workflow**.
 
@@ -198,5 +199,3 @@ jobs:
     
     ![run](./assets/15_details.jpg "run")
 
-
-[ ⏮️ Previous Module](../5_working-with-environments-in-github-actions/documentation.md)
