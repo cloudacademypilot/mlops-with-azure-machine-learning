@@ -50,7 +50,7 @@
     },
     "vmSize": {
       "type": "string",
-      "defaultValue": "Standard_D4S_v3",
+      "defaultValue": "STANDARD_DS2_V2",
       "metadata": {
         "description": "Specifies the VM size of the Compute Instance to create under Azure Machine Learning workspace."
       }
