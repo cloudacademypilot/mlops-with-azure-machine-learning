@@ -77,7 +77,8 @@
         "Microsoft.Notebooks/NotebookProxies",
         "Microsoft.KeyVault/vaults/accessPolicies",
         "Microsoft.MachineLearningServices/workspaces/codes/versions",
-        "Microsoft.MachineLearningServices/workspaces/jobs"
+        "Microsoft.MachineLearningServices/workspaces/jobs",
+        "Microsoft.MachineLearningServices/workspaces/onlineEndpoints"
       ]
     }
   }
