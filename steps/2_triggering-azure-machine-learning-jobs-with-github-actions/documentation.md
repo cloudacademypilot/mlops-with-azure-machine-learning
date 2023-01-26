@@ -210,7 +210,7 @@ To add a secret to your GitHub repository:
 
     ![secrets](./assets/18_secrets.jpg "secrets")
 
-2. Click on **New repositoty secret** to create a new secret.
+2. Click on **New repository secret** to create a new secret.
 
     ![repo_secret](./assets/19_repo_secret.jpg "repo_secret")
 
