@@ -126,7 +126,7 @@ instance_count: 1
 
 In this example, we're taking the model which you registered in Exercise 1. For ```<Model name>``` goto Azure ML workspace, select the model you registered and copy the name.
 
-    ![copy](./assets/10_copy.jpg "copy")    
+![copy](./assets/10_copy.jpg "copy")    
 
 1. Goto your GitHub Repo, inside ```src``` folder create a yaml file with name ```mlflow-deployment.yaml``` and paste the above configuration by replacing ```<Model name>``` with the model name from Azure ML workspace and Commit.
 
