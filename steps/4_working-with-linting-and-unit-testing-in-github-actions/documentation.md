@@ -90,9 +90,9 @@ import-order-style = pep8
 
 Create a new directory/folder in your github account repo with the name ```tests```. And create ```.flake8``` configuration file inside with above code copied. Click commit to save the file.
 
-    ![tests](./assets/1_tests.jpg "tests")
+![tests](./assets/1_tests.jpg "tests")
 
-    ![flake8](./assets/2_flake8.jpg "flake8")
+![flake8](./assets/2_flake8.jpg "flake8")
     
 
 ### Unit tests
