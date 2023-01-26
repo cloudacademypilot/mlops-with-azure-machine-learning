@@ -3,7 +3,7 @@ slug: mlops-with-azure-machine-learning
 short_description: Get Started with MLOps
 lab_features: # cloud-environment|remote-desktop|cli|code-ide
   - cloud-environment
-duration: 10800
+duration: 14400
 step_variables:
   - "SetupTime: '7'"
   - "appName: '{{appName|default:''waiting_for_app_name''}}'"
