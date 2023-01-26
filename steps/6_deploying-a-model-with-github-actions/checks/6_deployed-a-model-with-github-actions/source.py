@@ -1,46 +1,48 @@
 import json
-import logging
 import requests
-from azure.identity import AzureCliCredential
+from azure.identity import ClientSecretCredential, SharedTokenCacheCredential
+from azure.mgmt.resource import ResourceManagementClient
 
-def handler():
-    try:
-        with open("steps/6_deploying-a-model-with-github-actions/checks/6_deployed-a-model-with-github-actions/params.json") as f:
-            params = json.load(f)
+def with_hint(result, hint=None):
+    return {'result': result, 'hint_message': hint} if hint else result
 
-        subscriptionId = params['subscription_id']
-        rgName = params['resource_group_name']
-        
-        credential = AzureCliCredential()
-        token = credential.get_token("https://management.azure.com").token
+def handler(event, context):
+    credentials, subscriptionId = get_credentials(event)
+    rgName = event['environment_params']['resource_group']
 
-        headers = {
-            'ContentType': 'application/json',
-            'Authorization': f'Bearer {token}'
-        }
+    bearer_token = credentials.get_token('https://management.azure.com/.default')
 
-        # Get ML Workspace name
-        listWsUrl = f'https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{rgName}/providers/Microsoft.MachineLearningServices/workspaces?api-version=2022-10-01'
-        wsRes = requests.get(url=listWsUrl, headers=headers)
-        workspaceName = ''
-        if wsRes.status_code == 200:
-            workspaces = wsRes.json()['value']
-            if len(workspaces) != 0:
-                workspaceName = workspaces[0]['name']
+    headers = {
+        'ContentType': 'application/json',
+        'Authorization': f'Bearer {bearer_token.token}'
+    }
 
-        # Get endpoint
-        endpoint = f'https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{rgName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/onlineEndpoints?api-version=2022-10-01'
-        end = requests.get(url=endpoint, headers=headers)
-        if end.status_code == 200:
-            endpoints = end.json()['value']
+    # Get ML Workspace name
+    listWsUrl = f'https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{rgName}/providers/Microsoft.MachineLearningServices/workspaces?api-version=2022-10-01'
+    wsRes = requests.get(url=listWsUrl, headers=headers)
+    workspaceName = None
+    if wsRes.status_code == 200:
+        workspaces = wsRes.json()['value']
+        if len(workspaces) != 0:
+            workspaceName = workspaces[0]['name']
+    if not workspaceName:
+        return with_hint(False, 'Azure Machine Learning workspace not found')
 
-        if endpoints[0]['name'] and endpoints[0]['properties']['provisioningState'] == 'Succeeded':
-            print('Endpoint is created')
-        else:
-            print('Endpoint is not created')
+    # Get endpoint
+    endpoint = f'https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{rgName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/onlineEndpoints?api-version=2022-10-01'
+    end = requests.get(url=endpoint, headers=headers)
+    if end.status_code == 200:
+        endpoints = end.json()['value']
 
-    except Exception as e:
-        logging.error(e)
-        
-if __name__=="__main__":
-    handler()
+    success = endpoints[0]['name'] and endpoints[0]['properties']['provisioningState'] == 'Succeeded'
+    return with_hint(success, f'Endpoint in Succeeded provisioning state not found')
+
+
+def get_credentials(event):
+    subscription_id = event['environment_params']['subscription_id']
+    credentials = ClientSecretCredential(
+        client_id=event['credentials']['credential_id'],
+        client_secret=event['credentials']['credential_key'],
+        tenant_id=event['environment_params']['tenant']
+    )
+    return credentials, subscription_id
