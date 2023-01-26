@@ -1,3 +1,4 @@
 title: Azure AI/ML Labs
 description: Azure AI/ML Labs
 vendor: azure # aws|azure|google|alibaba-cloud
+custom_policy_tags: azure-container-instance.three_container_instances
