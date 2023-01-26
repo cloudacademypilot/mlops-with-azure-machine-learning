@@ -141,7 +141,7 @@ A runner is a server that runs your workflows when they're triggered. Each runne
 
 ## Exercise 2: Create a service principal needed to run an Azure Machine Learning job
 
-<ins>**Note**</ins> This exercise is for your information only. <ins>You will not be able to create a service principal and assign a role to it</ins> in the lab environment. Instead, the Cloud Academy lab environment has done this for you and the required JSON output is provided at the end of the exercise.
+<ins>**Note**</ins>: This exercise is for your information only. <ins>You will not be able to create a service principal and assign a role to it</ins> in the lab environment. Instead, the Cloud Academy lab environment has done this for you and the required JSON output is provided at the end of the exercise.
 
 When you use GitHub Actions to automate Azure Machine Learning jobs, you need to use a service principal to authenticate GitHub to manage the Azure Machine Learning workspace. For example, to train a model using Azure Machine Learning compute, you or any tool that you use, needs to be authorized to use that compute.
 
