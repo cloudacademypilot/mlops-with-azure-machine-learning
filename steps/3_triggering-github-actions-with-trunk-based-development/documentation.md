@@ -126,5 +126,3 @@ jobs:
 7. You can cross-check the merge by looking into ```.github/workflows``` directory of ```main``` branch. You will see the YAML workflow you created in ```cycle-1```.
 
     ![pullreq](./assets/17_check.jpg "pullreq")
-
-[ ⏮️ Previous Module](../2_triggering-azure-machine-learning-jobs-with-github-actions/documentation.md) - [Next Module ⏭️ ](../4_working-with-linting-and-unit-testing-in-github-actions/documentation.md)

@@ -115,12 +115,13 @@ jobs:
         run: cd src
       - name: Run prod env job
         run: az ml job create --file src/production.yaml --resource-group <rg-name> --workspace-name <ml-workspace-name> --stream  
- ```
+```
+
 The above workflow will run experiment job in ```development environment``` and the production job, will run in ```production environment```, is only allowed to run when the experiment job ran successfully. Adding ```needs: dev``` to the workflow will wait for experiment job to run successfully before running production job. 
 
 ### Define experiment job to run in **development environment**:
 
-Goto ```src```folder in cycle-2 branch in your repo. Select **Add file** and **Create new file**. Give name (For ex- ```development.yaml```) and paste the following code after changing the ```<Compute Cluster name>``` to your **Compute cluster name** from your Azure ML workspace. Select Commit.
+Goto ```src``` folder in cycle-2 branch in your repo. Select **Add file** and **Create new file**. Give name (For ex- ```development.yaml```) and paste the following code after changing the ```<Compute Cluster name>``` to your **Compute cluster name** from your Azure ML workspace. Select Commit.
 
 ```yaml
 $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
@@ -187,7 +188,7 @@ description: Train a classification model on nyc taxi data to predict taxi fare 
 
     ![pull](./assets/16_pull.jpg "pull")
     
-4. You can see pipeline where the workflow will run in ```development environment``` follwed by ```production environment```.
+4. You can see pipeline where the workflow will run in ```development environment``` followed by ```production environment```.
 
     ![pull](./assets/17_pull.jpg "pull")
     
@@ -206,5 +207,3 @@ description: Train a classification model on nyc taxi data to predict taxi fare 
 7. Now go to Azure ML workspace, navigate to **Jobs** > **All jobs**. You will see two job runs successfully.
 
     ![pull](./assets/23_pull.jpg "pull")
-
-[ ⏮️ Previous Module](../4_working-with-linting-and-unit-testing-in-github-actions/documentation.md) - [Next Module ⏭️ ](../6_deploying-a-model-with-github-actions/documentation.md)

@@ -89,8 +89,10 @@ import-order-style = pep8
 ```
 
 Create a new directory/folder in your github account repo with the name ```tests```. And create ```.flake8``` configuration file inside with above code copied. Click commit to save the file.
-    ![tests](./assets/1_tests.jpg "tests")
-    ![flake8](./assets/2_flake8.jpg "flake8")
+
+![tests](./assets/1_tests.jpg "tests")
+
+![flake8](./assets/2_flake8.jpg "flake8")
     
 
 ### Unit tests
@@ -155,9 +157,9 @@ For example, to test the ```get_csvs_df``` function, you can create a ```dataset
 
 Goto your github repo ```tests``` folder. Select Add file > Create new file and give ```test_main.py``` as name and paste the above code.
 
-   ![tests](./assets/3_testmain.jpg "tests")
+![tests](./assets/3_testmain.jpg "tests")
    
-   ![tests](./assets/4_testmain.jpg "tests")
+![tests](./assets/4_testmain.jpg "tests")
     
 #### Creating datasets folder with csv files.
 
@@ -268,7 +270,7 @@ jobs:
       run : pip install -r requirements.txt
     - name: Unit testing
       run: pytest tests/
- ```
+```
   
 ### Triggering workflow manually
 
@@ -338,5 +340,3 @@ on:
     ![merge](./assets/24_merge.jpg "merge")
 
 
-
-[ ⏮️ Previous Module](../3_triggering-github-actions-with-trunk-based-development/documentation.md) - [Next Module ⏭️ ](../5_working-with-environments-in-github-actions/documentation.md)
