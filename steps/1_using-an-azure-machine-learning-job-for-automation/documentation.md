@@ -438,15 +438,21 @@ Whenever you want to run an Azure Machine Learning job, you can use the CLI v2. 
 
     ![openterminal](./assets/35_openterminal.jpg "openterminal")
 
-2. First login to your azure account using the below command.
-
-    ![azlogin](./assets/36_azlogin.jpg "azlogin")
+2. First login to your azure account using the below command. Then open [Azure](https://microsoft.com/devicelogin) and enter the code to authenticate
 
     ```cmd
     az login
     ```
+    
+    ![azlogin](./assets/36_azlogin.jpg "azlogin")
+    
+3. You will see a link and and a code to authenticate. Go to the link and enter the code to authenticate. And select your account and click **Continue**.
+    
+    ![azlogin](./assets/37_azlogin.jpg "azlogin")
+    
+    ![azlogin](./assets/38_azlogin.jpg "azlogin")
 
-3. Now, you can submit an Azure Machine Learning job using the following command:
+4. Now, you can submit an Azure Machine Learning job using the following command:
 
     ![runjob](./assets/37_runjob.jpg "runjob")
 
@@ -454,11 +460,11 @@ Whenever you want to run an Azure Machine Learning job, you can use the CLI v2. 
     az ml job create --file job.yaml
     ```
 
-4. On the left side, Goto **Jobs** and select **All jobs**. Here you can see all the jobs that you had run.
+5. On the left side, Goto **Jobs** and select **All jobs**. Here you can see all the jobs that you had run.
 
     ![job](./assets/38_job.jpg "job")
 
-5. Click on the **Job Display Name** to view more details.
+6. Click on the **Job Display Name** to view more details.
 
     ![jobdetails](./assets/39_jobdetails.jpg "jobdetails")
 
