@@ -137,7 +137,7 @@ To get resource-group name and workspace-name, goto Azure ML workspace. Click on
         path: azureml:nyc-taxi-data:1
         mode: ro_mount  
     environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
-    compute: cluster20230111T062714Z
+    compute: <cluster name>
     experiment_name: nyc-taxi-fare-prices
     description: Train a classification model on nyc taxi data to predict taxi fare prices.
     ```    
