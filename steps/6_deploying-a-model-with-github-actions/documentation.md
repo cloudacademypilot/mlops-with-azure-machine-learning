@@ -6,11 +6,11 @@ Using the Azure Machine Learning CLI (v2), you want to set up an automated workf
 
 To get value from a machine learning model, you'll have to deploy it. Whenever you deploy a model you can generate predictions whenever necessary to give you insights.
 
-In other words, you need to deploy the model to a real-time endpoint. The web app should be able to send the wine quality data to the endpoint and get a prediction in return.
+In other words, you need to deploy the model to a real-time endpoint. The web app should be able to send the nyc taxi fare data to the endpoint and get a prediction in return.
 
-When you want to deploy a model, you have a choice between an online endpoint for real-time predictions or a batch endpoint for batch predictions. As the model will be integrated with a web app where the you will input wine data expecting to get a direct response, you choose to deploy the model to an online endpoint.
+When you want to deploy a model, you have a choice between an online endpoint for real-time predictions or a batch endpoint for batch predictions. As the model will be integrated with a web app where the you will input taxi fare data expecting to get a direct response, you choose to deploy the model to an online endpoint.
 
-You can deploy the model manually in the Azure Machine Learning workspace. However, you expect to deploy more models in the future. And you want to easily redeploy the wine quality model whenever the model has been retrained. You therefore want to automate the model deployment wherever possible.
+You can deploy the model manually in the Azure Machine Learning workspace. However, you expect to deploy more models in the future. And you want to easily redeploy the nyc taxi data model whenever the model has been retrained. You therefore want to automate the model deployment wherever possible.
 
 ## Prerequisites
 
