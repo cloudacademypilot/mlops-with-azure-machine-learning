@@ -44,7 +44,7 @@ Machine learning operations (MLOps) applies DevOps principles to machine learnin
 - Trigger Azure Machine Learning Job  
 
 
-## Exercise 1: Create a Notebook that trains a Machine Learning model to predict quality of wine.
+## Exercise 1: Create a Notebook that trains a Machine Learning model to predict NYC Taxi Fare price.
 
 1. Go to the resource group deployed in the Azure Portal. Amongst the list of resources, open the Azure Machine Learning workspace.
 
