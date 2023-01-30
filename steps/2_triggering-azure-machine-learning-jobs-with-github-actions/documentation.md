@@ -111,7 +111,7 @@ A runner is a server that runs your workflows when they're triggered. Each runne
           working-directory: src
     ```
 
-11. Click on **Add file** and select **Create new file** to create one more directory with the name ```src/model/``` and create a ```main.py``` file, which will be the python script you created in the previous module to train model. Copy-paste the python code from the main.py script created in Azure ML workspace. And Click on **Commit new file** at the bottom of the page.
+11. Navigate to **<> Code**  and click on **Add file** and select **Create new file** to create one more directory with the name ```src/model/``` and create a ```main.py``` file, which will be the python script you created in the previous module to train model. Copy-paste the python code from the main.py script created in Azure ML workspace. And Click on **Commit new file** at the bottom of the page.
     
     ![add_file](./assets/11_add_file.jpg "add_file")
     
@@ -145,44 +145,12 @@ A runner is a server that runs your workflows when they're triggered. Each runne
 
 When you use GitHub Actions to automate Azure Machine Learning jobs, you need to use a service principal to authenticate GitHub to manage the Azure Machine Learning workspace. For example, to train a model using Azure Machine Learning compute, you or any tool that you use, needs to be authorized to use that compute.
 
-Create a service principal, using the Cloud Shell in the Azure portal, which has contributor access to your resource group.  Use the following command:
+You can create a service principal, using the Cloud Shell in the Azure portal, which has contributor access to your resource group using the following command:
     
 ```bash
 az ad sp create-for-rbac --name "<service-principal-name>" --role contributor --scopes /subscriptions/<subscription-id>/resourceGroups/<your-resource-group-name> --sdk-auth
 ```
-
-- Give ```gitserviceprincipal``` as **<service-principal-name\>**.
-- For **<subscription-id\>** and **<your-resource-group-name\>**, Goto the resource group created in Azure Portal, copy the **Resource group** name and **Subscription ID** will be available under **Essentials**. Copy and Paste in the required fields.
-
-    ![subscription](./assets/15_subscription.jpg "subscription")
-
-Run the above command after updating all the fields in Azure Portal Cloud Shell. Save the output, you’ll also need it for next modules.
-
-- Go to Azure Portal, At the top, right side of search menu, you will see **Cloud Shell**. Open it.
-
-    ![cloudshell](./assets/16_cloudshell.jpg "cloudshell")
-
-- Paste the command in azure cloud shell and hit enter.
-
-    ![run](./assets/17_run.jpg "run")
-
-- The output of the service principal should be a JSON with the following structure:
-
-```json
-{
-"clientId": "your-client-id",
-"clientSecret": "your-client-secret",
-"subscriptionId": "your-subscription-id",
-"tenantId": "your-tenant-id",
-"activeDirectoryEndpointUrl": "https://login.microsoftonline.com",
-"resourceManagerEndpointUrl": "https://management.azure.com/",
-"activeDirectoryGraphResourceId": "https://graph.windows.net/",
-"sqlManagementEndpointUrl": "https://management.core.windows.net:8443/",
-"galleryEndpointUrl": "https://gallery.azure.com/",
-"managementEndpointUrl": "https://management.core.windows.net/"
-}
-```
-
+- The output of the service principal should be a JSON with the following structure.
 - The output for the service principal created by the Cloud Academy lab environment for your current lab session is below:
 
 ```
