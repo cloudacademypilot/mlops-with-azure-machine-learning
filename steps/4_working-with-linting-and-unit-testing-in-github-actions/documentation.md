@@ -107,7 +107,7 @@ As a best practice, your code should exist mostly out of functions. Whether you'
 
 When you work with Python, you can use Pytest and Numpy (which uses the Pytest framework) to test your code.
 
-You created a training script ```main.py```, in step 1, which contains the following function:
+You created a training script ```main.py```, in lab step 3 **Using an Azure Machine Learning Job for Automation**, which contains the following function:
 
 ```python
 #function to read CSV file
