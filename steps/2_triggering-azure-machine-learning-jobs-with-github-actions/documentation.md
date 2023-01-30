@@ -209,30 +209,7 @@ To define a workflow, you'll need to create a YAML file. You can trigger the wor
 
 To configure a GitHub Actions workflow so that you can trigger it manually, use ```on: workflow_dispatch```. To trigger a workflow with a push event, use ```on: [push]```.
 
-Once the GitHub Actions workflow is triggered, you can add various steps to a job. For example, you can use a step to run an Azure Machine Learning job:
-    
-```yaml
-name: Manually trigger an Azure Machine Learning job
-
-on: 
-  workflow_dispatch:
-
-jobs:
-  train:
-    runs-on: ubuntu-latest
-    steps:
-    - name: Check out repo
-      uses: actions/checkout@main
-    - name: Install az ml extension
-      run: az extension add -n ml -y
-    - name: Azure login
-      uses: azure/login@v1
-      with:
-        creds: ${{secrets.AZURE_CREDENTIALS}}
-    - name: run ml job
-      run: az ml job create --file job.yaml --resource-group <resource group name> --workspace-name <Azure ML workspace name>
-      working-directory: src
-```
+Github actions should be created in ```.github/workflows``` directory, which you have already created in Exercise 1 with file name ```01-manual-trigger-job.yaml```.
 
 ## Exercise 5: Manually trigger the workflow
 
