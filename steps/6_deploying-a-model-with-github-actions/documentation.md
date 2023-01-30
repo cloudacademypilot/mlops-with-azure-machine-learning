@@ -120,7 +120,7 @@ $schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.sch
 name: mlflow-deployment
 endpoint_name: price-prediction-ep
 model: azureml:<Model name>
-instance_type: Standard_DS2_v2
+instance_type: Standard_F2s_v2
 instance_count: 1
 ```
 
