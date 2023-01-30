@@ -57,7 +57,7 @@ Go to the **Settings** tab within your repo. Select **Environments**. Create a *
 
 Create one GitHub Actions workflow, triggered by changes being pushed to the main branch, with two jobs:
 
-- The experiment job that trains the model using the wine-quality dataset in the development environment.
+- The experiment job that trains the model using the nyc-taxi-data dataset in the development environment.
 - The production job that trains the model in the production environment.
 
 Add a condition that the production job is only allowed to run when the experiment job ran successfully. Success means that the Azure Machine Learning job ran successfully too.
