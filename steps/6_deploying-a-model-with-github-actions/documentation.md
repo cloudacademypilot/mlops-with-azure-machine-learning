@@ -36,7 +36,7 @@ When you log a model during model training, the model is stored in the job outpu
 
 To register the model, you can point to either a job's output, or to a location in an Azure Machine Learning datastore.
 
-1. Go to Azure ML workspace, navigate to **Jobs** > **All jobs** and select the successfull job run from previous module. 
+1. Go to Azure ML workspace, navigate to **Jobs** > **All jobs** and select the latest successfull job run from previous lab step. 
 
     ![Jobs](./assets/1_jobs.jpg "Jobs")
     
