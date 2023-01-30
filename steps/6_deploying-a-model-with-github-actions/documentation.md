@@ -189,9 +189,11 @@ Please cross-check the **endpoint** name you give in ```mlflow-deployment.yaml``
 
     ![run](./assets/11_run.jpg "run")
     
-3. You can two jobs running. One for creating endpoint and another for deploying the model.
+3. You can see two jobs running. One for creating endpoint and another for deploying the model.
 
     ![workflow](./assets/13_workflow.jpg "workflow")
+    
+    ![workflow](./assets/14_workflow.jpg "workflow")
     
 4. Goto your Azure ML workspace to check the endpoint created and model deployed to it.
 
