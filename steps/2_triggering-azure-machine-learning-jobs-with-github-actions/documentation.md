@@ -209,7 +209,7 @@ To define a workflow, you'll need to create a YAML file. You can trigger the wor
 
 To configure a GitHub Actions workflow so that you can trigger it manually, use ```on: workflow_dispatch```. To trigger a workflow with a push event, use ```on: [push]```.
 
-Github actions should be created in ```.github/workflows``` directory, which you have already created in Exercise 1 with file name ```01-manual-trigger-job.yaml```.
+You have already created a Github Action in Exercise 1 with file name ```01-manual-trigger-job.yaml```.
 
 ## Exercise 5: Manually trigger the workflow
 
