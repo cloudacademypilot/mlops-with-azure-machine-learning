@@ -8,7 +8,7 @@ Before moving code to production, you'll also want to check the performance of t
 
 Only when you've verified the code quality do you want to use the code in production. You can use GitHub Actions to automatically check the code whenever a pull request is created.
 
-To verify the code used to train the wine quality model, you'll want to run:
+To verify the code used to train the nyc taxi fare price model, you'll want to run:
 
 - **Linting**: Checking for programmatic or stylistic errors in Python scripts.
 - **Unit testing**: Checking for the performance of the contents of the code.
@@ -107,7 +107,7 @@ As a best practice, your code should exist mostly out of functions. Whether you'
 
 When you work with Python, you can use Pytest and Numpy (which uses the Pytest framework) to test your code.
 
-You created a training script ```main.py```, in step 1, which contains the following function:
+You created a training script ```main.py```, in lab step 3 **Using an Azure Machine Learning Job for Automation**, which contains the following function:
 
 ```python
 #function to read CSV file

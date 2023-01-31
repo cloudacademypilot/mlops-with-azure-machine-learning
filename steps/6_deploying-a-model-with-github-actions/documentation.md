@@ -6,11 +6,11 @@ Using the Azure Machine Learning CLI (v2), you want to set up an automated workf
 
 To get value from a machine learning model, you'll have to deploy it. Whenever you deploy a model you can generate predictions whenever necessary to give you insights.
 
-In other words, you need to deploy the model to a real-time endpoint. The web app should be able to send the wine quality data to the endpoint and get a prediction in return.
+In other words, you need to deploy the model to a real-time endpoint. The web app should be able to send the nyc taxi fare data to the endpoint and get a prediction in return.
 
-When you want to deploy a model, you have a choice between an online endpoint for real-time predictions or a batch endpoint for batch predictions. As the model will be integrated with a web app where the you will input wine data expecting to get a direct response, you choose to deploy the model to an online endpoint.
+When you want to deploy a model, you have a choice between an online endpoint for real-time predictions or a batch endpoint for batch predictions. As the model will be integrated with a web app where the you will input taxi fare data expecting to get a direct response, you choose to deploy the model to an online endpoint.
 
-You can deploy the model manually in the Azure Machine Learning workspace. However, you expect to deploy more models in the future. And you want to easily redeploy the wine quality model whenever the model has been retrained. You therefore want to automate the model deployment wherever possible.
+You can deploy the model manually in the Azure Machine Learning workspace. However, you expect to deploy more models in the future. And you want to easily redeploy the nyc taxi data model whenever the model has been retrained. You therefore want to automate the model deployment wherever possible.
 
 ## Prerequisites
 
@@ -36,7 +36,7 @@ When you log a model during model training, the model is stored in the job outpu
 
 To register the model, you can point to either a job's output, or to a location in an Azure Machine Learning datastore.
 
-1. Go to Azure ML workspace, navigate to **Jobs** > **All jobs** and select the successfull job run from previous module. 
+1. Go to Azure ML workspace, navigate to **Jobs** > **All jobs** and select the latest successfull job run from previous lab step. 
 
     ![Jobs](./assets/1_jobs.jpg "Jobs")
     
@@ -189,9 +189,11 @@ Please cross-check the **endpoint** name you give in ```mlflow-deployment.yaml``
 
     ![run](./assets/11_run.jpg "run")
     
-3. You can two jobs running. One for creating endpoint and another for deploying the model.
+3. You can see two jobs running. One for creating endpoint and another for deploying the model.
 
     ![workflow](./assets/13_workflow.jpg "workflow")
+    
+    ![workflow](./assets/14_workflow.jpg "workflow")
     
 4. Goto your Azure ML workspace to check the endpoint created and model deployed to it.
 

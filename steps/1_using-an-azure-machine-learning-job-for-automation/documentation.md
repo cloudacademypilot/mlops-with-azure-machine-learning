@@ -44,7 +44,7 @@ Machine learning operations (MLOps) applies DevOps principles to machine learnin
 - Trigger Azure Machine Learning Job  
 
 
-## Exercise 1: Create a Notebook that trains a Machine Learning model to predict quality of wine.
+## Exercise 1: Create a Notebook that trains a Machine Learning model to predict NYC Taxi Fare price.
 
 1. Go to the resource group deployed in the Azure Portal. Amongst the list of resources, open the Azure Machine Learning workspace.
 
@@ -440,13 +440,19 @@ Whenever you want to run an Azure Machine Learning job, you can use the CLI v2. 
 
 2. First login to your azure account using the below command.
 
-    ![azlogin](./assets/36_azlogin.jpg "azlogin")
-
     ```cmd
     az login
     ```
+    
+    ![azlogin](./assets/36_azlogin.jpg "azlogin")
+    
+3. You will see a link and a code to authenticate. Open the link and enter the code to authenticate and select your account and click **Continue**.
+    
+    ![azlogin](./assets/37_azlogin.jpg "azlogin")
+    
+    ![azlogin](./assets/38_azlogin.jpg "azlogin")
 
-3. Now, you can submit an Azure Machine Learning job using the following command:
+4. After logging in, you can submit an Azure Machine Learning job using the following command:
 
     ![runjob](./assets/37_runjob.jpg "runjob")
 
@@ -454,11 +460,10 @@ Whenever you want to run an Azure Machine Learning job, you can use the CLI v2. 
     az ml job create --file job.yaml
     ```
 
-4. On the left side, Goto **Jobs** and select **All jobs**. Here you can see all the jobs that you had run.
+5. On the left side, Goto **Jobs** and select **All jobs**. Here you can see all the jobs that you had run.
 
     ![job](./assets/38_job.jpg "job")
 
-5. Click on the **Job Display Name** to view more details.
+6. Click on the **Job Display Name** to view more details.
 
     ![jobdetails](./assets/39_jobdetails.jpg "jobdetails")
-
