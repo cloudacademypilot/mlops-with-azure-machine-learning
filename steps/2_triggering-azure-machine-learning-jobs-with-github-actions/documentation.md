@@ -110,9 +110,10 @@ A runner is a server that runs your workflows when they're triggered. Each runne
           run: az ml job create --file job.yaml --resource-group <resource group name> --workspace-name <Azure ML workspace name>
           working-directory: src
     ```
-To get resource-group name and workspace-name, goto Azure ML workspace. Click on **workspace** in right-top corner beside **account/profile**. Copy resource-group name and workspace-name into notepad. You will use them in next steps.
 
-   ![add_file](./assets/11_getnames.jpg "add_file")
+    To get resource-group name and workspace-name, goto Azure ML workspace. Click on **workspace** in right-top corner beside **account/profile**. Copy resource-group name and workspace-name into notepad. You will use them in next steps.
+
+    ![add_file](./assets/11_getnames.jpg "add_file")
 
 11. Navigate to **<> Code**  and click on **Add file** and select **Create new file** to create one more directory with the name ```src/model/``` and create a ```main.py``` file, which will be the python script you created in the previous module to train model. Copy-paste the python code from the main.py script created in Azure ML workspace. And Click on **Commit new file** at the bottom of the page.
     
@@ -153,6 +154,7 @@ You can create a service principal, using the Cloud Shell in the Azure portal, w
 ```bash
 az ad sp create-for-rbac --name "<service-principal-name>" --role contributor --scopes /subscriptions/<subscription-id>/resourceGroups/<your-resource-group-name> --sdk-auth
 ```
+
 - The output of the service principal should be a JSON with the following structure.
 - The output for the service principal created by the Cloud Academy lab environment for your current lab session is below:
 
