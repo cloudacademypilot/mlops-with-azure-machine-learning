@@ -94,7 +94,7 @@ name: mlflow-endpoint
 auth_mode: key
 ```
 
-1. Goto your GitHub Repo, inside ```src``` folder create a yaml file with name ```create-endpoint.yaml``` and paste the above configuration and Commit.
+1. Go to your GitHub Repo, inside ```src``` folder create a yaml file with name ```create-endpoint.yaml``` and paste the above configuration and Commit.
 
     ![create](./assets/7_create.jpg "create")
     
@@ -124,11 +124,11 @@ instance_type: Standard_DS2_v2
 instance_count: 1
 ```
 
-In this example, we're taking the model which you registered in Exercise 1. For ```<Model name>``` goto Azure ML workspace, select the model you registered and copy the name.
+In this example, we're taking the model which you registered in Exercise 1. For ```<Model name>``` go to Azure ML workspace, select the model you registered and copy the name.
 
 ![copy](./assets/10_copy.jpg "copy")    
 
-1. Goto your GitHub Repo, inside ```src``` folder create a yaml file with name ```mlflow-deployment.yaml``` and paste the above configuration by replacing ```<Model name>``` with the model name from Azure ML workspace and Commit.
+1. Go to your GitHub Repo, inside ```src``` folder create a yaml file with name ```mlflow-deployment.yaml``` and paste the above configuration by replacing ```<Model name>``` with the model name from Azure ML workspace and Commit.
 
     ![create](./assets/7_create.jpg "create")
     
@@ -140,7 +140,7 @@ To trigger the model deployment with Github actions, you need to create a workfl
 
 Please cross-check the **endpoint** name you give in ```mlflow-deployment.yaml``` and ```05_model-deployment.yaml```. It should be unique and same in both files..
 
-1. Goto your GitHub Repo, inside ```.github/workflows``` folder create a yaml file with name ```05_model-deployment.yaml``` and paste the below code by replacing ```<rg-name>``` with your resource group name and ```<ml-workspace-name>``` with your Azure ML workspace name and Commit.
+1. Go to your GitHub Repo, inside ```.github/workflows``` folder create a yaml file with name ```05_model-deployment.yaml``` and paste the below code by replacing ```<rg-name>``` with your resource group name and ```<ml-workspace-name>``` with your Azure ML workspace name and Commit.
 
     ![workflow](./assets/12_workflow.jpg "workflow")
 
@@ -185,7 +185,7 @@ Please cross-check the **endpoint** name you give in ```mlflow-deployment.yaml``
             run: az ml online-deployment create --name mlflow-deployment --endpoint price-prediction-ep -f src/mlflow-deployment.yaml --resource-group <rg-name> --workspace-name <ml-workspace-name> --all-traffic
     ```
 
-2. Goto your Github repo and navigate to Actions and select ```Register and Deploy a Azure Machine Learning Model``` workflow. Select **Run workflow**.
+2. Go to your Github repo and navigate to Actions and select ```Register and Deploy a Azure Machine Learning Model``` workflow. Select **Run workflow**.
 
     ![run](./assets/11_run.jpg "run")
     
@@ -195,7 +195,7 @@ Please cross-check the **endpoint** name you give in ```mlflow-deployment.yaml``
     
     ![workflow](./assets/14_workflow.jpg "workflow")
     
-4. Goto your Azure ML workspace to check the endpoint created and model deployed to it.
+4. Go to your Azure ML workspace to check the endpoint created and model deployed to it.
 
     ![run](./assets/14_endpoint.jpg "run")
     
