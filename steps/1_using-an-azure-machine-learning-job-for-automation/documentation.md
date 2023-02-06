@@ -12,7 +12,7 @@ DevOps for machine learning models, often called MLOps, is a process for develop
    
    ![Mllifecycle](./assets/1_ml-cycle.jpg "Ml lifecycle")
     
-### Integrations enabling MLOPs
+### Integrations enabling MLOps
 
 Azure Machine Learning is built with the model lifecycle in mind. You can audit the model lifecycle down to a specific commit and environment.
 
