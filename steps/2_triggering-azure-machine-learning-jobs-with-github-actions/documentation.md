@@ -111,7 +111,7 @@ A runner is a server that runs your workflows when they're triggered. Each runne
           working-directory: src
     ```
 
-    To get resource-group name and workspace-name, goto Azure ML workspace. Click on **workspace** in right-top corner beside **account/profile**. Copy resource-group name and workspace-name into notepad. You will use them in next steps.
+    To get resource-group name and workspace-name, go to Azure ML workspace. Click on **workspace** in right-top corner beside **account/profile**. Copy resource-group name and workspace-name into notepad. You will use them in next steps.
 
     ![add_file](./assets/11_getnames.jpg "add_file")
 

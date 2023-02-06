@@ -155,7 +155,7 @@ For example, to test the ```get_csvs_df``` function, you can create a ```dataset
 
 #### Creating ```test_main.py```:
 
-Goto your github repo ```tests``` folder. Select Add file > Create new file and give ```test_main.py``` as name and paste the above code.
+Go to your github repo ```tests``` folder. Select Add file > Create new file and give ```test_main.py``` as name and paste the above code.
 
 ![tests](./assets/3_testmain.jpg "tests")
    
@@ -163,7 +163,7 @@ Goto your github repo ```tests``` folder. Select Add file > Create new file and 
     
 #### Creating datasets folder with csv files.
 
-- Goto your github repo ```tests``` folder. Select Add file > Create new file and give ```datasets``` as name and give a slash(```/```). Then give ```first.csv```. Paste the following sample data for unit testing. Click commit. 
+- Go to your github repo ```tests``` folder. Select Add file > Create new file and give ```datasets``` as name and give a slash(```/```). Then give ```first.csv```. Paste the following sample data for unit testing. Click commit. 
 
 ```
 index,first,last
@@ -205,7 +205,7 @@ index,first,last
    
 #### Creating requirements.txt
 
-Goto your github repo. Select Add file > Create new file and give ```requirements.txt``` as name and paste the following snippet and commit.
+Go to your github repo. Select Add file > Create new file and give ```requirements.txt``` as name and paste the following snippet and commit.
 
 ```
 pytest==7.1.2
@@ -230,7 +230,7 @@ To run the test in GitHub Action:
 
 ### Defining the workflow
 
-Goto your github repo. Inside ```.github/workflows```, select Add file > Create new file and give ```03_code_checks.yaml``` as name and paste the following code and commit.
+Go to your github repo. Inside ```.github/workflows```, select Add file > Create new file and give ```03_code_checks.yaml``` as name and paste the following code and commit.
 
    ![workflow](./assets/11_workflow.jpg "workflow")
    
