@@ -460,7 +460,7 @@ Whenever you want to run an Azure Machine Learning job, you can use the CLI v2. 
     az ml job create --file job.yaml
     ```
 
-5. On the left side, Goto **Jobs** and select **All jobs**. Here you can see all the jobs that you had run.
+5. On the left side, go to **Jobs** and select **All jobs**. Here you can see all the jobs that you had run.
 
     ![job](./assets/38_job.jpg "job")
 
