@@ -46,8 +46,12 @@ Machine learning operations (MLOps) applies DevOps principles to machine learnin
 
 ## Exercise 1: Create a Notebook that trains a Machine Learning model to predict NYC Taxi Fare price.
 
-1. Go to the resource group deployed in the Azure Portal. Amongst the list of resources, open the Azure Machine Learning workspace.
+1. Go to Azure portal and click on hamburger button **☰** on top-left side and select **Resource groups**. Select the resource group deployed in the Azure Portal. Amongst the list of resources, open the Azure Machine Learning workspace.
 
+    ![Resources](./assets/mlops-rg.jpg "Resources")
+    
+    ![Resources](./assets/mlops-ws.jpg "Resources")
+    
     ![Resources](./assets/8_resources.jpg "Resources")
 
 2. Click on the **Launch Studio** Tile.
@@ -58,29 +62,15 @@ Machine learning operations (MLOps) applies DevOps principles to machine learnin
 
     ![HomePage](./assets/10_homepage.jpg "Home Page")
 
-4. Now on the left side, Go to **Notebooks** and click on **⊕** and **Create new file**.
-
-    ![Notebook](./assets/11_notebook.jpg "Notebook")
-
-5. Give ```main.ipynb``` as File name and Select **Notebook** as File type from Dropdown. Click **Create**.
-
-    ![create](./assets/12_create.jpg "create")
-
-6. Select **compute instance** starting with ```instance{*}``` that is already created for you. Click on **Start compute**, if the instance is in stopped state. Choose Python 3.8 - AzureML (from drop down kernal list)
-
-    ![compute](./assets/13_compute.jpg "compute")
-
-Before running the notebook, you need to upload **nyc-taxi-data.csv** file to your workspace.
-
-7. Go to the resource group deployed in the Azure Portal. Amongst the list of resources, open the Storage account. On the left side, click on **Containers**. Then open **azureml** container. Inside you will see the **nyc-taxi-data.csv** file. On the right side, click on **...** and **Downlaod**. The csv file will be downloaded to your local system in **Downloads** folder.
+4. Before creating the notebook, you need to upload **nyc-taxi-data.csv** file to your workspace. Go to the resource group deployed in the Azure Portal. Amongst the list of resources, open the Storage account. On the left side, click on **Containers**. Then open **azureml** container. Inside you will see the **nyc-taxi-data.csv** file. On the right side, click on **...** and **Downlaod**. The csv file will be downloaded to your local system in **Downloads** folder.
 
     ![storage](./assets/2_storage.jpg "storage")
     
     ![containers](./assets/3_containers.jpg "containers")
     
     ![azureml](./assets/4_download.jpg "azureml")
-    
-8. Now go back to the Azure ML workspace, Go to **Notebooks** and click on **⊕** and **Upload files**. Browse and select the csv file you downloaded. Click **Upload**. 
+
+5. Now go back to the Azure ML workspace, Go to **Notebooks** and click on **⊕** and **Upload files**. Browse and select the csv file you downloaded. Click **Upload**. 
 
     ![upload](./assets/29_upload.jpg "upload")
     
@@ -88,7 +78,19 @@ Before running the notebook, you need to upload **nyc-taxi-data.csv** file to yo
     
     ![upload](./assets/5_upload.jpg "upload")
 
-9. Now open the Notebook you created and Run all the below scripts in the command cell. And use (+Code) icon for new cells.
+6. To create a notebook, Go to **Notebooks** and click on **⊕** and **Create new file**.
+
+    ![Notebook](./assets/11_notebook.jpg "Notebook")
+
+7. Give ```main.ipynb``` as File name and Select **Notebook** as File type from Dropdown. Click **Create**.
+
+    ![create](./assets/12_create.jpg "create")
+
+8. Select **compute instance** starting with ```instance{*}``` that is already created for you. Click on **Start compute**, if the instance is in stopped state. Choose Python 3.8 - AzureML (from drop down kernel list)
+
+    ![compute](./assets/13_compute.jpg "compute")
+
+9. In notebook, run all the below scripts in the command cell. And use (+Code) icon for new cells.
 
    ![runscripts](./assets/32_run_scripts.jpg "run_scripts")
 
@@ -361,7 +363,7 @@ To define a job in Azure Machine Learning, you can create a YAML file. Whether y
 
 ### Creating YAML Job
 
-1. Go to **Notebooks** and click on **⊕** and **Create new file**.
+1. Go to **Notebooks** and click on **⊕** and **Create new file**. You need to create this file in user directory not in ```src```.
 
 2. Give ```job.yaml``` as File name and Select **Yaml** as File type from Dropdown. Click **Create**.
 
