@@ -64,7 +64,7 @@ Add a condition that the production job is only allowed to run when the experime
 
 ### Define the GitHub Actions workflow:
 
-Go to ```/.github/workflows/``` folder in cycle-2 branch in your repo. Select **Add file** and **Create new file**. Give name (For ex- ```04_environment.yaml```) and paste the following code after changing the ```<rg-name>``` to your **resource group** name from Azure portal and ```<ml-workspace-name>``` to your **Azure ML workspace** name. Select Commit.
+Go to ```/.github/workflows/``` folder in cycle-2 branch in your repo. Select **Add file** and **Create new file**. Give name (For ex- ```04_environment.yaml```) and paste the following code after changing the ```<rg-name>``` to your **resource group** name and ```<ml-workspace-name>``` to your **Azure ML workspace** name from the notepad you copied earlier. Select Commit.
     
    ![workflow](./assets/5_workflow.jpg "workflow")
    
