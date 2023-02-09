@@ -82,11 +82,13 @@ A runner is a server that runs your workflows when they're triggered. Each runne
 
     ![dir_name](./assets/8_dir_name.jpg "dir_name")
     
-10. Now give ```01-manual-trigger-job.yaml``` to create a yaml file, which we will use in this module to trigger azure machine learning job through GitHub Actions. Copy paste the below code as file content after replacing ```<resource group name>``` and ```<Azure ML workspace name>``` with your **resource group** and **Azure ML workspace** names from Azure Portal. Scroll down at the bottom and Click on **Commit new file**.
+10. Now give ```01-manual-trigger-job.yaml``` to create a yaml file, which we will use in this module to trigger azure machine learning job through GitHub Actions. Copy paste the below code as file content after replacing ```<resource group name>``` and ```<Azure ML workspace name>``` with your **resource group** and **Azure ML workspace** names. To get resource-group name and workspace-name, go to Azure ML workspace. Click on **workspace** in right-top corner beside **account/profile**. Copy resource-group name and workspace-name into notepad. You will use them in next steps. Scroll down at the bottom and Click on **Commit new file**.
 
     ![name](./assets/9_name.jpg "name")
    
     ![commit](./assets/10_commit.jpg "commit")
+    
+    ![add_file](./assets/11_getnames.jpg "add_file")
    
     ```yaml
     name: Manually trigger an Azure Machine Learning job
@@ -110,9 +112,6 @@ A runner is a server that runs your workflows when they're triggered. Each runne
           run: az ml job create --file job.yaml --resource-group <resource group name> --workspace-name <Azure ML workspace name>
           working-directory: src
     ```
-To get resource-group name and workspace-name, go to Azure ML workspace. Click on **workspace** in right-top corner beside **account/profile**. Copy resource-group name and workspace-name into notepad. You will use them in next steps.
-
-   ![add_file](./assets/11_getnames.jpg "add_file")
 
 11. Navigate to **<> Code**  and click on **Add file** and select **Create new file** to create one more directory with the name ```src/model/``` and create a ```main.py``` file, which will be the python script you created in the previous module to train model. Copy-paste the python code from the main.py script created in Azure ML workspace. And Click on **Commit new file** at the bottom of the page.
     
