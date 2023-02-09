@@ -5,7 +5,7 @@ lab_features: # cloud-environment|remote-desktop|cli|code-ide
   - cloud-environment
 duration: 21600
 step_variables:
-  - "SetupTime: '7'"
+  - "SetupTime: '13'"
   - "appName: '{{appName|default:''waiting_for_app_name''}}'"
   - "clientId: '{{clientId|default:''waiting_for_client_id''}}'"
   - "clientSecret: '{{clientSecret|default:''waiting_for_client_secret''}}'"
