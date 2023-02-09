@@ -310,14 +310,14 @@ To integrate the code checks with any pull requests that target the main branch,
     
 - Replace ```on: workflow_dispatch``` with:
 
-    ![branch](./assets/19_branch.jpg "branch")
+    ```yaml
+    on: 
+      pull_request:
+        branches:
+          - main
+    ```
 
-```yaml
-on: 
-  pull_request:
-    branches:
-      - main
-```
+    ![branch](./assets/19_branch.jpg "branch")
 
 - Select **Start commit** and **Commit changes**.
 
