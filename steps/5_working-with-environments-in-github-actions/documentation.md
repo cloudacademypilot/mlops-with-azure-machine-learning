@@ -64,7 +64,7 @@ Add a condition that the production job is only allowed to run when the experime
 
 ### Define the GitHub Actions workflow:
 
-Go to ```/.github/workflows/``` folder in cycle-2 branch in your repo. Select **Add file** and **Create new file**. Give name (For ex- ```04_environment.yaml```) and paste the following code after changing the ```<rg-name>``` to your **resource group** name from Azure portal and ```<ml-workspace-name>``` to your **Azure ML workspace** name. Select Commit.
+Go to ```/.github/workflows/``` folder in cycle-2 branch in your repo. Select **Add file** and **Create new file**. Give name (For ex- ```04_environment.yaml```) and paste the following code after changing the ```<rg-name>``` to your **resource group** name and ```<ml-workspace-name>``` to your **Azure ML workspace** name from the notepad you copied earlier. Select Commit.
     
    ![workflow](./assets/5_workflow.jpg "workflow")
    
@@ -121,7 +121,7 @@ The above workflow will run experiment job in ```development environment``` and 
 
 ### Define experiment job to run in **development environment**:
 
-Go to ```src``` folder in cycle-2 branch in your repo. Select **Add file** and **Create new file**. Give name (For ex- ```development.yaml```) and paste the following code after changing the ```<Compute Cluster name>``` to your **Compute cluster name** from your Azure ML workspace. Select Commit.
+Go to ```src``` folder in cycle-2 branch in your repo. Select **Add file** and **Create new file**. Give name (For ex- ```development.yaml```) and paste the following code after changing the ```<Compute Cluster name>``` to your **Compute cluster name** from the notepad you copied earlier. Select Commit.
 
 ```yaml
 $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
@@ -145,7 +145,7 @@ description: Train a classification model on nyc taxi data to predict taxi fare 
 
 ### Define production job to run in **production environment**:
 
-Go to ```src``` folder in cycle-2 branch in your repo. Select **Add file** and **Create new file**. Give name (For ex- ```production.yaml```) and paste the following code after changing the ```<Compute Cluster name>``` to your **Compute cluster name** from your Azure ML workspace. Select Commit.
+Go to ```src``` folder in cycle-2 branch in your repo. Select **Add file** and **Create new file**. Give name (For ex- ```production.yaml```) and paste the following code after changing the ```<Compute Cluster name>``` to your **Compute cluster name** from the notepad you copied earlier. Select Commit.
 You can also use different input training data by creating one more **Data assets** in Azure ML workspace with different Data source and change the ```path``` accordingly.
 
 ```yaml
