@@ -82,7 +82,7 @@ A runner is a server that runs your workflows when they're triggered. Each runne
 
     ![dir_name](./assets/8_dir_name.jpg "dir_name")
     
-10. Now give ```01-manual-trigger-job.yaml``` to create a yaml file, which we will use in this module to trigger azure machine learning job through GitHub Actions. Copy paste the below code as file content after replacing ```<resource group name>``` and ```<Azure ML workspace name>``` with your **resource group** and **Azure ML workspace** names. To get resource-group name and workspace-name, go to Azure ML workspace. Click on **workspace** in right-top corner beside **account/profile**. Copy resource-group name and workspace-name into notepad. You will use them in next steps. Scroll down at the bottom and Click on **Commit new file**.
+10. Now give ```01-manual-trigger-job.yaml``` to create a yaml file, which we will use in this module to trigger azure machine learning job through GitHub Actions. Copy paste the below code as file content after replacing ```<resource group name>``` and ```<Azure ML workspace name>``` with your **resource group** and **Azure ML workspace** names. To get resource-group name and workspace-name, go to Azure ML workspace. Click on **workspace** in right-top corner beside **account/profile**. Copy resource-group name and workspace-name into notepad as you will use them later as well. Scroll down at the bottom and Click on **Commit new file**.
 
     ![name](./assets/9_name.jpg "name")
    
@@ -119,7 +119,7 @@ A runner is a server that runs your workflows when they're triggered. Each runne
     
     ![py_script](./assets/12_py_script.jpg "py_script")
     
-12. Go to ```src``` folder and click on **Add file** and select **Create new file** to create a Azure ML job with the name ```job.yaml```, which will be the same job you defined in previous module. Only change will be the ```code``` and **cluster name**. Here change it to ```model``` because the ```main.py``` is in model directory. And we will use **Compute Cluster** instead of **Cluster Instance**. Because, GitHub is authenticated to use your Azure Machine Learning workspace with a service principal. The service principal is only allowed to submit jobs that use a compute cluster, not a compute instance. You can get compute cluster name from your ML Workspace in **Compute** under **Compute Clusters** starting with **cluster{\*}**. Replace the instance name with cluster name and Paste. Click **Commit**.
+12. Go to ```src``` folder and click on **Add file** and select **Create new file** to create a Azure ML job with the name ```job.yaml```, which will be the same job you defined in previous module. Only change will be the ```code``` and **cluster name**. Here change it to ```model``` because the ```main.py``` is in model directory. And we will use **Compute Cluster** instead of **Cluster Instance**. Because, GitHub is authenticated to use your Azure Machine Learning workspace with a service principal. The service principal is only allowed to submit jobs that use a compute cluster, not a compute instance. You can get compute cluster name from your ML Workspace in **Compute** under **Compute Clusters** starting with **cluster{\*}**. Replace the instance name with cluster name and Paste. Copy down the name into a notepad as you will use it again. Click **Commit**.
 
     ![create](./assets/13_create.jpg "create")
    
