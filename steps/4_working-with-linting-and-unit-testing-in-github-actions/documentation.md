@@ -316,6 +316,7 @@ To integrate the code checks with any pull requests that target the main branch,
         branches:
           - main
     ```
+
     ![branch](./assets/19_branch.jpg "branch")
 
 - Select **Start commit** and **Commit changes**.
