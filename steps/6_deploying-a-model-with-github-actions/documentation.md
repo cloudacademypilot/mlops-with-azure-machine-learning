@@ -140,7 +140,7 @@ To trigger the model deployment with Github actions, you need to create a workfl
 
 Please cross-check the **endpoint** name you give in ```mlflow-deployment.yaml``` and ```05_model-deployment.yaml```. It should be unique and same in both files.
 
-1. Go to your GitHub Repo, inside ```.github/workflows``` folder create a yaml file with name ```05_model-deployment.yaml``` and paste the below code by replacing ```<rg-name>``` with your resource group name and ```<ml-workspace-name>``` with your Azure ML workspace name- from the notepad you copied into earlier and select  **Commit**.
+1. Go to your GitHub Repo, inside ```.github/workflows``` folder create a yaml file with name ```05_model-deployment.yaml``` and paste the below code by replacing ```<rg-name>``` with your resource group name and ```<ml-workspace-name>``` with your Azure ML workspace name from the notepad you copied into earlier and select  **Commit**.
 
     ![workflow](./assets/12_workflow.jpg "workflow")
 
