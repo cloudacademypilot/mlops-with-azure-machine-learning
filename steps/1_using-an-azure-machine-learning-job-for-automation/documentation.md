@@ -62,7 +62,7 @@ Machine learning operations (MLOps) applies DevOps principles to machine learnin
 
     ![HomePage](./assets/10_homepage.jpg "Home Page")
 
-4. Before creating the notebook, you need to upload **nyc-taxi-data.csv** file to your workspace. Go to the resource group deployed in the Azure Portal. Amongst the list of resources, open the Storage account. On the left side, click on **Containers**. Then open **azureml** container. Inside you will see the **nyc-taxi-data.csv** file. On the right side, click on **...** and **Downlaod**. The csv file will be downloaded to your local system in **Downloads** folder.
+4. Before creating the notebook, you need to upload **nyc-taxi-data.csv** file to your workspace. Go to the resource group deployed in the Azure Portal. Amongst the list of resources, open the Storage account. On the left side, click on **Containers**. Then open **azureml** container. Inside you will see the **nyc-taxi-data.csv** file. On the right side, click on **...** and **Download**. The csv file will be downloaded to your local system in **Downloads** folder.
 
     ![storage](./assets/2_storage.jpg "storage")
     
