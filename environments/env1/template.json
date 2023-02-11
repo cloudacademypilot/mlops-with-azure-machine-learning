@@ -394,7 +394,7 @@
             "properties": {
                 "forceUpdateTag": "[parameters('utcValue')]",
                 "azCliVersion": "2.41.0",
-                "timeout": "PT5M",
+                "timeout": "PT10M",
                 "arguments": "[concat(subscription().subscriptionId,' ',resourceGroup().name,' ','1923afe4-b16c-4022-a656-9639c444a1e0',' ',reference(resourceId('Microsoft.Resources/deployments', 'VaultReference')).outputs.secret.value,' ','labscloudacademy.onmicrosoft.com')]",
                 "scriptContent": "appregname=gitserviceprincipal$RANDOM; echo appregname is $appregname; az login --service-principal -u $3 -p $4 --tenant $5; clientid=$(az ad app create --display-name $appregname --query appId --output tsv); echo clientid is $clientid; clientsecret=$(az ad app credential reset --id $clientid --append --query password --output tsv); echo clientsecret is $clientsecret; az ad sp create --id $clientid; role_definition=$(az role definition list --subscription $1 --resource-group $2 --custom-role-only --query \"[? contains(to_string(roleName),'cal-role-')].name\" --output tsv); echo role_definition is $role_definition; az role assignment create --assignee $clientid --role $role_definition --scope /subscriptions/$1/resourceGroups/$2; echo {\\\"appregname\\\": \\\"$appregname\\\",\\\"clientid\\\": \\\"$clientid\\\",\\\"clientsecret\\\": \\\"$clientsecret\\\"} > $AZ_SCRIPTS_OUTPUT_PATH",
                 "cleanupPreference": "Always",
